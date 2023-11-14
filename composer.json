@@ -1,0 +1,21 @@
+{
+    "name": "nelson-dominici/slimgry",
+    "description": "Slim Framework high-level validation library",
+    "type": "library",
+    "require-dev": {
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "NelsonDominici\\Slimgry\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nelson-Dominici",
+            "email": "nelsoncomer777@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
