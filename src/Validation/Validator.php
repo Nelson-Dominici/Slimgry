@@ -20,17 +20,13 @@ abstract class Validator extends ValidationExecutor
 	{        
         if (!is_string($fieldValidations) || $fieldValidations === '') {
         
-                throw new \Exception('Slimgry validations must be a string.' , 422);                      
+            throw new \Exception('Slimgry validations must be a string.' , 422);                      
         }
         
-        foreach (explode('|', $fieldValidations) as $validation) {
-            
-            $validationParts = explode(':', $validation);
+        $pattern = '/:[^:]*:/'; //Checking if there are two (::)
 
-            if (count($validationParts) > 2) {
-            
-                throw new \Exception('Invalid validation format. Use only one colon (:).', 422);
-            }
+        if (!preg_match($pattern, $fieldValidations)) {
+            throw new \Exception('Invalid validation format. Use only one colon (:).', 422);
         }
     }
 
