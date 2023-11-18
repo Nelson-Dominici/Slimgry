@@ -6,31 +6,42 @@ abstract class Validator extends ValidationExecutor
 {
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
-		foreach ($bodyValidations as $field => $validationRules) {
-
-            $this->checkFieldValidations($field, $validationRules);
+		foreach ($bodyValidations as $field => $fieldValidations) {
+		
+            $this->checkFieldValidations($field, $fieldValidations);
             
-            $uniqueValidations = $this->getUniqueValidations($validationRules);
+            $uniqueValidations = $this->getUniqueValidations($fieldValidations);
             
             $this->execute($field, $uniqueValidations, $requestBody);
-		}
-	}
-	
-	private function checkFieldValidations(string $field, string $validationRules): void
-	{
-        if (!is_string($validationRules) || $validationRules === '') {
-        
-            $message = "The \"$field\" field must contain a valid Slimgry validation";
-
-            throw new \Exception($message, 500);
         }
 	}
+	
+	private function checkFieldValidations(string $field, string $fieldValidations): void
+	{
+        $exceptionMessage  = "The \"$field\" field must contain a valid Slimgry validation";
+        
+        if (!is_string($fieldValidations) || $fieldValidations === '') {
+        
+                throw new \Exception('$exceptionMessage' , 500);                      
+        }
+        
+        foreach (explode('|', $fieldValidations) as $validation) {
+            
+            $validationParts = explode(':', $validation);
 
-	private function getUniqueValidations(string $validationRules): array
+            if (count($validationParts) > 2) {
+            
+                throw new \Exception($exceptionMessage, 500);                        
+            }
+        
+        }
+    }
+
+	private function getUniqueValidations(string $fieldValidations): array
 	{
         $uniqueValidations = [];
         
-        foreach (explode('|', $validationRules) as $validation) {
+        foreach (explode('|', $fieldValidations) as $validation) {
         
             $key = explode(':', $validation)[0];
 
