@@ -36,9 +36,9 @@ abstract class Validator extends ValidationExecutor
         
         foreach (explode('|', $fieldValidations) as $validation) {
         
-            $key = explode(':', $validation)[0];
+            $validationMethod = explode(':', $validation)[0];
 
-            $uniqueValidations[$key] = $validation;
+            $uniqueValidations[$validationMethod] = $validation;
         }
 
         return array_values($uniqueValidations);
