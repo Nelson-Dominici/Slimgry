@@ -6,19 +6,19 @@ abstract class Validator extends ValidationExecutor
 {
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
-		foreach ($bodyValidations as $field => $validations) {
+		foreach ($bodyValidations as $field => $validationRules) {
 
-            $this->checkFieldValidations($validations);
+            $this->checkFieldValidations($field, $validationRules);
             
-            $uniqueValidations = $this->getUniqueValidations($validations);
+            $uniqueValidations = $this->getUniqueValidations($validationRules);
             
             $this->execute($field, $uniqueValidations, $requestBody);
 		}
 	}
 	
-	private function checkFieldValidations(string $fieldValidations): void
+	private function checkFieldValidations(string $field, string $validationRules): void
 	{
-        if (!is_string($fieldValidations) || $fieldValidations === '') {
+        if (!is_string($validationRules) || $validationRules === '') {
         
             $message = "The \"$field\" field must contain a valid Slimgry validation";
 
@@ -26,11 +26,11 @@ abstract class Validator extends ValidationExecutor
         }
 	}
 
-	private function getUniqueValidations(string $fieldValidations): array
+	private function getUniqueValidations(string $validationRules): array
 	{
         $uniqueValidations = [];
         
-        foreach (explode('|', $fieldValidations) as $validation) {
+        foreach (explode('|', $validationRules) as $validation) {
         
             $key = explode(':', $validation)[0];
 
