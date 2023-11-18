@@ -25,7 +25,7 @@ abstract class Validator extends ValidationExecutor
         
         $pattern = '/:[^:]*:/'; //Checking if there are two (::)
 
-        if (!preg_match($pattern, $fieldValidations)) {
+        if (preg_match($pattern, $fieldValidations)) {
             throw new \Exception('Invalid validation format. Use only one colon (:).', 422);
         }
     }
