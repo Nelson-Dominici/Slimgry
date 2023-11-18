@@ -8,7 +8,7 @@ abstract class Validator extends ValidationExecutor
 	{
 		foreach ($bodyValidations as $field => $fieldValidations) {
 		
-            $this->checkFieldValidations($field, $fieldValidations);
+            $this->checkFieldValidations($fieldValidations);
             
             $uniqueValidations = $this->getUniqueValidations($fieldValidations);
             
@@ -16,13 +16,11 @@ abstract class Validator extends ValidationExecutor
         }
 	}
 	
-	private function checkFieldValidations(string $field, string $fieldValidations): void
-	{
-        $exceptionMessage  = "The \"$field\" field must contain a valid Slimgry validation";
-        
+	private function checkFieldValidations(string $fieldValidations): void
+	{        
         if (!is_string($fieldValidations) || $fieldValidations === '') {
         
-                throw new \Exception('$exceptionMessage' , 500);                      
+                throw new \Exception('Slimgry validations must be a string.' , 422);                      
         }
         
         foreach (explode('|', $fieldValidations) as $validation) {
@@ -31,9 +29,8 @@ abstract class Validator extends ValidationExecutor
 
             if (count($validationParts) > 2) {
             
-                throw new \Exception($exceptionMessage, 500);                        
+                throw new \Exception('Invalid validation format. Use only one colon (:).', 422);
             }
-        
         }
     }
 
