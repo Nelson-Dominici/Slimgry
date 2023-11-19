@@ -23,10 +23,10 @@ abstract class Validator extends ValidationExecutor
             throw new \Exception('Slimgry validations must be a string.' , 422);                      
         }
         
-        $pattern = '/[^|]*:[^|]*:[^|]*/'; //Checking if there are two (::)
+        $pattern = '/[^|]*:[^|]*:[^|]*/'; //Checking if there are two (::) in a validation method
 
         if (preg_match($pattern, $fieldValidations)) {
-            throw new \Exception('Invalid validation format. Use only one colon (:).', 422);
+            throw new \Exception('Invalid validation method format. Use only one colon (:).', 422);
         }
     }
 
