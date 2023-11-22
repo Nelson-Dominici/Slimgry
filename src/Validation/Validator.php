@@ -2,45 +2,38 @@
 
 namespace NelsonDominici\Slimgry\Validation;
 
-abstract class Validator extends ValidationExecutor
+abstract class Validator extends ValidationParser
 {
+    use Validations\TypesValidation, Validations\LengthValidation;
+    
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
-		foreach ($bodyValidations as $field => $fieldValidations) {
-		
-            $this->checkFieldValidations($fieldValidations);
+		foreach ($bodyValidations as $fieldName => $fieldValidations) {
             
-            $uniqueValidations = $this->getUniqueValidations($fieldValidations);
-            
-            $this->execute($field, $uniqueValidations, $requestBody);
+            $parsedValidations = $this->getParserdValidations($fieldValidations);
+
+            $this->executeValidationMethod($fieldName, $parsedValidations, $requestBody);
         }
 	}
-	
-	private function checkFieldValidations(string $fieldValidations): void
-	{        
-        if (!is_string($fieldValidations) || $fieldValidations === '') {
-        
-            throw new \Exception('Slimgry validations must be a string.' , 422);                      
-        }
-        
-        $pattern = '/[^|]*:[^|]*:[^|]*/'; //Checking if there are two (::) in a validation method
 
-        if (preg_match($pattern, $fieldValidations)) {
-            throw new \Exception('Invalid validation method format. Use only one colon (:).', 422);
-        }
+    private function executeValidationMethod(string $fieldName, array $parsedValidations, array $requestBody): void
+    {
+        foreach ($parsedValidations as $validation) {
+            
+            $validationParts = explode(':', $validation);
+    
+            $validationMethod = $validationParts[0];
+
+            $this->checkValidationMethodExists($validationMethod);
+
+            $this->$validationMethod($requestBody, $fieldName, $validationParts);
+        }    
     }
-
-	private function getUniqueValidations(string $fieldValidations): array
-	{
-        $uniqueValidations = [];
-        
-        foreach (explode('|', $fieldValidations) as $validation) {
-        
-            $validationMethod = explode(':', $validation)[0];
-
-            $uniqueValidations[$validationMethod] = $validation;
-        }
-
-        return array_values($uniqueValidations);
-	}
+    
+    private function checkValidationMethodExists(string $validationMethod): void
+    {
+        if (!method_exists($this, $validationMethod)) {
+            throw new \Exception("Validation method '$validationMethod' does not exist.", 422);
+        }    
+    }
 }
