@@ -1,5 +1,7 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace NelsonDominici\Slimgry\Validation;
 
 abstract class ValidationParser
