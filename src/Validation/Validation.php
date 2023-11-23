@@ -22,9 +22,9 @@ abstract class Validation extends ValidationParser
 
     private function executeValidationMethod(string $fieldName, array $parsedValidations, ?array $requestBody): void
     {
-        foreach ($parsedValidations as $validation) {
+        foreach ($parsedValidations as $parsedValidation) {
 
-            $validationParts = explode(':', $validation);
+            $validationParts = explode(':', $parsedValidation);
     
             $validationMethod = $validationParts[0];
 

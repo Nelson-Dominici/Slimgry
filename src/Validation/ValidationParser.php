@@ -30,11 +30,11 @@ abstract class ValidationParser
 	{
         $uniqueValidations = [];
         
-        foreach (explode('|', $fieldValidations) as $validation) {
+        foreach (explode('|', $fieldValidations) as $fieldValidation) {
         
-            $validationMethod = explode(':', $validation)[0];
+            $validationMethod = explode(':', $fieldValidation)[0];
 
-            $uniqueValidations[$validationMethod] = $validation;
+            $uniqueValidations[$validationMethod] = $fieldValidation;
         }
 
         return array_values($uniqueValidations);
