@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
-abstract class Validation extends ValidationParser
+abstract class Validation extends ValidationMethods
 {
-    const METHODS = [
-        'max' => Methods\MaxMethod::class
-    ];
+    use ValidationParser;
     
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
@@ -16,11 +14,15 @@ abstract class Validation extends ValidationParser
             
             $parsedValidations = $this->getParserdValidations($fieldValidations);
 
-            $this->executeValidationMethod($fieldName, $parsedValidations, $requestBody);
+            $this->executeValidationMethod(
+                $fieldName, 
+                $requestBody,
+                $parsedValidations
+            );
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, array $parsedValidations, ?array $requestBody): void
+    private function executeValidationMethod(string $fieldName, ?array $requestBody, array $parsedValidations): void
     {
         foreach ($parsedValidations as $parsedValidation) {
 
@@ -35,13 +37,6 @@ abstract class Validation extends ValidationParser
             $methodInstance = new $validationMethodPath();
             
             $methodInstance($requestBody, $fieldName, $validationParts);
-        }    
-    }
-    
-    private function checkValidationMethodExists(string $validationMethod): void
-    {
-        if (!array_key_exists($validationMethod, self::METHODS)) {
-            throw new \Exception("Validation method '$validationMethod' does not exist.", 422);
         }    
     }
 }
