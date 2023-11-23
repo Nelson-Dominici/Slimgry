@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\Validation;
 
 class ValidationMethods
 {
-    const METHODS = [
+    protected const METHODS = [
         'max' => Methods\MaxMethod::class
     ];
 
