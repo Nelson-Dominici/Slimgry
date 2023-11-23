@@ -6,7 +6,9 @@ namespace NelsonDominici\Slimgry\Validation;
 
 abstract class Validation extends ValidationParser
 {
-    use Validations\LengthValidation;
+    const METHODS = [
+        'max' => Methods\MaxMethod::class
+    ];
     
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
@@ -21,20 +23,24 @@ abstract class Validation extends ValidationParser
     private function executeValidationMethod(string $fieldName, array $parsedValidations, ?array $requestBody): void
     {
         foreach ($parsedValidations as $validation) {
-            
+
             $validationParts = explode(':', $validation);
     
             $validationMethod = $validationParts[0];
 
             $this->checkValidationMethodExists($validationMethod);
-
-            $this->$validationMethod($requestBody, $fieldName, $validationParts);
+            
+            $validationMethodPath = self::METHODS[$validationMethod];
+            
+            $methodInstance = new $validationMethodPath();
+            
+            $methodInstance($requestBody, $fieldName, $validationParts);
         }    
     }
     
     private function checkValidationMethodExists(string $validationMethod): void
     {
-        if (!method_exists($this, $validationMethod)) {
+        if (!array_key_exists($validationMethod, self::METHODS)) {
             throw new \Exception("Validation method '$validationMethod' does not exist.", 422);
         }    
     }
