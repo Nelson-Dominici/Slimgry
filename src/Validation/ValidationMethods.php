@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
-class ValidationMethods
+abstract class ValidationMethods
 {
     protected const METHODS = [
-        'max' => Methods\MaxMethod::class
+        'max' => Methods\MaxMethod::class,
+        'required' => Methods\RequiredMethod::class
     ];
 
     protected function checkValidationMethodExists(string $validationMethod): void
