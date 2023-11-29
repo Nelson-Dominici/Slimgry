@@ -13,7 +13,7 @@ abstract class Validation extends ValidationMethods
 		foreach ($bodyValidations as $fieldName => $fieldValidations) {
             
             $parsedValidations = $this->getParserdValidations($fieldValidations);
-
+            
             $this->executeValidationMethod(
                 $fieldName, 
                 $requestBody,
@@ -22,21 +22,24 @@ abstract class Validation extends ValidationMethods
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, ?array $requestBody, array $parsedValidations): void
+    private function executeValidationMethod(string $fieldName, array $requestBody, array $parsedValidations): void
     {
         foreach ($parsedValidations as $parsedValidation) {
 
             $validationParts = explode(':', $parsedValidation);
-    
-            $validationMethod = $validationParts[0];
 
-            $this->checkValidationMethodExists($validationMethod);
+            $this->checkValidationMethodExists($validationParts[0]);
             
-            $validationMethodPath = self::METHODS[$validationMethod];
-            
-            $methodInstance = new $validationMethodPath();
-            
-            $methodInstance($requestBody, $fieldName, $validationParts);
+            $validationMethodPath = self::METHODS[$validationParts[0]];
+
+            $validationMethodInstance = new $validationMethodPath(
+                $fieldName,
+                $requestBody,
+                $validationParts, 
+                ''
+           );
+
+            $validationMethodInstance();
         }    
     }
 }
