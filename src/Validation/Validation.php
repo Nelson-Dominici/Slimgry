@@ -10,6 +10,8 @@ abstract class Validation extends ValidationMethods
     
 	protected function validate(array $bodyValidations, ?array $requestBody): void
 	{
+        $requestBody ??= [];
+
 		foreach ($bodyValidations as $fieldName => $fieldValidations) {
             
             $parsedValidations = $this->getParserdValidations($fieldValidations);
