@@ -17,12 +17,23 @@ final class Slimgry extends Validation
 		private array $bodyValidations,
 		private array $customExceptionMessages = []
 	){}
+        
+    private function parseRequestBody(null|array|\SimpleXMLElement $requestBody): array
+    {
+        if ($requestBody instanceof \SimpleXMLElement) {
+            return get_object_vars($requestBody);
+        }
+
+        return (array) $requestBody ?? [];
+    }
 	
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-	    $this->validate(
+        $requestBody = $this->parseRequestBody($request->getParsedBody());
+
+	    $validatedRequestBody = $this->validate(
+            $requestBody,
             $this->bodyValidations, 
-            $request->getParsedBody(), 
             $this->customExceptionMessages
         );
         
