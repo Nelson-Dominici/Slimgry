@@ -8,7 +8,7 @@ abstract class Validation extends ValidationMethods
 {
     use ValidationParser;
     
-	protected function validate(array $bodyValidations, ?array $requestBody, array $customExceptionMessages): void
+	protected function validate(array $bodyValidations, ?array $requestBody, array $customExceptionMessages): array
 	{
         $requestBody ??= [];
 
@@ -16,7 +16,7 @@ abstract class Validation extends ValidationMethods
             
             $parsedValidations = $this->getParserdValidations($fieldValidations);
             
-            $this->executeValidationMethod(
+            return $this->executeValidationMethod(
                 $fieldName, 
                 $requestBody,
                 $parsedValidations,
@@ -25,8 +25,10 @@ abstract class Validation extends ValidationMethods
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, array $requestBody, array $parsedValidations, array $customExceptionMessages): void
+    private function executeValidationMethod(string $fieldName, array $requestBody, array $parsedValidations, array $customExceptionMessages): array
     {
+        $validated = $requestBody;
+        
         foreach ($parsedValidations as $parsedValidation) {
 
             $validationParts = explode(':', $parsedValidation);
@@ -47,9 +49,15 @@ abstract class Validation extends ValidationMethods
                 $validationParts, 
                 $customExceptionMessage
            );
-
-            $validationMethodInstance();
+            
+            $validatedBodyField = $validationMethodInstance();
+            
+            if ($validatedBodyField) {
+                $validated[$fieldName] = $validatedBodyField;
+            }
         }    
+        
+        return $validated;
     }
     
     private function customExceptionMessage(string $fieldName, string $validationMethod, array $customExceptionMessages): string
