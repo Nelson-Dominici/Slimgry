@@ -25,7 +25,7 @@ abstract class Validation extends ValidationMethods
 
     private function executeValidationMethod(string $fieldName, array $requestBody, array $parsedValidations, array $customExceptionMessages): array
     {
-        $validated = $requestBody;
+        $requestBodyValidated = $requestBody;
         
         foreach ($parsedValidations as $parsedValidation) {
 
@@ -48,14 +48,14 @@ abstract class Validation extends ValidationMethods
                 $customExceptionMessage
            );
             
-            $validatedBodyField = $validationMethodInstance();
+            $validatedBodyFieldValue = $validationMethodInstance();
             
-            if ($validatedBodyField) {
-                $validated[$fieldName] = $validatedBodyField;
+            if ($validatedBodyFieldValue) {
+                $requestBodyValidated[$fieldName] = $validatedBodyFieldValue;
             }
         }    
         
-        return $validated;
+        return $requestBodyValidated;
     }
     
     private function customExceptionMessage(string $fieldName, string $validationMethod, array $customExceptionMessages): string
