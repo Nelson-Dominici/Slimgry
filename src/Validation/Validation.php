@@ -6,45 +6,45 @@ namespace NelsonDominici\Slimgry\Validation;
 
 abstract class Validation extends ValidationMethods
 {
-    use ValidationParser;
+    use ValidationMethodsParser;
     
 	protected function validate(array $requestBody, array $bodyValidations, array $customExceptionMessages): array
 	{
-		foreach ($bodyValidations as $fieldName => $fieldValidations) {
+		foreach ($bodyValidations as $fieldName => $fieldValidationMethods) {
             
-            $parsedValidations = $this->getParserdValidations($fieldValidations);
-            
+            $validationMethods = $this->getParsedValidationMethods($fieldValidationMethods);
+ 
             return $this->executeValidationMethod(
                 $fieldName, 
                 $requestBody,
-                $parsedValidations,
+                $validationMethods,
                 $customExceptionMessages
             );
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, array $requestBody, array $parsedValidations, array $customExceptionMessages): array
+    private function executeValidationMethod(string $fieldName, array $requestBody, array $validationMethods, array $customExceptionMessages): array
     {
         $requestBodyValidated = $requestBody;
         
-        foreach ($parsedValidations as $parsedValidation) {
+        foreach ($validationMethods as $validationMethod) {
 
-            $validationParts = explode(':', $parsedValidation);
+            $validationMethodParts = explode(':', $validationMethod);
 
-            $this->checkValidationMethodExists($validationParts[0]);
+            $this->checkValidationMethodExists($validationMethodParts[0]);
             
             $customExceptionMessage = $this->customExceptionMessage(
                 $fieldName, 
-                $validationParts[0], 
+                $validationMethodParts[0], 
                 $customExceptionMessages
             );
             
-            $validationMethodPath = self::METHODS[$validationParts[0]];
+            $validationMethodPath = self::METHODS[$validationMethodParts[0]];
 
             $validationMethodInstance = new $validationMethodPath(
                 $fieldName,
                 $requestBody,
-                $validationParts, 
+                $validationMethodParts, 
                 $customExceptionMessage
            );
             
