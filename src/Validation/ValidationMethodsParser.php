@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
- trait ValidationParser
+ trait ValidationMethodsParser
 {
     protected function getParserdValidations(string $fieldValidations): array
     {
