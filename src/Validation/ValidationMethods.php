@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
+use NelsonDominici\Slimgry\Validation\Methods\MethodHelper;
+
 abstract class ValidationMethods
 {
     protected const METHODS = [
@@ -21,7 +23,7 @@ abstract class ValidationMethods
         }    
     }
 
-    protected function getValidationMethodInstance(string $fieldName, array $requestBody, array $validationMethodParts, array $customExceptionMessages): object
+    protected function getValidationMethodInstance(string $fieldName, array $requestBody, array $validationMethodParts, array $customExceptionMessages): MethodHelper
     {
         $validationMethodPath = self::METHODS[$validationMethodParts[0]];
 
