@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
-abstract class Validation extends ValidationMethods
+class Validator extends ValidationMethods
 {
     use ValidationMethodsParser;
     
-	protected function validate(array $requestBody, array $bodyValidations, array $customExceptionMessages): array
+    public function __construct(
+        private array $requestBody,
+        private array $bodyValidations, 
+        private array $customExceptionMessages
+    ) {}
+    
+	public function execute(): array
 	{
-		foreach ($bodyValidations as $fieldName => $validationMethods) {
+		foreach ($this->bodyValidations as $fieldName => $validationMethods) {
             
             $this->checkFieldValidationMethods($validationMethods);
             $validationMethods = $this->getUniqueValidationMethods($validationMethods);
  
             return $this->executeValidationMethod(
                 $fieldName, 
-                $requestBody,
-                $validationMethods,
-                $customExceptionMessages
+                $validationMethods
             );
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, array $requestBody, array $validationMethods, array $customExceptionMessages): array
+    private function executeValidationMethod(string $fieldName, array $validationMethods): array
     {
-        $requestBodyValidated = $requestBody;
+        $requestBodyValidated = $this->requestBody;
         
         foreach ($validationMethods as $validationMethod) {
 
@@ -36,9 +40,9 @@ abstract class Validation extends ValidationMethods
 
             $validationMethodInstance = $this->getValidationMethodInstance(
                 $fieldName,
-                $requestBody,
+                $this->requestBody,
                 $validationMethodParts,
-                $customExceptionMessages
+                $this->customExceptionMessages
             );
             
             $validatedBodyFieldValue = $validationMethodInstance();
