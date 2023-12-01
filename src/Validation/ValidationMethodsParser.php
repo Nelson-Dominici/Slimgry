@@ -8,14 +8,7 @@ use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
 
  trait ValidationMethodsParser
 {
-    protected function getParsedValidationMethods(string $fieldValidationMethods): array
-    {
-        $this->checkFieldValidationMethods($fieldValidationMethods);
-        
-        return $this->getUniqueValidationMethods($fieldValidationMethods);
-    }
-    
-	private function checkFieldValidationMethods(string $fieldValidationMethods): void
+    protected function checkFieldValidationMethods(mixed $fieldValidationMethods): void
 	{        
         if (!is_string($fieldValidationMethods) || $fieldValidationMethods === '') {
             throw new InvalidValidationMethodsException(
@@ -32,7 +25,7 @@ use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
         }
     }
 
-	private function getUniqueValidationMethods(string $fieldValidationMethods): array
+	protected function getUniqueValidationMethods(string $fieldValidationMethods): array
 	{
         $uniqueValidationMethods = [];
         
