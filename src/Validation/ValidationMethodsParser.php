@@ -8,32 +8,32 @@ use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
 
  trait ValidationMethodsParser
 {
-    protected function checkFieldValidationMethods(mixed $fieldValidationMethods): void
+    protected function checkFieldValidationMethods(mixed $validationMethods): void
 	{        
-        if (!is_string($fieldValidationMethods) || $fieldValidationMethods === '') {
+        if (!is_string($validationMethods) || $validationMethods === '') {
             throw new InvalidValidationMethodsException(
-                'Methods validation must be a string.' , $fieldValidationMethods
+                'Methods validation must be a string.' , $validationMethods
             );                      
         }
         
         $pattern = '/[^|]*:[^|]*:[^|]*/';
 
-        if (preg_match($pattern, $fieldValidationMethods)) {
+        if (preg_match($pattern, $validationMethods)) {
             throw new InvalidValidationMethodsException(
-                'Invalid validation method format. Use only one colon (:).', $fieldValidationMethods
+                'Invalid validation method format. Use only one colon (:).', $validationMethods
             );
         }
     }
 
-	protected function getUniqueValidationMethods(string $fieldValidationMethods): array
+	protected function getUniqueValidationMethods(string $validationMethods): array
 	{
         $uniqueValidationMethods = [];
         
-        foreach (explode('|', $fieldValidationMethods) as $fieldValidationMethod) {
+        foreach (explode('|', $validationMethods) as $validationMethod) {
         
-            $validationMethod = explode(':', $fieldValidationMethod)[0];
+            $validationMethodName = explode(':', $validationMethod)[0];
 
-            $uniqueValidationMethods[$validationMethod] = $fieldValidationMethod;
+            $uniqueValidationMethods[$validationMethodName] = $validationMethod;
         }
 
         return array_values($uniqueValidationMethods);

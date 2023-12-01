@@ -10,10 +10,10 @@ abstract class Validation extends ValidationMethods
     
 	protected function validate(array $requestBody, array $bodyValidations, array $customExceptionMessages): array
 	{
-		foreach ($bodyValidations as $fieldName => $fieldValidationMethods) {
+		foreach ($bodyValidations as $fieldName => $validationMethods) {
             
-            $this->checkFieldValidationMethods($fieldValidationMethods);
-            $validationMethods = $this->getUniqueValidationMethods($fieldValidationMethods);
+            $this->checkFieldValidationMethods($validationMethods);
+            $validationMethods = $this->getUniqueValidationMethods($validationMethods);
  
             return $this->executeValidationMethod(
                 $fieldName, 
