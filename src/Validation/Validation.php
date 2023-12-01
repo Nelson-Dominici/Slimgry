@@ -32,21 +32,13 @@ abstract class Validation extends ValidationMethods
             $validationMethodParts = explode(':', $validationMethod);
 
             $this->checkValidationMethodExists($validationMethodParts[0]);
-            
-            $customExceptionMessage = $this->customExceptionMessage(
-                $fieldName, 
-                $validationMethodParts[0], 
-                $customExceptionMessages
-            );
-            
-            $validationMethodPath = self::METHODS[$validationMethodParts[0]];
 
-            $validationMethodInstance = new $validationMethodPath(
+            $validationMethodInstance = $this->getValidationMethodInstance(
                 $fieldName,
                 $requestBody,
-                $validationMethodParts, 
-                $customExceptionMessage
-           );
+                $validationMethodParts,
+                $customExceptionMessages
+            );
             
             $validatedBodyFieldValue = $validationMethodInstance();
             
@@ -56,16 +48,5 @@ abstract class Validation extends ValidationMethods
         }    
         
         return $requestBodyValidated;
-    }
-    
-    private function customExceptionMessage(string $fieldName, string $validationMethod, array $customExceptionMessages): string
-    {
-        $customExceptionMessageField = $fieldName.'.'.$validationMethod;
-        
-        if (!array_key_exists($customExceptionMessageField, $customExceptionMessages)) {
-            return '';
-        }
-        
-        return $customExceptionMessages[$customExceptionMessageField];
     }
 }
