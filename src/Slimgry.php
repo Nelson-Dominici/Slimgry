@@ -31,12 +31,14 @@ final class Slimgry extends Validation
     {
         $requestBody = $this->parseRequestBody($request->getParsedBody());
 
-	    $validatedRequestBody = $this->validate(
+	    $requestBodyValidated = $this->validate(
             $requestBody,
             $this->bodyValidations, 
             $this->customExceptionMessages
         );
         
+        $request = $request->withAttribute("validated", $requestBodyValidated);
+
 	  	return $handler->handle($request);
     }
 }
