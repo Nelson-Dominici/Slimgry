@@ -12,7 +12,8 @@ abstract class Validation extends ValidationMethods
 	{
 		foreach ($bodyValidations as $fieldName => $fieldValidationMethods) {
             
-            $validationMethods = $this->getParsedValidationMethods($fieldValidationMethods);
+            $this->checkFieldValidationMethods($fieldValidationMethods);
+            $validationMethods = $this->getUniqueValidationMethods($fieldValidationMethods);
  
             return $this->executeValidationMethod(
                 $fieldName, 
