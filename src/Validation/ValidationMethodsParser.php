@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
+use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
+
  trait ValidationMethodsParser
 {
     protected function getParsedValidationMethods(string $fieldValidationMethods): array
@@ -16,13 +18,17 @@ namespace NelsonDominici\Slimgry\Validation;
 	private function checkFieldValidationMethods(string $fieldValidationMethods): void
 	{        
         if (!is_string($fieldValidationMethods) || $fieldValidationMethods === '') {
-            throw new \Exception('Slimgry validations must be a string.' , 422);                      
+            throw new InvalidValidationMethodsException(
+                'Methods validation must be a string.' , $fieldValidationMethods
+            );                      
         }
         
-        $pattern = '/[^|]*:[^|]*:[^|]*/'; //Checking if there is more than one (:) in a validation method.
+        $pattern = '/[^|]*:[^|]*:[^|]*/';
 
         if (preg_match($pattern, $fieldValidationMethods)) {
-            throw new \Exception('Invalid validation method format. Use only one colon (:).', 422);
+            throw new InvalidValidationMethodsException(
+                'Invalid validation method format. Use only one colon (:).', $fieldValidationMethods
+            );
         }
     }
 
