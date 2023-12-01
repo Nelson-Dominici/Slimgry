@@ -15,7 +15,7 @@ abstract class MethodHelper
 
     protected function validationMethodValue(): int
     {
-        $validationMethod = $this->validationParts[0];
+        $validationMethodName = $this->validationParts[0];
     
         if (
             !array_key_exists(1, $this->validationParts) || 
@@ -23,7 +23,7 @@ abstract class MethodHelper
         ) {
             
             throw new \Exception(
-                "The validation method '$validationMethod' does not have a numeric value", 422);
+                "The validation method '$validationMethodName' does not have a numeric value", 422);
         }
         
         $numericMethodValue = intval($this->validationParts[1]);
