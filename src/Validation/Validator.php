@@ -21,10 +21,7 @@ class Validator extends ValidationMethods
             $this->checkFieldValidationMethods($validationMethods);
             $validationMethods = $this->getUniqueValidationMethods($validationMethods);
  
-            return $this->executeValidationMethod(
-                $fieldName, 
-                $validationMethods
-            );
+            return $this->executeValidationMethod($fieldName, $validationMethods);
         }
 	}
 
@@ -35,9 +32,7 @@ class Validator extends ValidationMethods
         foreach ($validationMethods as $validationMethod) {
 
             $validationMethodParts = explode(':', $validationMethod);
-
-            $this->checkValidationMethodExists($validationMethodParts[0]);
-
+            
             $validationMethodInstance = $this->getValidationMethodInstance(
                 $fieldName,
                 $this->requestBody,
