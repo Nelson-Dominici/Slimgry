@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
-class Validator extends ValidationMethods
+class ValidationExecutor extends ValidationMethods
 {
     use ValidationMethodsParser;
     
+    private array $validatedBody;
+        
     public function __construct(
         private array $requestBody,
-        private array $bodyValidations, 
+        private array $bodyValidations,
         private array $customExceptionMessages
-    ) {}
+    ) {
+//         $this->execute();
+//         $this->$validatedBody = $this->getValidatedBody();
+    }
     
-	public function execute(): array
+	 function execute(): array
 	{
 		foreach ($this->bodyValidations as $fieldName => $validationMethods) {
             
@@ -27,7 +32,7 @@ class Validator extends ValidationMethods
 
     private function executeValidationMethod(string $fieldName, array $validationMethods): array
     {
-        $requestBodyValidated = $this->requestBody;
+        $newBodyFieldValue = $this->requestBody;
         
         foreach ($validationMethods as $validationMethod) {
 
@@ -40,13 +45,20 @@ class Validator extends ValidationMethods
                 $this->customExceptionMessages
             );
             
-            $validatedBodyFieldValue = $validationMethodInstance();
+            $newBodyFieldValue = $validationMethodInstance();
             
-            if ($validatedBodyFieldValue) {
-                $requestBodyValidated[$fieldName] = $validatedBodyFieldValue;
+            if ($newBodyFieldValue === null) {
+                $requestBodyValidated[$fieldName] = $newBodyFieldValue;
             }
         }    
         
         return $requestBodyValidated;
     }
+    
+    private function newBodyFieldValue()
+    {
+        return 'name';
+    }
+    
+    // FAZER BAGUI PRA JUNTAR O BAGUI
 }
