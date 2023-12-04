@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation;
 
-class ValidationExecutor extends ValidationMethods
-{
+use NelsonDominici\Slimgry\Validation\ValidationMethod\{
+    ValidationMethodsParser,    
+    ValidationMethodHandler
+};
+
+class Validation extends ValidationMethodHandler
+{  
     use ValidationMethodsParser;
-    
-    private array $validatedBody;
-        
+      
     public function __construct(
         private array $requestBody,
         private array $bodyValidations,
         private array $customExceptionMessages
-    ) {
-        $this->$validatedBody = $this->getValidatedBody();
-        $this->execute();
-    }
+    ) {}
     
-	 private function execute(): void
+	 public function execute(): void
 	{
 		foreach ($this->bodyValidations as $fieldName => $validationMethods) {
             
@@ -43,7 +43,7 @@ class ValidationExecutor extends ValidationMethods
                 $this->customExceptionMessages
             );
             
-            $validationMethodInstance()
+            $validationMethodInstance();
         }    
     }
 }
