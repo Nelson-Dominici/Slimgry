@@ -8,25 +8,19 @@ use NelsonDominici\Slimgry\Validation\Methods\MethodHelper;
 
 abstract class ValidationMethods
 {
-    protected const METHODS = [
-        'min' => Methods\MinMethod::class,
-        'trim' => Methods\TrimMethod::class,
-        'max' => Methods\MaxMethod::class,
-        'string' => Methods\StringMethod::class,
-        'required' => Methods\RequiredMethod::class
-    ];
-
-    protected function checkValidationMethodExists(string $validationMethod): void
+    private function getValidationMethodPath(string $validationMethod): string
     {
-        if (!array_key_exists($validationMethod, self::METHODS)) {
+        if (!isset(self::METHODS[$validationMethod])) {
             throw new \Exception("Validation method '$validationMethod' does not exist.", 422);
         }    
+        
+        return self::METHODS[$validationMethod];
     }
 
     protected function getValidationMethodInstance(string $fieldName, array $requestBody, array $validationMethodParts, array $customExceptionMessages): MethodHelper
     {
-        $validationMethodPath = self::METHODS[$validationMethodParts[0]];
-
+        $validationMethodPath = $this->getValidationMethodPath($validationMethodParts[0]);
+        
         $customExceptionMessage = $this->customExceptionMessage(
             $fieldName, 
             $validationMethodParts[0], 
@@ -44,11 +38,7 @@ abstract class ValidationMethods
     private function customExceptionMessage(string $fieldName, string $validationMethod, array $customExceptionMessages): string
     {
         $customExceptionMessageField = $fieldName.'.'.$validationMethod;
-        
-        if (!array_key_exists($customExceptionMessageField, $customExceptionMessages)) {
-            return '';
-        }
-        
-        return $customExceptionMessages[$customExceptionMessageField];
+
+        return $customExceptionMessages[$customExceptionMessageField] ?? '';
     }
 }
