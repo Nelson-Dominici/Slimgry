@@ -15,25 +15,23 @@ class ValidationExecutor extends ValidationMethods
         private array $bodyValidations,
         private array $customExceptionMessages
     ) {
-//         $this->execute();
-//         $this->$validatedBody = $this->getValidatedBody();
+        $this->$validatedBody = $this->getValidatedBody();
+        $this->execute();
     }
     
-	 function execute(): array
+	 private function execute(): void
 	{
 		foreach ($this->bodyValidations as $fieldName => $validationMethods) {
             
             $this->checkFieldValidationMethods($validationMethods);
             $validationMethods = $this->getUniqueValidationMethods($validationMethods);
  
-            return $this->executeValidationMethod($fieldName, $validationMethods);
+            $this->executeValidationMethod($fieldName, $validationMethods);
         }
 	}
 
     private function executeValidationMethod(string $fieldName, array $validationMethods): array
     {
-        $newBodyFieldValue = $this->requestBody;
-        
         foreach ($validationMethods as $validationMethod) {
 
             $validationMethodParts = explode(':', $validationMethod);
@@ -45,20 +43,7 @@ class ValidationExecutor extends ValidationMethods
                 $this->customExceptionMessages
             );
             
-            $newBodyFieldValue = $validationMethodInstance();
-            
-            if ($newBodyFieldValue === null) {
-                $requestBodyValidated[$fieldName] = $newBodyFieldValue;
-            }
+            $validationMethodInstance()
         }    
-        
-        return $requestBodyValidated;
     }
-    
-    private function newBodyFieldValue()
-    {
-        return 'name';
-    }
-    
-    // FAZER BAGUI PRA JUNTAR O BAGUI
 }
