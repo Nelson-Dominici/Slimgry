@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\Validation;
 
 use NelsonDominici\Slimgry\Validation\Methods\MethodHelper;
 
-class ValidationMethod
+class ValidationMethodHandler
 {
     private string $validationMethodName;
     
