@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\ValidationMethod;
 
-abstract class ValidationMethodsHandler
+abstract class ValidationMethodHandler
 {
     public function getValidationMethodInstance(): Methods\MethodHelper
         string $fieldName,
