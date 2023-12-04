@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NelsonDominici\Slimgry\Validation;
+namespace NelsonDominici\Slimgry\Validation\ValidationMethod;
 
 use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
 
