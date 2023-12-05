@@ -24,7 +24,7 @@ abstract class ValidationMethodInstantiator
             $customExceptionMessages
         );
         
-        $validationMethodPath = $this->validationMethodPath($validationMethodName);
+        $validationMethodPath = $this->getValidationMethod($validationMethodName);
 
         return new $validationMethodPath(
             $fieldName,
