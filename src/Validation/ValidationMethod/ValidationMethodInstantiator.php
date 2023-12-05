@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\ValidationMethod;
 
+use NelsonDominici\Slimgry\Validation\ValidationMethod\Methods\ValidationMethodHelper;
+
 abstract class ValidationMethodInstantiator
 {
-    use MethodsGroup;
+    use ValidationMethodGroupTrait;
     
     public function getValidationMethodInstance(
         string $fieldName,
         array $requestBody,
         array $validationMethodParts,
         array $customExceptionMessages
-    ): MethodHelper {
+    ): ValidationMethodHelper {
         $validationMethodName = $validationMethodParts[0];
         
         $customExceptionMessage = $this->customExceptionMessage(
