@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\Methods;
 
-class MinMethod extends MethodHelper
+class MinMethod extends ValidationMethodHelper
 {
     public function __invoke(): void
     {    

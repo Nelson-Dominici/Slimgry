@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\Methods;
 
-class TrimMethod extends MethodHelper
+class TrimMethod extends ValidationMethodHelper
 {
     public function __invoke(): ?string
     {    

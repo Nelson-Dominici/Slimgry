@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\Methods;
 
-class RequiredMethod extends MethodHelper
+class RequiredMethod extends ValidationMethodHelper
 {
     public function __invoke(): void
     {    

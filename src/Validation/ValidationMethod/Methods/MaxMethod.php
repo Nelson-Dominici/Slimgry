@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\Methods;
 
-class MaxMethod extends MethodHelper
+class MaxMethod extends ValidationMethodHelper
 {    
     public function __invoke(): void
     {
