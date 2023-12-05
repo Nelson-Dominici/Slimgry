@@ -13,4 +13,15 @@ trait ValidationMethodGroupTrait
         'string' => Methods\StringMethod::class,
         'required' => Methods\RequiredMethod::class
     ];
+      
+    private function getValidationMethod(string $validationMethodName): string
+    {
+        if (!isset(self::METHODS[$validationMethodName])) {
+            throw new \Exception(
+                "Validation method '$validationMethodName' does not exist.", 422
+            );
+        }
+        
+        return self::METHODS[$validationMethodName];
+    }
 }
