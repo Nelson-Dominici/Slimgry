@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\Validation\Methods;
 
-abstract class MethodHelper
+abstract class ValidationMethodHelper
 {
     public function __construct(
         protected string $fieldName, 
