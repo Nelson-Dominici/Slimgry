@@ -6,10 +6,10 @@ namespace NelsonDominici\Slimgry\Validation;
 
 use NelsonDominici\Slimgry\Validation\ValidationMethod\{
     ValidationMethodsParser,    
-    ValidationMethodHandler
+    ValidationMethodInstantiator
 };
 
-class Validation extends ValidationMethodHandler
+class Validation extends ValidationMethodInstantiator
 {  
     use ValidationMethodsParser;
       
