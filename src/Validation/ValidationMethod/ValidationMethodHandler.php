@@ -6,7 +6,9 @@ namespace NelsonDominici\Slimgry\Validation\ValidationMethod;
 
 abstract class ValidationMethodHandler
 {
-    public function getValidationMethodInstance(): Methods\MethodHelper
+    use MethodsGroup;
+    
+    public function getValidationMethodInstance(
         string $fieldName,
         array $requestBody,
         array $validationMethodParts,
@@ -20,7 +22,9 @@ abstract class ValidationMethodHandler
             $customExceptionMessages
         );
         
-        return new $this->validationMethodPath($validationMethodName)(
+        $validationMethodPath = $this->validationMethodPath($validationMethodName);
+
+        return new $validationMethodPath(
             $fieldName,
             $requestBody,
             $validationMethodParts, 
