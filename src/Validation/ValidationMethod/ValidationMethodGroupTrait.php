@@ -13,7 +13,7 @@ trait ValidationMethodGroupTrait
         'string' => Methods\StringMethod::class,
         'required' => Methods\RequiredMethod::class
     ];
-      
+       
     private function getValidationMethod(string $validationMethodName): string
     {
         if (!isset(self::METHODS[$validationMethodName])) {
