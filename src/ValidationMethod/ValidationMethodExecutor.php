@@ -9,7 +9,7 @@ use NelsonDominici\Slimgry\Validation\ValidationMethod\{
     ValidationMethodInstantiator
 };
 
-class Validation extends ValidationMethodInstantiator
+class ValidationMethodExecutor extends ValidationMethodInstantiator
 {  
     use ValidationMethodsParser;
       
