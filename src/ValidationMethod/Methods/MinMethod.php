@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NelsonDominici\Slimgry\Validation\ValidationMethod\Methods;
+namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class MinMethod extends ValidationMethodHelper
 {

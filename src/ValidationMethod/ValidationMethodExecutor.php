@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace NelsonDominici\Slimgry\Validation;
+namespace NelsonDominici\Slimgry\ValidationMethod;
 
-use NelsonDominici\Slimgry\Validation\ValidationMethod\{
+use NelsonDominici\Slimgry\ValidationMethod\{
     ValidationMethodsParser,    
     ValidationMethodInstantiator
 };
