@@ -33,13 +33,11 @@ class ValidationMethodExecutor extends ValidationMethodInstantiator
     private function executeValidationMethod(string $fieldToValidate, array $validationMethods): array
     {
         foreach ($validationMethods as $validationMethod) {
-
-            $validationMethodParts = explode(':', $validationMethod);
-            
+        
             $validationMethodInstance = $this->getValidationMethodInstance(
                 $fieldToValidate,
                 $this->requestBody,
-                $validationMethodParts,
+                $validationMethod,
                 $this->customExceptionMessages
             );
             
