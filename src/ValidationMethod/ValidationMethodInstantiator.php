@@ -22,7 +22,7 @@ abstract class ValidationMethodInstantiator
             $customExceptionMessages
         );
         
-        $validationMethodPath = $this->validationMethod($validationMethodName);
+        $validationMethodPath = $this->validationMethodPath($validationMethodName);
 
         return new $validationMethodPath(
             $validationMethodParts, 
@@ -30,7 +30,7 @@ abstract class ValidationMethodInstantiator
         );    
     }
 
-    private function validationMethod(string $validationMethodName): string
+    private function validationMethodPath(string $validationMethodName): string
     {
         $validationMethodPath = __NAMESPACE__.'\Methods\\'.ucfirst($validationMethodName)."Method";
         
