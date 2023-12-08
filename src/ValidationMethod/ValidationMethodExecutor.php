@@ -6,8 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 class ValidationMethodExecutor
 {
-    use ValidationMethodsParser;
-    
+    private ValidationMethodsHandler $validationMethodsHandler;
     private ValidationMethodInstantiator $validationMethodInstantiator;
 
     public function __construct(
@@ -15,6 +14,7 @@ class ValidationMethodExecutor
         private array $bodyValidations,
         private array $customExceptionMessages
     ) {
+        $this->validationMethodsHandler  = new ValidationMethodsHandler();
         $this->validationMethodInstantiator  = new ValidationMethodInstantiator();
     }
     
@@ -22,8 +22,9 @@ class ValidationMethodExecutor
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
-            $this->checkFieldValidationMethods($validationMethods);
-            $validationMethods = $this->getUniqueValidationMethods($validationMethods);
+            $this->validationMethodsHandler->checkFieldValidationMethods($validationMethods);
+            
+            $validationMethods = $this->validationMethodsHandler->getUniqueValidationMethods($validationMethods);
  
             $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
