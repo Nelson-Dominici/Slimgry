@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
-use NelsonDominici\Slimgry\ValidationMethod\{
-    ValidationMethodsParser,    
-    ValidationMethodInstantiator
-};
-
 class ValidationMethodExecutor
 {
     use ValidationMethodsParser;
