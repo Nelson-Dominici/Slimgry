@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
-abstract class ValidationMethodInstantiator
+class ValidationMethodInstantiator
 {    
-    public function getValidationMethodInstance(
+    public function getInstance(
         string $fieldToValidate,
         string $validationMethod,
         array $customExceptionMessages
