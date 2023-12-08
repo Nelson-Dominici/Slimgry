@@ -8,7 +8,14 @@ use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
 
 class ValidationMethodsHandler
 {
-    public function checkFieldValidationMethods(mixed $validationMethods): void
+    public function handle(mixed $validationMethods): array
+    {
+        $this->checkValidationMethodsFormat($validationMethods);
+        
+        return $this->getUniqueValidationMethods($validationMethods);
+    }
+    
+    private function checkValidationMethodsFormat(mixed $validationMethods): void
 	{        
         if (!is_string($validationMethods) || $validationMethods === '') {
             throw new InvalidValidationMethodsException(
@@ -25,7 +32,7 @@ class ValidationMethodsHandler
         }
     }
 
-	public function getUniqueValidationMethods(string $validationMethods): array
+	private function getUniqueValidationMethods(string $validationMethods): array
 	{
         $uniqueValidationMethods = [];
         
