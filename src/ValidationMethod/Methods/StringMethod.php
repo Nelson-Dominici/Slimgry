@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
-class StringMethod extends ValidationMethodHelper
+class StringMethod extends ValidationMethod
 {
     public function __invoke(): void
     {    
