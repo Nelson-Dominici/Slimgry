@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
 abstract class ValidationMethodInstantiator
-{
+{    
     use ValidationMethodGroupTrait;
     
     public function getValidationMethodInstance(
@@ -39,6 +39,6 @@ abstract class ValidationMethodInstantiator
     ): string {
         $customExceptionMessageField = $fieldName.'.'.$validationMethodName;
 
-        return $this->customExceptionMessages[$customExceptionMessageField] ?? '';
+        return $customExceptionMessages[$customExceptionMessageField] ?? '';
     }
 }
