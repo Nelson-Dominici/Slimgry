@@ -22,10 +22,10 @@ class ValidationMethodExecutor
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
-            $this->validationMethodsHandler->checkFieldValidationMethods($validationMethods);
+            $validationMethods = $this->validationMethodsHandler->handle(
+                $validationMethods
+            );
             
-            $validationMethods = $this->validationMethodsHandler->getUniqueValidationMethods($validationMethods);
- 
             $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
 	}
