@@ -13,7 +13,7 @@ class ValidationMethodsHandler
         $this->ensureString($validationMethods);
         $this->checkValidationMethodsFormat($validationMethods);
         
-        return $this->getUniqueValidationMethods($validationMethods);
+        return $this->removeRepetitions($validationMethods);
     }
 
     private function ensureString(mixed $validationMethods): void
@@ -36,7 +36,7 @@ class ValidationMethodsHandler
         }
     }
     
-	private function getUniqueValidationMethods(string $validationMethods): array
+	private function removeRepetitions(string $validationMethods): array
 	{
         $uniqueValidationMethods = [];
         
