@@ -10,28 +10,32 @@ class ValidationMethodsHandler
 {
     public function handle(mixed $validationMethods): array
     {
+        $this->ensureString($validationMethods);
         $this->checkValidationMethodsFormat($validationMethods);
         
         return $this->getUniqueValidationMethods($validationMethods);
     }
-    
-    private function checkValidationMethodsFormat(mixed $validationMethods): void
-	{        
-        if (!is_string($validationMethods) || $validationMethods === '') {
-            throw new InvalidValidationMethodsException(
-                'Methods validation must be a string.' , $validationMethods
-            );                      
-        }
-        
-        $pattern = '/[^|]*:[^|]*:[^|]*/';
 
-        if (preg_match($pattern, $validationMethods)) {
-            throw new InvalidValidationMethodsException(
-                'Invalid validation method format. Use only one colon (:).', $validationMethods
-            );
+    private function ensureString(mixed $validationMethods): void
+	{        
+        $message = 'Methods validation must be a string.';
+        
+        if (!is_string($validationMethods) || $validationMethods === '') {
+            throw new InvalidValidationMethodsException($message, $validationMethods);                      
         }
     }
 
+    private function checkValidationMethodsFormat(mixed $validationMethods): void
+	{        
+        $pattern = '/[^|]*:[^|]*:[^|]*/';
+    
+        $message = 'Invalid validation methods format. Use only one colon (:).';
+        
+        if (preg_match($pattern, $validationMethods)) {
+            throw new InvalidValidationMethodsException($message, $validationMethods);
+        }
+    }
+    
 	private function getUniqueValidationMethods(string $validationMethods): array
 	{
         $uniqueValidationMethods = [];
