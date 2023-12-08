@@ -10,7 +10,7 @@ abstract class ValidationMethodInstantiator
         string $fieldToValidate,
         string $validationMethod,
         array $customExceptionMessages
-    ): Methods\ValidationMethodHelper {
+    ): Methods\ValidationMethod {
     
         $validationMethodParts = explode(':', $validationMethod);
     
