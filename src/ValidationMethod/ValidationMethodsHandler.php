@@ -6,9 +6,9 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
 
- trait ValidationMethodsParser
+class ValidationMethodsHandler
 {
-    protected function checkFieldValidationMethods(mixed $validationMethods): void
+    public function checkFieldValidationMethods(mixed $validationMethods): void
 	{        
         if (!is_string($validationMethods) || $validationMethods === '') {
             throw new InvalidValidationMethodsException(
@@ -25,7 +25,7 @@ use NelsonDominici\Slimgry\Exceptions\InvalidValidationMethodsException;
         }
     }
 
-	protected function getUniqueValidationMethods(string $validationMethods): array
+	public function getUniqueValidationMethods(string $validationMethods): array
 	{
         $uniqueValidationMethods = [];
         
