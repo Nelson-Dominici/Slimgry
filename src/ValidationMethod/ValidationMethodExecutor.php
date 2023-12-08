@@ -9,15 +9,19 @@ use NelsonDominici\Slimgry\ValidationMethod\{
     ValidationMethodInstantiator
 };
 
-class ValidationMethodExecutor extends ValidationMethodInstantiator
-{  
+class ValidationMethodExecutor
+{
     use ValidationMethodsParser;
-      
+    
+    private ValidationMethodInstantiator $validationMethodInstantiator;
+
     public function __construct(
         private array $requestBody,
         private array $bodyValidations,
         private array $customExceptionMessages
-    ) {}
+    ) {
+        $this->validationMethodInstantiator  = new ValidationMethodInstantiator();
+    }
     
 	 public function performFieldValidationMethods(): void
 	{
@@ -34,14 +38,13 @@ class ValidationMethodExecutor extends ValidationMethodInstantiator
     {
         foreach ($validationMethods as $validationMethod) {
         
-            $validationMethodInstance = $this->getValidationMethodInstance(
+            $validationMethodInstance = $this->validationMethodInstantiator->getValidationMethodInstance(
                 $fieldToValidate,
-                $this->requestBody,
                 $validationMethod,
                 $this->customExceptionMessages
             );
             
-            $validationMethodInstance();
+            $validationMethodInstance($this->requestBody, $fieldToValidate);
         }    
     }
 }
