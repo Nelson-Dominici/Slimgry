@@ -33,7 +33,7 @@ class ValidationMethodExecutor
     {
         foreach ($validationMethods as $validationMethod) {
         
-            $validationMethodInstance = $this->validationMethodInstantiator->getValidationMethodInstance(
+            $validationMethodInstance = $this->validationMethodInstantiator->getInstance(
                 $fieldToValidate,
                 $validationMethod,
                 $this->customExceptionMessages
