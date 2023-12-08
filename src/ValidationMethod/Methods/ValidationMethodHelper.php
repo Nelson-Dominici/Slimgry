@@ -7,8 +7,6 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 abstract class ValidationMethodHelper
 {
     public function __construct(
-        protected string $fieldName, 
-        protected array $requestBody, 
         private array $validationParts,
         private string $customExceptionMessage
     ) {}
