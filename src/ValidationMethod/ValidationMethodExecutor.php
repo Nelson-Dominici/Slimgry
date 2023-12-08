@@ -21,23 +21,23 @@ class ValidationMethodExecutor extends ValidationMethodInstantiator
     
 	 public function performFieldValidationMethods(): void
 	{
-		foreach ($this->bodyValidations as $fieldName => $validationMethods) {
+		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
             $this->checkFieldValidationMethods($validationMethods);
             $validationMethods = $this->getUniqueValidationMethods($validationMethods);
  
-            $this->executeValidationMethod($fieldName, $validationMethods);
+            $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
 	}
 
-    private function executeValidationMethod(string $fieldName, array $validationMethods): array
+    private function executeValidationMethod(string $fieldToValidate, array $validationMethods): array
     {
         foreach ($validationMethods as $validationMethod) {
 
             $validationMethodParts = explode(':', $validationMethod);
             
             $validationMethodInstance = $this->getValidationMethodInstance(
-                $fieldName,
+                $fieldToValidate,
                 $this->requestBody,
                 $validationMethodParts,
                 $this->customExceptionMessages

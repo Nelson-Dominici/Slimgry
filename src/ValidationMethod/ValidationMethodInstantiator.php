@@ -9,7 +9,7 @@ abstract class ValidationMethodInstantiator
     use ValidationMethodGroupTrait;
     
     public function getValidationMethodInstance(
-        string $fieldName,
+        string $fieldToValidate,
         array $requestBody,
         array $validationMethodParts,
         array $customExceptionMessages
@@ -17,7 +17,7 @@ abstract class ValidationMethodInstantiator
         $validationMethodName = $validationMethodParts[0];
         
         $customExceptionMessage = $this->customExceptionMessage(
-            $fieldName,
+            $fieldToValidate,
             $validationMethodName,
             $customExceptionMessages
         );
@@ -25,7 +25,7 @@ abstract class ValidationMethodInstantiator
         $validationMethodPath = $this->getValidationMethod($validationMethodName);
 
         return new $validationMethodPath(
-            $fieldName,
+            $fieldToValidate,
             $requestBody,
             $validationMethodParts, 
             $customExceptionMessage
@@ -33,11 +33,11 @@ abstract class ValidationMethodInstantiator
     }
     
     private function customExceptionMessage(
-        string $fieldName, 
+        string $fieldToValidate, 
         string $validationMethodName,
         array $customExceptionMessages
     ): string {
-        $customExceptionMessageField = $fieldName.'.'.$validationMethodName;
+        $customExceptionMessageField = $fieldToValidate.'.'.$validationMethodName;
 
         return $customExceptionMessages[$customExceptionMessageField] ?? '';
     }
