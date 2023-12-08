@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
-abstract class ValidationMethodHelper
+abstract class ValidationMethod
 {
     public function __construct(
         private array $validationParts,
