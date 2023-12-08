@@ -6,14 +6,14 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 abstract class ValidationMethodInstantiator
 {    
-    use ValidationMethodGroupTrait;
-    
     public function getValidationMethodInstance(
         string $fieldToValidate,
-        array $requestBody,
-        array $validationMethodParts,
+        string $validationMethod,
         array $customExceptionMessages
     ): Methods\ValidationMethodHelper {
+    
+        $validationMethodParts = explode(':', $validationMethod);
+    
         $validationMethodName = $validationMethodParts[0];
         
         $customExceptionMessage = $this->customExceptionMessage(
@@ -22,16 +22,27 @@ abstract class ValidationMethodInstantiator
             $customExceptionMessages
         );
         
-        $validationMethodPath = $this->getValidationMethod($validationMethodName);
+        $validationMethodPath = $this->validationMethod($validationMethodName);
 
         return new $validationMethodPath(
-            $fieldToValidate,
-            $requestBody,
             $validationMethodParts, 
             $customExceptionMessage
         );    
     }
-    
+
+    private function validationMethod(string $validationMethodName): string
+    {
+        $validationMethodPath = __NAMESPACE__.'\Methods\\'.ucfirst($validationMethodName)."Method";
+        
+        if (class_exists($validationMethodPath)) {
+            return $validationMethodPath;
+        } 
+        
+        throw new \Exception(
+            "Validation method '$validationMethodName' does not exist.", 422
+        );
+    }
+
     private function customExceptionMessage(
         string $fieldToValidate, 
         string $validationMethodName,
