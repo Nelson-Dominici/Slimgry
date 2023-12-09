@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class StringMethod extends ValidationMethod
 {
-    public function __invoke(): void
+    public function execute(array $requestBody, string $fieldToValidate): void
     {    
         if (!array_key_exists($this->fieldName, $this->requestBody)) {
             return;

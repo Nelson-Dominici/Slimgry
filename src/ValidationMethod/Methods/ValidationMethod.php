@@ -44,4 +44,6 @@ abstract class ValidationMethod
             throw new \Exception($exceptionMessage, $statuscode);
         }
     }
+    
+    abstract protected function execute(array $requestBody, string $fieldToValidate);
 }

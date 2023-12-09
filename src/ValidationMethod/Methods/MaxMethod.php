@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class MaxMethod extends ValidationMethod
 {    
-    public function __invoke(): void
+    public function execute(array $requestBody, string $fieldToValidate): void
     {
         if (
             empty($this->requestBody[$this->fieldName]) || 

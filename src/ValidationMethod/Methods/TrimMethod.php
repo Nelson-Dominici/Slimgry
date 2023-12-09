@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class TrimMethod extends ValidationMethod
 {
-    public function __invoke(): ?string
+    public function execute(array $requestBody, string $fieldToValidate): ?string
     {    
         if (
             empty($this->requestBody[$this->fieldName]) || 
