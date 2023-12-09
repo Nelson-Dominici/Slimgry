@@ -6,50 +6,27 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 class ValidationMethodInstantiator
 {    
-    public function getInstance(
-        string $fieldToValidate,
-        string $validationMethod,
-        array $customExceptionMessages
-    ): Methods\ValidationMethod {
+    private ValidationMethodFinder $methodFinder;
     
+    public function __construct()
+    {
+        $this->methodFinder = new ValidationMethodFinder();
+    }
+
+    public function getInstance(
+        string $validationMethod,
+        string $customExceptionMessage 
+    ): Methods\ValidationMethod 
+    {
         $validationMethodParts = explode(':', $validationMethod);
     
         $validationMethodName = $validationMethodParts[0];
         
-        $customExceptionMessage = $this->customExceptionMessage(
-            $fieldToValidate,
-            $validationMethodName,
-            $customExceptionMessages
-        );
-        
-        $validationMethodPath = $this->validationMethodPath($validationMethodName);
+        $validationMethodPath = $this->methodFinder->find($validationMethodName);
 
         return new $validationMethodPath(
             $validationMethodParts, 
             $customExceptionMessage
         );    
-    }
-
-    private function validationMethodPath(string $validationMethodName): string
-    {
-        $validationMethodPath = __NAMESPACE__.'\Methods\\'.ucfirst($validationMethodName)."Method";
-        
-        if (class_exists($validationMethodPath)) {
-            return $validationMethodPath;
-        } 
-        
-        throw new \Exception(
-            "Validation method '$validationMethodName' does not exist.", 422
-        );
-    }
-
-    private function customExceptionMessage(
-        string $fieldToValidate, 
-        string $validationMethodName,
-        array $customExceptionMessages
-    ): string {
-        $customExceptionMessageField = $fieldToValidate.'.'.$validationMethodName;
-
-        return $customExceptionMessages[$customExceptionMessageField] ?? '';
     }
 }
