@@ -8,13 +8,13 @@ class StringMethod extends ValidationMethod
 {
     public function execute(array $requestBody, string $fieldToValidate): void
     {    
-        if (!array_key_exists($this->fieldName, $this->requestBody)) {
+        if (!array_key_exists($fieldToValidate, $requestBody)) {
             return;
         }
 
-        $exceptionMessage = "The value of the {$this->fieldName} field must be a string.";
+        $exceptionMessage = "The value of the {$fieldToValidate} field must be a string.";
 
-        $isString = is_string($this->requestBody[$this->fieldName]);
+        $isString = is_string($requestBody[$fieldToValidate]);
 
         $this->assertAndThrow(!$isString, $exceptionMessage);
     }

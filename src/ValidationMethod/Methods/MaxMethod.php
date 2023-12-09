@@ -9,16 +9,16 @@ class MaxMethod extends ValidationMethod
     public function execute(array $requestBody, string $fieldToValidate): void
     {
         if (
-            empty($this->requestBody[$this->fieldName]) || 
-            $this->requestBody[$this->fieldName] === true
+            empty($requestBody[$fieldToValidate]) || 
+            $requestBody[$fieldToValidate] === true
         ) {
             return;
         }
 
         $validationMethodValue = $this->validationMethodValue();
-        $bodyFieldValue = $this->requestBody[$this->fieldName];
+        $bodyFieldValue = $requestBody[$fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldName} field cannot be greater than $validationMethodValue";
+        $exceptionMessage = "The {$fieldToValidate} field cannot be greater than $validationMethodValue";
 
         $expression = false;
 

@@ -9,12 +9,12 @@ class TrimMethod extends ValidationMethod
     public function execute(array $requestBody, string $fieldToValidate): ?string
     {    
         if (
-            empty($this->requestBody[$this->fieldName]) || 
-            !is_string($this->requestBody[$this->fieldName])
-        ) {
+            empty($requestBody[$fieldToValidate]) || 
+            !is_string($requestBody[$fieldToValidate])) 
+        {
             return null;
         }
 
-        return trim($this->requestBody[$this->fieldName]);
+        return trim($requestBody[$fieldToValidate]);
     }
 }
