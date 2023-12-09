@@ -6,26 +6,26 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 class ValidationMethodExecutor
 {
-    private ValidationMethodsHandler $validationMethodsHandler;
-    private ValidationMethodInstantiator $validationMethodInstantiator;
-
+    private ValidationMethodsHandler $handler;
+    private ValidationMethodInstantiator $instantiator;
+    private CustomExceptionMessageProvider $messageProvider;
+    
     public function __construct(
         private array $requestBody,
         private array $bodyValidations,
         private array $customExceptionMessages
     ) {
-        $this->validationMethodsHandler  = new ValidationMethodsHandler();
-        $this->validationMethodInstantiator  = new ValidationMethodInstantiator();
+        $this->handler  = new ValidationMethodsHandler();
+        $this->instantiator  = new ValidationMethodInstantiator();
+        $this->messageProvider = new CustomExceptionMessageProvider();
     }
     
 	 public function performFieldValidationMethods(): void
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
-            $validationMethods = $this->validationMethodsHandler->handle(
-                $validationMethods
-            );
-            
+            $validationMethods = $this->handler->handle($validationMethods);
+        
             $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
 	}
@@ -33,14 +33,19 @@ class ValidationMethodExecutor
     private function executeValidationMethod(string $fieldToValidate, array $validationMethods): array
     {
         foreach ($validationMethods as $validationMethod) {
-        
-            $validationMethodInstance = $this->validationMethodInstantiator->getInstance(
+            
+            $customExceptionMessage = $this->messageProvider->getCustomMessage(
                 $fieldToValidate,
                 $validationMethod,
                 $this->customExceptionMessages
             );
             
-            $validationMethodInstance($this->requestBody, $fieldToValidate);
+            $validationMethodInstance = $this->instantiator->getInstance(
+                $validationMethod,
+                $customExceptionMessage
+            );
+            
+            $validationMethodInstance->execute($this->requestBody, $fieldToValidate);
         }    
     }
 }
