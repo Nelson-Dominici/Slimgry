@@ -8,7 +8,6 @@ class ValidationMethodExecutor
 {
     private ValidationMethodsHandler $handler;
     private ValidationMethodInstantiator $instantiator;
-    private CustomExceptionMessageProvider $messageProvider;
     
     public function __construct(
         private array $requestBody,
@@ -17,7 +16,6 @@ class ValidationMethodExecutor
     ) {
         $this->handler  = new ValidationMethodsHandler();
         $this->instantiator  = new ValidationMethodInstantiator();
-        $this->messageProvider = new CustomExceptionMessageProvider();
     }
     
 	 public function performFieldValidationMethods(): void
@@ -33,16 +31,11 @@ class ValidationMethodExecutor
     private function executeValidationMethod(string $fieldToValidate, array $validationMethods): array
     {
         foreach ($validationMethods as $validationMethod) {
-            
-            $customExceptionMessage = $this->messageProvider->getCustomMessage(
+    
+            $validationMethodInstance = $this->instantiator->getInstance(
                 $fieldToValidate,
                 $validationMethod,
                 $this->customExceptionMessages
-            );
-            
-            $validationMethodInstance = $this->instantiator->getInstance(
-                $validationMethod,
-                $customExceptionMessage
             );
             
             $validationMethodInstance->execute($this->requestBody, $fieldToValidate);
