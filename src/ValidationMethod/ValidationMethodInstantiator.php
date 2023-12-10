@@ -9,17 +9,13 @@ class ValidationMethodInstantiator
     private ValidationMethodFinder $methodFinder;
     private CustomExceptionMessageProvider $messageProvider;
 
-    public function __construct()
+    public function __construct(array $customExceptionMessages)
     {
         $this->methodFinder = new ValidationMethodFinder();
-        $this->messageProvider = new CustomExceptionMessageProvider();
+        $this->messageProvider = new CustomExceptionMessageProvider($customExceptionMessages);
     }
 
-    public function getInstance(
-        string $fieldToValidate,
-        string $validationMethod,
-        array $customExceptionMessages
-    ): Methods\ValidationMethod 
+    public function getInstance(string $fieldToValidate, string $validationMethod): Methods\ValidationMethod 
     {
         $validationMethodParts = explode(':', $validationMethod);
     
@@ -27,8 +23,7 @@ class ValidationMethodInstantiator
     
         $customExceptionMessage = $this->messageProvider->getCustomMessage(
             $fieldToValidate,
-            $validationMethod,
-            $customExceptionMessages
+            $validationMethod
         );
         
         $validationMethodPath = $this->methodFinder->find($validationMethodName);
