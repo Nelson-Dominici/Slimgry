@@ -6,14 +6,14 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 class CustomExceptionMessageProvider
 {
-    public function getCustomMessage(
-        string $fieldToValidate, 
-        string $validationMethodName,
-        array $customExceptionMessages
-    ): string 
+    public function __construct(
+        private array $customExceptionMessages
+    ) {}
+    
+    public function getCustomMessage(string $fieldToValidate, string $validationMethodName): string 
     {
         $customExceptionMessageField = $fieldToValidate.'.'.$validationMethodName;
 
-        return $customExceptionMessages[$customExceptionMessageField] ?? '';
+        return $this->customExceptionMessages[$customExceptionMessageField] ?? '';
     }
 }
