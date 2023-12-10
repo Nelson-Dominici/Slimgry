@@ -8,12 +8,10 @@ class CustomExceptionMessageProvider
 {
     public function getCustomMessage(
         string $fieldToValidate, 
-        string $validationMethod,
+        string $validationMethodName,
         array $customExceptionMessages
     ): string 
     {
-        $validationMethodName = explode(':', $validationMethod)[0];
-
         $customExceptionMessageField = $fieldToValidate.'.'.$validationMethodName;
 
         return $customExceptionMessages[$customExceptionMessageField] ?? '';
