@@ -7,7 +7,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 class TrimMethod extends ValidationMethod
 {
     public string $type = 'modeler';
-    
+
     public function execute(array $requestBody, string $fieldToValidate): ?array
     {    
         if (
