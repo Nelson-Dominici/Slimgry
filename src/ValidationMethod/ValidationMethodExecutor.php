@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
+use NelsonDominici\Slimgry\RequestBodyHadler;
+
 class ValidationMethodExecutor
 {
     private ValidationMethodsHandler $handler;
-    private ValidationMethodInstantiator $instantiator;
     
     public function __construct(
-        private array $requestBody,
         private array $bodyValidations,
-        private array $customExceptionMessages
+        private RequestBodyHadler $requestBodyHandler,
+        private ValidationMethodInstantiator $instantiator
     ) {
         $this->handler  = new ValidationMethodsHandler();
-        $this->instantiator  = new ValidationMethodInstantiator($customExceptionMessages);
     }
     
-	 public function performFieldValidationMethods(): void
+	 public function performFieldValidationMethods(): array
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
@@ -26,17 +26,27 @@ class ValidationMethodExecutor
         
             $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
+        
+        return $this->requestBodyHandler->getValidatedBody();
 	}
 
-    private function executeValidationMethod(string $fieldToValidate, array $validationMethods): array
+    private function executeValidationMethod(string $fieldToValidate, array $validationMethods): void
     {
         foreach ($validationMethods as $validationMethod) {
     
             $validationMethodInstance = $this->instantiator->getInstance(
                 $fieldToValidate, $validationMethod
             );
+    
+            $requestBody = $this->requestBodyHandler->getByValidationMethodType(
+                $validationMethodInstance->getType()
+            );
             
-            $validationMethodInstance->execute($this->requestBody, $fieldToValidate);
-        }    
+            $validationMethodData = $validationMethodInstance->execute(
+                $requestBody, $fieldToValidate
+            );
+            
+            $this->requestBodyHandler->newFieldValue($fieldToValidate, $validationMethodData);
+        }
     }
 }
