@@ -8,36 +8,32 @@ use Psr\Http\Message\{
 	ResponseInterface as Response,
 	ServerRequestInterface as Request
 };
-use NelsonDominici\Slimgry\Validation\Validation;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use NelsonDominici\Slimgry\ValidationMethod\ValidationMethodExecutor;
+use NelsonDominici\Slimgry\ValidationMethod\ValidationMethodInstantiator;
 
-final class Slimgry extends Validation
+final class Slimgry
 {
 	public function __construct(
 		private array $bodyValidations,
 		private array $customExceptionMessages = []
-	){}
-        
-    private function parseRequestBody(null|array|\SimpleXMLElement $requestBody): array
-    {
-        if ($requestBody instanceof \SimpleXMLElement) {
-            return get_object_vars($requestBody);
-        }
+	) {}
 
-        return (array) $requestBody ?? [];
-    }
-	
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $requestBody = $this->parseRequestBody($request->getParsedBody());
+        $instantiator = new ValidationMethodInstantiator($this->customExceptionMessages);
 
-	    $requestBodyValidated = $this->validate(
-            $requestBody,
-            $this->bodyValidations, 
-            $this->customExceptionMessages
+        $requestBodyHandler = new RequestBodyHadler($request->getParsedBody());
+            
+        $validationMethodExecutor = new ValidationMethodExecutor(
+            $this->bodyValidations,
+            $requestBodyHandler,
+            $instantiator
         );
         
-        $request = $request->withAttribute("validated", $requestBodyValidated);
+        $validatedBody = $validationMethodExecutor->performFieldValidationMethods();
+
+        $request = $request->withAttribute("validated", $validatedBody);
 
 	  	return $handler->handle($request);
     }
