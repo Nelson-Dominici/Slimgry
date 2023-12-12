@@ -6,6 +6,8 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 abstract class ValidationMethod
 {
+    private string $type = '';
+    
     public function __construct(
         private array $validationParts,
         private string $customExceptionMessage
@@ -43,6 +45,11 @@ abstract class ValidationMethod
 
             throw new \Exception($exceptionMessage, $statuscode);
         }
+    }
+    
+    public function getType(): string
+    {
+        return $this->type;
     }
     
     abstract protected function execute(array $requestBody, string $fieldToValidate);
