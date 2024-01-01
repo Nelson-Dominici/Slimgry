@@ -6,8 +6,8 @@ namespace NelsonDominici\Slimgry;
 
 class RequestBodyHadler
 {
-    private array $requestBody; 
-    private array $validatedBody;
+    public array $requestBody; 
+    public array $validatedBody;
             
     public function __construct(null|array|\SimpleXMLElement $requestBody)
     {
@@ -26,21 +26,7 @@ class RequestBodyHadler
         return (array) $requestBody ?? [];
     }
     
-    public function getByValidationMethodType(string $validationMethodType): array
-    {
-        if ($validationMethodType === 'modeler') {
-            return $this->validatedBody;
-        }
-    
-        return $this->requestBody;
-    }
-
-    public function getValidatedBody(): array
-    {
-        return $this->validatedBody;
-    }
-    
-    public function newFieldValue(string $fieldToValidate, ?array $validationMethodData): void
+    public function newValidatedFieldValue(string $fieldToValidate, ?array $validationMethodData): void
     {
         if (!$validationMethodData || empty($validationMethodData['newBodyFieldValue'])) {
             return;
