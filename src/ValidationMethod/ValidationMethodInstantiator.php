@@ -30,8 +30,8 @@ class ValidationMethodInstantiator
 
         return new $validationMethodPath(
             $validationMethodParts, 
-            $customExceptionMessage,
-            $requestBodyHandlerData
+            $requestBodyHandlerData,
+            $customExceptionMessage
         );    
     }
 }
