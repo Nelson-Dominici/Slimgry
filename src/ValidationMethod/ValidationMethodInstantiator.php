@@ -15,7 +15,7 @@ class ValidationMethodInstantiator
         $this->messageProvider = new CustomExceptionMessageProvider($customExceptionMessages);
     }
 
-    public function getInstance(string $fieldToValidate, string $validationMethod): Methods\ValidationMethod 
+    public function getInstance(string $fieldToValidate, string $validationMethod, array $requestBodyHandlerData): Methods\ValidationMethod 
     {
         $validationMethodParts = explode(':', $validationMethod);
     
@@ -30,7 +30,8 @@ class ValidationMethodInstantiator
 
         return new $validationMethodPath(
             $validationMethodParts, 
-            $customExceptionMessage
+            $customExceptionMessage,
+            $requestBodyHandlerData
         );    
     }
 }
