@@ -11,7 +11,7 @@ abstract class ValidationMethod
         private string $customExceptionMessage
     ) {}
 
-    protected function validationMethodValue(): int
+    protected function getNumericValue(): int
     {
         $validationMethodName = $this->validationParts[0];
     
