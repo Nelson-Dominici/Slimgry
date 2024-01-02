@@ -26,12 +26,8 @@ class RequestBodyHadler
         return (array) $requestBody ?? [];
     }
     
-    public function newValidatedFieldValue(string $fieldToValidate, ?array $validationMethodData): void
+    public function newValidatedFieldValue(?array $newValidatedRequestBody): void
     {
-        if (!$validationMethodData || empty($validationMethodData['newBodyFieldValue'])) {
-            return;
-        }
-
-        $this->validatedBody[$fieldToValidate] = $validationMethodData['newBodyFieldValue'];
+        $this->validatedBody = $newValidatedRequestBody ?: $this->validatedBody;
     }
 }
