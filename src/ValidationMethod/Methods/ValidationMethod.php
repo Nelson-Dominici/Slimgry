@@ -45,5 +45,5 @@ abstract class ValidationMethod
         }
     }
     
-    // abstract protected function execute(): ?array;
+    abstract protected function execute(string $fieldToValidate, array $requestBody, array $validatedRequestBody): ?array;
 }
