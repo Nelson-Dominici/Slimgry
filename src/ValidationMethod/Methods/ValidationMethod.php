@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 abstract class ValidationMethod
-{
-    private string $type = '';
-    
+{    
     public function __construct(
-        private array $validationParts,
+        public array $validationParts,
         private string $customExceptionMessage
     ) {}
 
@@ -31,26 +29,21 @@ abstract class ValidationMethod
         return $numericMethodValue;
     }
 
-    protected function throwException(string $exceptionMessage, int $statuscode = 400): void
+    protected function throwException(string $exceptionMessage): void
     {    
         $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
 
-        throw new \Exception($exceptionMessage, $statuscode);        
+        throw new \Exception($exceptionMessage, 422);        
     }
 
-    protected function assertAndThrow(bool $expression, string $exceptionMessage, int $statuscode = 400): void
+    protected function assertAndThrow(bool $expression, string $exceptionMessage): void
     {      
         if ($expression) {
             $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
 
-            throw new \Exception($exceptionMessage, $statuscode);
+            throw new \Exception($exceptionMessage, 422);
         }
     }
     
-    public function getType(): string
-    {
-        return $this->type;
-    }
-    
-    abstract protected function execute(array $requestBody, string $fieldToValidate);
+    // abstract protected function execute(): ?array;
 }
