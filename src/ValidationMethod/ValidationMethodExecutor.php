@@ -42,7 +42,7 @@ class ValidationMethodExecutor
             $validatedRequestBody = $this->requestBodyHandler->validatedBody;
 
             $newValidatedRequestBody = $validationMethodInstance->execute(
-                $fieldToValidate, $requestBody, $validatedRequestBody
+                $requestBody, $validatedRequestBody
             );
 
             $this->requestBodyHandler->updateValidatedBody($newValidatedRequestBody);
