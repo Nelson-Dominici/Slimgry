@@ -37,13 +37,15 @@ abstract class ValidationMethod
         throw new \Exception($exceptionMessage, 422);        
     }
 
-    protected function assertAndThrow(bool $expression, string $exceptionMessage): void
+    protected function assertAndThrow(bool $expression, string $exceptionMessage): null
     {      
-        if ($expression) {
-            $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
-
-            throw new \Exception($exceptionMessage, 422);
+        if (!$expression) {
+            return null;
         }
+
+        $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
+
+        throw new \Exception($exceptionMessage, 422);
     }
     
     abstract protected function execute(array $requestBody, array $validatedRequestBody): ?array;
