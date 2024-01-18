@@ -6,17 +6,17 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class TrimMethod extends ValidationMethod
 {
-    public string $type = 'modeler';
-
-    public function execute(array $requestBody, string $fieldToValidate): ?array
-    {    
+    public function execute(string $fieldToValidate, array $requestBody, array $validatedRequestBody): ?array
+    {
         if (
-            empty($requestBody[$fieldToValidate]) || 
-            !is_string($requestBody[$fieldToValidate])) 
-        {
+            empty($validatedRequestBody[$fieldToValidate]) || 
+            !is_string($validatedRequestBody[$fieldToValidate])
+        ) {
             return null;
         }
-
-        return ['newBodyFieldValue' => trim($requestBody[$fieldToValidate])];
+        
+        $validatedRequestBody[$fieldToValidate] = trim($validatedRequestBody[$fieldToValidate]);
+        
+        return $validatedRequestBody;
     }
 }
