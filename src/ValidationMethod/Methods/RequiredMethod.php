@@ -19,6 +19,6 @@ class RequiredMethod extends ValidationMethod
             return null;
         }
     
-        $this->throwException('The field '.$this->fieldToValidate.' is required');
+        $this->throwException('The field '.$this->fieldToValidate.' is required.');
     }
 }

@@ -18,7 +18,7 @@ class MinMethod extends ValidationMethod
         $validationMethodValue = $this->getNumericValue();
         $bodyFieldValue = $requestBody[$this->fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldToValidate} field cannot be less than $validationMethodValue";
+        $exceptionMessage = "The {$this->fieldToValidate} field cannot be less than $validationMethodValue.";
 
         $expression = false;
 

@@ -18,7 +18,7 @@ class MaxMethod extends ValidationMethod
         $validationMethodValue = $this->getNumericValue();
         $bodyFieldValue = $requestBody[$this->fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldToValidate} field cannot be greater than $validationMethodValue";
+        $exceptionMessage = "The {$this->fieldToValidate} field cannot be greater than $validationMethodValue.";
 
         $expression = false;
 
