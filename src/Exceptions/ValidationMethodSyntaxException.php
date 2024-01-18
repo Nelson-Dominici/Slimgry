@@ -10,7 +10,7 @@ class ValidationMethodSyntaxException extends \InvalidArgumentException
         string $message,
         private string $validationMethod
     ) {
-        parent::__construct('Invalid validation method sintax. '.$message, 422);
+        parent::__construct('Invalid validation method sintax. '.$message, 500);
     }
 
     function getValidationMethod()
