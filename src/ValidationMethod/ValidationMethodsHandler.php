@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
-use NelsonDominici\Slimgry\Exceptions\ValidationMethodSintaxException;
+use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandler
 {
@@ -25,7 +25,7 @@ class ValidationMethodsHandler
 
             $message = 'The '.$validationMethod.' validation method cannot have more than ":".';
 
-            throw new ValidationMethodSintaxException($message, $validationMethod);
+            throw new ValidationMethodSyntaxException($message, $validationMethod);
         }
     }
     

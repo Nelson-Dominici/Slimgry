@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
-use NelsonDominici\Slimgry\Exceptions\ValidationMethodSintaxException;
+use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 abstract class ValidationMethod
 {    
@@ -26,7 +26,7 @@ abstract class ValidationMethod
 
             $message = 'The validation method '.$validationMethod.' does not have a numeric value.';
             
-            throw new ValidationMethodSintaxException(
+            throw new ValidationMethodSyntaxException(
                 $message,
                 $validationMethodName
             );
