@@ -10,19 +10,9 @@ class ValidationMethodsHandler
 {
     public function handle(mixed $validationMethods): array
     {
-        $this->ensureString($validationMethods);
         $this->checkKeyValueValidationMethodsFormat($validationMethods);
         
         return $this->removeRepetitions($validationMethods);
-    }
-
-    private function ensureString(mixed $validationMethods): void
-	{        
-        $message = 'Methods validation must be a string.';
-        
-        if (!is_string($validationMethods) || $validationMethods === '') {
-            throw new InvalidValidationMethodsException($message, $validationMethods);                      
-        }
     }
 
     private function checkKeyValueValidationMethodsFormat(mixed $validationMethods): void
