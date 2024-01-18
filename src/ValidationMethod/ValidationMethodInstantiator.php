@@ -29,6 +29,7 @@ class ValidationMethodInstantiator
         $validationMethodPath = $this->methodFinder->find($validationMethodName);
 
         return new $validationMethodPath(
+            $fieldToValidate,
             $validationMethodParts, 
             $customExceptionMessage
         );    
