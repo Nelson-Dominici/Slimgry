@@ -18,10 +18,13 @@ class ValidationMethodsHandler
     private function checkKeyValueValidationMethodsFormat(string $validationMethods): void
 	{        
         $pattern = '/[^|]*:[^|]*:[^|]*/';
-    
-        $message = 'Invalid validation methods format. Use only one colon (:).';
-        
-        if (preg_match($pattern, $validationMethods)) {
+
+        if (preg_match($pattern, $validationMethods, $matches, PREG_OFFSET_CAPTURE)) {
+
+            $validationMethod = $matches[0][0];
+
+            $message = 'The '.$validationMethod.' validation method cannot have more than ":".';
+
             throw new InvalidValidationMethodsException($message, $validationMethods);
         }
     }
