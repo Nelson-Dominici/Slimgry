@@ -6,19 +6,19 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class RequiredMethod extends ValidationMethod
 {
-    public function execute(array $requestBody, string $fieldToValidate): void
+    public function execute(array $requestBody, array $validatedRequestBody): null
     {    
         if (
-            array_key_exists($fieldToValidate, $requestBody) &&
+            array_key_exists($this->fieldToValidate, $requestBody) &&
             (
-                $requestBody[$fieldToValidate] ||
-                $requestBody[$fieldToValidate] === false ||
-                $requestBody[$fieldToValidate] === 0
+                $requestBody[$this->fieldToValidate] ||
+                $requestBody[$this->fieldToValidate] === false ||
+                $requestBody[$this->fieldToValidate] === 0
             )
         ) {
-            return;
+            return null;
         }
     
-        $this->throwException('The field '.$fieldToValidate.' is required');
+        $this->throwException('The field '.$this->fieldToValidate.' is required');
     }
 }
