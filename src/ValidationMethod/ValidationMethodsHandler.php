@@ -15,7 +15,7 @@ class ValidationMethodsHandler
         return $this->removeRepetitions($validationMethods);
     }
 
-    private function checkKeyValueValidationMethodsFormat(mixed $validationMethods): void
+    private function checkKeyValueValidationMethodsFormat(string $validationMethods): void
 	{        
         $pattern = '/[^|]*:[^|]*:[^|]*/';
     
