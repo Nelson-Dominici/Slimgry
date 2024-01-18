@@ -6,16 +6,16 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class StringMethod extends ValidationMethod
 {
-    public function execute(array $requestBody, string $fieldToValidate): void
+    public function execute(array $requestBody, array $validatedRequestBody): null
     {    
-        if (!array_key_exists($fieldToValidate, $requestBody)) {
-            return;
+        if (!array_key_exists($this->fieldToValidate, $requestBody)) {
+            return null;
         }
 
-        $exceptionMessage = "The value of the {$fieldToValidate} field must be a string.";
+        $exceptionMessage = "The value of the {$this->fieldToValidate} field must be a string.";
 
-        $isString = is_string($requestBody[$fieldToValidate]);
+        $isString = is_string($requestBody[$this->fieldToValidate]);
 
-        $this->assertAndThrow(!$isString, $exceptionMessage);
+        return $this->assertAndThrow(!$isString, $exceptionMessage);
     }
 }
