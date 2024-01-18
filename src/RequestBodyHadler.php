@@ -26,7 +26,7 @@ class RequestBodyHadler
         return (array) $requestBody ?? [];
     }
     
-    public function newValidatedFieldValue(?array $newValidatedRequestBody): void
+    public function updateValidatedBody(?array $newValidatedRequestBody): void
     {
         $this->validatedBody = $newValidatedRequestBody ?: $this->validatedBody;
     }
