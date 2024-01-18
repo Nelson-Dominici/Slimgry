@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
+use NelsonDominici\Slimgry\Exceptions\ValidationMethodSintaxException;
+
 abstract class ValidationMethod
 {    
     public function __construct(
@@ -20,9 +22,14 @@ abstract class ValidationMethod
             !array_key_exists(1, $this->validationParts) || 
             !ctype_digit($this->validationParts[1])
         ) {
+            $validationMethod = $validationMethodName.':'.$this->validationParts[1];
+
+            $message = 'The validation method '.$validationMethod.' does not have a numeric value';
             
-            throw new \Exception(
-                "The validation method '$validationMethodName' does not have a numeric value", 422);
+            throw new ValidationMethodSintaxException(
+                $message,
+                $validationMethodName
+            );
         }
         
         $numericMethodValue = intval($this->validationParts[1]);
