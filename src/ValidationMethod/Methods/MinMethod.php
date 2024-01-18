@@ -6,19 +6,19 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class MinMethod extends ValidationMethod
 {
-    public function execute(array $requestBody, string $fieldToValidate): void
+    public function execute(array $requestBody, array $validatedRequestBody): null
     {    
         if (
-            empty($requestBody[$fieldToValidate]) || 
-            $requestBody[$fieldToValidate] === true
+            empty($requestBody[$this->fieldToValidate]) || 
+            $requestBody[$this->fieldToValidate] === true
         ) {
-            return;
+            return null;
         }
 
-        $validationMethodValue = $this->validationMethodValue();
-        $bodyFieldValue = $requestBody[$fieldToValidate];
+        $validationMethodValue = $this->getNumericValue();
+        $bodyFieldValue = $requestBody[$this->fieldToValidate];
 
-        $exceptionMessage = "The {$fieldToValidate} field cannot be less than $validationMethodValue";
+        $exceptionMessage = "The {$this->fieldToValidate} field cannot be less than $validationMethodValue";
 
         $expression = false;
 
@@ -30,7 +30,7 @@ class MinMethod extends ValidationMethod
             $expression = count($bodyFieldValue) < $validationMethodValue;
         }
 
-        $this->assertAndThrow($expression, $exceptionMessage);
+        return $this->assertAndThrow($expression, $exceptionMessage);
     }
 }
  
