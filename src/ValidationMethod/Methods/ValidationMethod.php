@@ -25,7 +25,7 @@ abstract class ValidationMethod
         ) {
             $validationMethod = $validationMethodName.':'.$this->validationParts[1];
 
-            $message = 'The validation method '.$validationMethod.' does not have a numeric value.';
+            $message = "The validation method \"$validationMethod\" does not have a numeric value.";
             
             throw new ValidationMethodSyntaxException(
                 $message,
