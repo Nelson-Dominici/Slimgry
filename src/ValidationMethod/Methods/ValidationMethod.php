@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
+use NelsonDominici\Slimgry\Exceptions\ValidationMethodException;
 
 abstract class ValidationMethod
 {    
@@ -41,7 +42,7 @@ abstract class ValidationMethod
     {    
         $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
 
-        throw new \Exception($exceptionMessage, 422);        
+        throw new ValidationMethodException($exceptionMessage, $this->validationParts[0]);        
     }
 
     protected function assertAndThrow(bool $expression, string $exceptionMessage): null
@@ -52,7 +53,7 @@ abstract class ValidationMethod
 
         $exceptionMessage = $this->customExceptionMessage ?: $exceptionMessage;
 
-        throw new \Exception($exceptionMessage, 422);
+        throw new ValidationMethodException($exceptionMessage, $this->validationParts[0]);
     }
     
     abstract protected function execute(array $requestBody, array $validatedRequestBody): ?array;
