@@ -27,7 +27,7 @@ class ValidationMethodExecutor
             $this->executeValidationMethod($fieldToValidate, $validationMethods);
         }
         
-        return $this->requestBodyHandler->validatedBody;
+        return $this->requestBodyHandler->getValidatedBody();
 	}
 
     private function executeValidationMethod(string $fieldToValidate, array $validationMethods): void
@@ -38,8 +38,8 @@ class ValidationMethodExecutor
                 $fieldToValidate, $validationMethod
             );
 
-            $requestBody = $this->requestBodyHandler->requestBody;
-            $validatedRequestBody = $this->requestBodyHandler->validatedBody;
+            $requestBody = $this->requestBodyHandler->getRequestBody();
+            $validatedRequestBody = $this->requestBodyHandler->getValidatedBody();
 
             $newValidatedRequestBody = $validationMethodInstance->execute(
                 $requestBody, $validatedRequestBody
