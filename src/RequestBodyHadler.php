@@ -6,8 +6,8 @@ namespace NelsonDominici\Slimgry;
 
 class RequestBodyHadler
 {
-    public array $requestBody; 
-    public array $validatedBody;
+    private array $requestBody; 
+    private array $validatedBody;
             
     public function __construct(null|array|\SimpleXMLElement $requestBody)
     {
@@ -29,5 +29,15 @@ class RequestBodyHadler
     public function updateValidatedBody(?array $newValidatedRequestBody): void
     {
         $this->validatedBody = $newValidatedRequestBody ?: $this->validatedBody;
+    }
+
+    public function getValidatedBody(): array
+    {
+        return $this->validatedBody;
+    }
+
+    public function getRequestBody(): array
+    {
+        return $this->requestBody;
     }
 }
