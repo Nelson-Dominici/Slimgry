@@ -23,7 +23,7 @@ class ValidationMethodsHandler
 
             $validationMethod = $matches[0][0];
 
-            $message = 'The '.$validationMethod.' validation method cannot have more than ":".';
+            $message = "The \"$validationMethod\" validation method cannot have more than \":\".";
 
             throw new ValidationMethodSyntaxException($message, $validationMethod);
         }
