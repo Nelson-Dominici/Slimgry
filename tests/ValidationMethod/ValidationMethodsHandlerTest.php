@@ -10,7 +10,7 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandlerTest extends TestCase
 {
-    public function testAnExceptionMustBeThrownIfOneOfTheValidationMethodsHasMoreThanOneColon()
+    public function testHandleThrowsExceptionForValidationMethodWithMoreThanOneColon()
     {
         $validationMethodsHandler = new ValidationMethodsHandler();
 
@@ -20,5 +20,21 @@ class ValidationMethodsHandlerTest extends TestCase
         $this->expectExceptionMessage("The \"min::3\" validation method cannot have more than \":\".");
 
         $validationMethodsHandler->handle($validationMethods);
+    }
+
+    public function testHandleRemovesRepetitionsInValidationMethods()
+    {
+        $validationMethodsHandler = new ValidationMethodsHandler();
+
+        $validationMethodsWithRepetitions = 'required|min:4|trim|trim|string|string|min:3';
+
+        $validationMethodsWithoutRepetitions = $validationMethodsHandler->handle(
+            $validationMethodsWithRepetitions
+        );
+
+        $this->assertSame(
+            ['required','min:3','trim','string'],
+            $validationMethodsWithoutRepetitions
+        );
     }
 }
