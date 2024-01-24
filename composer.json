@@ -4,7 +4,8 @@
     "type": "library",
     "require-dev": {
         "slim/slim": "^4.12",
-        "slim/psr7": "^1.6"
+        "slim/psr7": "^1.6",
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {
