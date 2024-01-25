@@ -38,11 +38,9 @@ class ValidationMethodExecutor
                 $fieldToValidate, $validationMethod
             );
 
-            $requestBody = $this->requestBodyHandler->getRequestBody();
-            $validatedRequestBody = $this->requestBodyHandler->getValidatedBody();
-
             $newValidatedRequestBody = $validationMethodInstance->execute(
-                $requestBody, $validatedRequestBody
+                $this->requestBodyHandler->getRequestBody(), 
+                $this->requestBodyHandler->getValidatedBody()
             );
 
             $this->requestBodyHandler->updateValidatedBody($newValidatedRequestBody);
