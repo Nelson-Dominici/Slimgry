@@ -8,15 +8,12 @@ use NelsonDominici\Slimgry\RequestBodyHadler;
 
 class ValidationMethodExecutor
 {
-    private ValidationMethodsHandler $handler;
-    
     public function __construct(
         private array $bodyValidations,
+        private ValidationMethodsHandler $handler,
         private RequestBodyHadler $requestBodyHandler,
         private ValidationMethodInstantiator $instantiator
-    ) {
-        $this->handler  = new ValidationMethodsHandler();
-    }
+    ) {}
     
 	 public function performFieldValidationMethods(): array
 	{
