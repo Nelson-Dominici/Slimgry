@@ -13,6 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 use NelsonDominici\Slimgry\ValidationMethod\{
     ValidationMethodFinder,
+    ValidationMethodsHandler,
     ValidationMethodExecutor,
     ValidationMethodInstantiator,
     CustomExceptionMessageProvider
@@ -33,9 +34,12 @@ final class Slimgry
         );
 
         $requestBodyHandler = new RequestBodyHadler($request->getParsedBody());
-            
+        
+        $validationMethodsHandler = new ValidationMethodsHandler();     
+
         $validationMethodExecutor = new ValidationMethodExecutor(
             $this->bodyValidations,
+            $validationMethodsHandler,
             $requestBodyHandler,
             $instantiator
         );
