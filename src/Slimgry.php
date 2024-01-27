@@ -8,9 +8,15 @@ use Psr\Http\Message\{
 	ResponseInterface as Response,
 	ServerRequestInterface as Request
 };
+
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use NelsonDominici\Slimgry\ValidationMethod\ValidationMethodExecutor;
-use NelsonDominici\Slimgry\ValidationMethod\ValidationMethodInstantiator;
+
+use NelsonDominici\Slimgry\ValidationMethod\{
+    ValidationMethodFinder,
+    ValidationMethodExecutor,
+    ValidationMethodInstantiator,
+    CustomExceptionMessageProvider
+};
 
 final class Slimgry
 {
@@ -21,7 +27,10 @@ final class Slimgry
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $instantiator = new ValidationMethodInstantiator($this->customExceptionMessages);
+        $instantiator = new ValidationMethodInstantiator(
+            new ValidationMethodFinder(),
+            new CustomExceptionMessageProvider($this->customExceptionMessages)
+        );
 
         $requestBodyHandler = new RequestBodyHadler($request->getParsedBody());
             
