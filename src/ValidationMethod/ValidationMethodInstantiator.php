@@ -6,14 +6,10 @@ namespace NelsonDominici\Slimgry\ValidationMethod;
 
 class ValidationMethodInstantiator
 {    
-    private ValidationMethodFinder $methodFinder;
-    private CustomExceptionMessageProvider $messageProvider;
-
-    public function __construct(array $customExceptionMessages)
-    {
-        $this->methodFinder = new ValidationMethodFinder();
-        $this->messageProvider = new CustomExceptionMessageProvider($customExceptionMessages);
-    }
+    public function __construct(
+        private ValidationMethodFinder $methodFinder,
+        private CustomExceptionMessageProvider $messageProvider
+    ){}
 
     public function getInstance(string $fieldToValidate, string $validationMethod): Methods\ValidationMethod 
     {
