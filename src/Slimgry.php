@@ -44,7 +44,7 @@ final class Slimgry
             $instantiator
         );
         
-        $validatedBody = $validationMethodExecutor->performFieldValidationMethods();
+        $validatedBody = $validationMethodExecutor->performFields();
 
         $request = $request->withAttribute("validated", $validatedBody);
 
