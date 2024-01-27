@@ -15,19 +15,19 @@ class ValidationMethodExecutor
         private ValidationMethodInstantiator $instantiator
     ) {}
     
-	 public function performFieldValidationMethods(): array
+	 public function performFields(): array
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
             $validationMethods = $this->handler->handle($validationMethods);
         
-            $this->executeValidationMethod($fieldToValidate, $validationMethods);
+            $this->executeMethods($fieldToValidate, $validationMethods);
         }
         
         return $this->requestBodyHandler->getValidatedBody();
 	}
 
-    private function executeValidationMethod(string $fieldToValidate, array $validationMethods): void
+    private function executeMethods(string $fieldToValidate, array $validationMethods): void
     {
         foreach ($validationMethods as $validationMethod) {
     
