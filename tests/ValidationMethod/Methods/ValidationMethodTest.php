@@ -70,7 +70,7 @@ class ValidationMethodTest extends TestCase
 
     public function testAssertAndThrowMethodThrowsExceptionWithCustomMessageIfExpressionIsTrue()
     {
-        $customMessage = 'This custom message must appear.';
+        $defaultMessage = 'This is a default exception message.';
         
         $assertAndThrowMethod = $this->validationMethodReflection->getMethod(
             'assertAndThrow'
@@ -80,16 +80,16 @@ class ValidationMethodTest extends TestCase
 
         $this->expectException(ValidationMethodException::class);
     
-        $this->expectExceptionMessage($customMessage);
+        $this->expectExceptionMessage('This is a custom exception message.');
     
         $this->expectExceptionCode(422);
 
-       $assertAndThrowMethod->invoke($this->validationMethodMock, true, $customMessage);
+       $assertAndThrowMethod->invoke($this->validationMethodMock, true, $defaultMessage);
     }
 
     public function testThrowExceptionMethodThrowsExceptionWithCustomMessage(): void
     {
-        $customMessage = 'This custom message must appear.';
+        $defaultMessage = 'This is a default exception message.';
 
         $throwExceptionMethod = $this->validationMethodReflection->getMethod(
             'throwException'
@@ -99,10 +99,10 @@ class ValidationMethodTest extends TestCase
 
         $this->expectException(ValidationMethodException::class);
     
-        $this->expectExceptionMessage($customMessage);
+        $this->expectExceptionMessage('This is a custom exception message.');
     
         $this->expectExceptionCode(422);
 
-       $throwExceptionMethod->invoke($this->validationMethodMock, $customMessage);
+       $throwExceptionMethod->invoke($this->validationMethodMock, $defaultMessage);
     }
 }
