@@ -19,7 +19,7 @@ use NelsonDominici\Slimgry\ValidationMethod\Methods\{
 
 class ValidationMethodInstantiatorTest extends TestCase
 {    
-    function testMustReturnTheInstanceOfAValidationMethod(): void
+    public function testMustReturnTheInstanceOfAValidationMethod(): void
     {
         $exampleFieldToValidate = 'name';
         $exampleValidationMethod = 'string';
