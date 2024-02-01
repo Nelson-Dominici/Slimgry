@@ -18,7 +18,11 @@ class ValidationMethodTest extends TestCase
     {
         $this->validationMethodMock = $this
             ->getMockBuilder(ValidationMethod::class)
-            ->setConstructorArgs(['name', ['max','test'], ''])
+            ->setConstructorArgs([
+                'name', 
+                ['max','test'], 
+                'This is a custom exception message.'
+            ])
             ->getMockForAbstractClass();
 
         $this->validationMethodReflection = new \ReflectionClass(
@@ -43,6 +47,25 @@ class ValidationMethodTest extends TestCase
         $this->expectExceptionCode(500);
 
         $getNumericValueMethod->invoke($this->validationMethodMock);    
+    }
+
+    public function testAssertAndThrowMethodReturnNullValueIfExpressionIsFalse()
+    {
+        $defaultMessage = 'This is a default exception message.';
+        
+        $assertAndThrowMethod = $this->validationMethodReflection->getMethod(
+            'assertAndThrow'
+        );
+
+        $assertAndThrowMethod->setAccessible(true);
+
+        $nullValue = $assertAndThrowMethod->invoke(
+            $this->validationMethodMock, 
+            false, 
+            $defaultMessage
+        );
+
+        $this->assertNull($nullValue);
     }
 
     public function testAssertAndThrowMethodThrowsExceptionWithCustomMessageIfExpressionIsTrue()
