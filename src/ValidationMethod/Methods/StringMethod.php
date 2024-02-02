@@ -12,7 +12,7 @@ class StringMethod extends ValidationMethod
             return null;
         }
 
-        $exceptionMessage = "The value of the {$this->fieldToValidate} field must be a string.";
+        $exceptionMessage = "The {$this->fieldToValidate} field must be a string.";
 
         $isString = is_string($requestBody[$this->fieldToValidate]);
 
