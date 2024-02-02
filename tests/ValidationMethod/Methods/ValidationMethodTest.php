@@ -49,7 +49,7 @@ class ValidationMethodTest extends TestCase
         $getNumericValueMethod->invoke($this->validationMethodMock);    
     }
 
-    public function testAssertAndThrowMethodReturnNullValueIfExpressionIsFalse()
+    public function testAssertAndThrowMethodReturnNullValueIfExpressionIsFalse(): void
     {
         $defaultMessage = 'This is a default exception message.';
         
@@ -68,7 +68,7 @@ class ValidationMethodTest extends TestCase
         $this->assertNull($nullValue);
     }
 
-    public function testAssertAndThrowMethodThrowsExceptionWithCustomMessageIfExpressionIsTrue()
+    public function testAssertAndThrowMethodThrowsExceptionWithCustomMessageIfExpressionIsTrue(): void
     {
         $defaultMessage = 'This is a default exception message.';
         
