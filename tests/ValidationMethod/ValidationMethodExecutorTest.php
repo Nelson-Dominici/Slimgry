@@ -71,7 +71,7 @@ class ValidationMethodExecutorTest extends TestCase
     public function testRequestBodyHadlerGetValidatedBodyMethodCalledInTheCorrectAmount(): void
     {
         $this->requestBodyHadler
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(1))
             ->method('getValidatedBody');
     
         $this->validationMethodExecutor->performFields();
