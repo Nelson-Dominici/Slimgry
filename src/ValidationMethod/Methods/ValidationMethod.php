@@ -56,5 +56,5 @@ abstract class ValidationMethod
         throw new ValidationMethodException($exceptionMessage, $this->validationParts[0]);
     }
     
-    abstract protected function execute(array $requestBody, array $validatedRequestBody): ?array;
+    abstract protected function execute(array $requestBody): ?array;
 }
