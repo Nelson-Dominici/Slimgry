@@ -11,6 +11,7 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodTest extends TestCase
 {   
+    private string $defaultMessage;
     private ValidationMethod $validationMethodMock;
     private \ReflectionClass $validationMethodReflection;
 
@@ -24,6 +25,8 @@ class ValidationMethodTest extends TestCase
                 'This is a custom exception message.'
             ])
             ->getMockForAbstractClass();
+
+        $this->defaultMessage = 'Validation method default exception message.';
 
         $this->validationMethodReflection = new \ReflectionClass(
             ValidationMethod::class
@@ -51,8 +54,6 @@ class ValidationMethodTest extends TestCase
 
     public function testAssertAndThrowMethodReturnNullValueIfExpressionIsFalse(): void
     {
-        $defaultMessage = 'This is a default exception message.';
-        
         $assertAndThrowMethod = $this->validationMethodReflection->getMethod(
             'assertAndThrow'
         );
@@ -62,7 +63,7 @@ class ValidationMethodTest extends TestCase
         $nullValue = $assertAndThrowMethod->invoke(
             $this->validationMethodMock, 
             false, 
-            $defaultMessage
+            $this->defaultMessage
         );
 
         $this->assertNull($nullValue);
@@ -70,8 +71,6 @@ class ValidationMethodTest extends TestCase
 
     public function testAssertAndThrowMethodThrowsExceptionWithCustomMessageIfExpressionIsTrue(): void
     {
-        $defaultMessage = 'This is a default exception message.';
-        
         $assertAndThrowMethod = $this->validationMethodReflection->getMethod(
             'assertAndThrow'
         );
@@ -84,13 +83,15 @@ class ValidationMethodTest extends TestCase
     
         $this->expectExceptionCode(422);
 
-       $assertAndThrowMethod->invoke($this->validationMethodMock, true, $defaultMessage);
+        $assertAndThrowMethod->invoke(
+            $this->validationMethodMock, 
+            true, 
+            $this->defaultMessage
+        );
     }
 
     public function testThrowExceptionMethodThrowsExceptionWithCustomMessage(): void
     {
-        $defaultMessage = 'This is a default exception message.';
-
         $throwExceptionMethod = $this->validationMethodReflection->getMethod(
             'throwException'
         );
@@ -103,6 +104,9 @@ class ValidationMethodTest extends TestCase
     
         $this->expectExceptionCode(422);
 
-       $throwExceptionMethod->invoke($this->validationMethodMock, $defaultMessage);
+        $throwExceptionMethod->invoke(
+            $this->validationMethodMock, 
+            $this->defaultMessage
+        );
     }
 }
