@@ -9,16 +9,14 @@ class RequiredMethod extends ValidationMethod
     public function execute(array $requestBody): null
     {    
         if (
-            array_key_exists($this->fieldToValidate, $requestBody) &&
-            (
-                $requestBody[$this->fieldToValidate] ||
-                $requestBody[$this->fieldToValidate] === false ||
-                $requestBody[$this->fieldToValidate] === 0
-            )
+            !array_key_exists($this->fieldToValidate, $requestBody) ||
+            $requestBody[$this->fieldToValidate] === '' ||
+            $requestBody[$this->fieldToValidate] === [] ||
+            $requestBody[$this->fieldToValidate] === null
         ) {
-            return null;
+            $this->throwException('The '.$this->fieldToValidate.' field is required.');
         }
-    
-        $this->throwException('The '.$this->fieldToValidate.' field is required.');
+
+        return null;
     }
 }
