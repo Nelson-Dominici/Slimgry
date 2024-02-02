@@ -25,7 +25,7 @@ class TrimMethodTest extends TestCase
         );
     }
 
-    public static function fieldsThatCannotBeValidated(): array
+    public static function invalidValidationFields(): array
     {
         return [
             [['name' => false]],
@@ -34,8 +34,8 @@ class TrimMethodTest extends TestCase
         ];
     }
 
-    #[DataProvider('fieldsThatCannotBeValidated')]
-    public function testExecuteMethodReturnsNullForAFieldThatCannotBeValidated(array $requestBody): void
+    #[DataProvider('invalidValidationFields')]
+    public function testExecuteMethodReturnsNullForInvalidValidationField(array $requestBody): void
     {
         $this->assertNull($this->trimMethod->execute($requestBody));
     }
