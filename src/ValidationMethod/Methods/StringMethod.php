@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class StringMethod extends ValidationMethod
 {
-    public function execute(array $requestBody, array $validatedRequestBody): null
+    public function execute(array $requestBody): null
     {    
         if (!array_key_exists($this->fieldToValidate, $requestBody)) {
             return null;

@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class MinMethod extends ValidationMethod
 {
-    public function execute(array $requestBody, array $validatedRequestBody): null
+    public function execute(array $requestBody): null
     {    
         if (
             empty($requestBody[$this->fieldToValidate]) || 
