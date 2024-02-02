@@ -26,9 +26,13 @@ class RequestBodyHadler
         return (array) $requestBody ?? [];
     }
     
-    public function updateValidatedBody(?array $newValidatedRequestBody): void
+    public function updateValidatedBody(?array $newValidatedField): void
     {
-        $this->validatedBody = $newValidatedRequestBody ?: $this->validatedBody;
+        if (!$newValidatedField) {
+            return;
+        }
+
+        $this->validatedBody = array_merge($this->validatedBody, $newValidatedField);
     }
 
     public function getValidatedBody(): array
