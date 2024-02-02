@@ -10,7 +10,7 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandlerTest extends TestCase
 {
-    public function testHandleThrowsExceptionForValidationMethodWithMoreThanOneColon()
+    public function testHandleMethodThrowsExceptionWhenAKeyValueValidationMethodHasMoreThanOneColon(): void
     {
         $validationMethodsHandler = new ValidationMethodsHandler();
 
@@ -22,7 +22,7 @@ class ValidationMethodsHandlerTest extends TestCase
         $validationMethodsHandler->handle($validationMethods);
     }
 
-    public function testHandleRemovesRepetitionsInValidationMethods()
+    public function testHandleMethodRemovesRepeatedValidationMethods(): void
     {
         $validationMethodsHandler = new ValidationMethodsHandler();
 
