@@ -10,25 +10,28 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandlerTest extends TestCase
 {
+    private ValidationMethodsHandler $validationMethodsHandler;
+
+    public function setUp(): void
+    {
+        $this->validationMethodsHandler = new ValidationMethodsHandler();
+    }
+
     public function testHandleMethodThrowsExceptionWhenAKeyValueValidationMethodHasMoreThanOneColon(): void
     {
-        $validationMethodsHandler = new ValidationMethodsHandler();
-
         $validationMethods = 'required|trim|string|min::3';
 
         $this->expectException(ValidationMethodSyntaxException::class);
         $this->expectExceptionMessage("The \"min::3\" validation method cannot have more than \":\".");
 
-        $validationMethodsHandler->handle($validationMethods);
+        $this->validationMethodsHandler->handle($validationMethods);
     }
 
     public function testHandleMethodRemovesRepeatedValidationMethods(): void
     {
-        $validationMethodsHandler = new ValidationMethodsHandler();
-
         $validationMethodsWithRepetitions = 'required|min:4|trim|trim|string|string|min:3';
 
-        $validationMethodsWithoutRepetitions = $validationMethodsHandler->handle(
+        $validationMethodsWithoutRepetitions = $this->validationMethodsHandler->handle(
             $validationMethodsWithRepetitions
         );
 
