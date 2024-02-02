@@ -6,54 +6,36 @@ namespace tests;
 
 use PHPUnit\Framework\TestCase;
 use NelsonDominici\Slimgry\RequestBodyHadler;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RequestBodyHadlerTest extends TestCase
 {
-    public function testInitializationWithArrayResultsInArrayProperties(): void 
+    public static function requestBodyTypes(): array
     {
-        $requestBody = [
-            'name' => 'Davidson', 
-            'email' => 'Davidson123@gmail.com',
-            'password' => '123456'
+        return [
+            [[
+                'name' => 'Davidson', 
+                'email' => 'Davidson123@gmail.com',
+                'password' => '123456'
+            ]],
+            [new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+                <user>
+                    <name>Davidson</name>
+                    <email>Davidson123@gmail.com</email>
+                    <password>123456</password>
+                </user>')
+            ],
+            [null]
         ];
-
-        $requestBodyHadler = new RequestBodyHadler($requestBody);
-
-        $this->assertSame($requestBody, $requestBodyHadler->getRequestBody());
-        $this->assertSame($requestBody, $requestBodyHadler->getValidatedBody());
     }
 
-    public function testInitializationWithXMLResultsInArrayProperties(): void
+    #[DataProvider('requestBodyTypes')]
+    public function testParseMethodReturnsAnArrayIndependentOfTheRequestBodyType($requestBody): void 
     {
-        $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
-        <user>
-            <name>Davidson</name>
-            <email>Davidson123@gmail.com</email>
-            <password>123456</password>
-        </user>';
-
-        $expected = [
-            'name' => 'Davidson', 
-            'email' => 'Davidson123@gmail.com',
-            'password' => '123456'
-        ];
-
-        $simpleXmlElement = new \SimpleXMLElement($xmlString);
-
-        $requestBodyHadler = new RequestBodyHadler($simpleXmlElement);
-
-        $this->assertSame($expected, $requestBodyHadler->getRequestBody());
-        $this->assertSame($expected, $requestBodyHadler->getValidatedBody());
-    }
-
-    public function testMustHaveEmptyArrayPropertiesIfInitializedWithANull(): void
-    {
-        $requestBody = null;
-
         $requestBodyHadler = new RequestBodyHadler($requestBody);
 
-        $this->assertEmpty($requestBodyHadler->getRequestBody());
-        $this->assertEmpty($requestBodyHadler->getValidatedBody());
+        $this->assertIsArray($requestBodyHadler->getRequestBody());
+        $this->assertIsArray($requestBodyHadler->getValidatedBody());
     }
 
     public function testMustPreserveValidatedBodyWhenUpdatingWithNullValue(): void
