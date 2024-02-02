@@ -23,14 +23,14 @@ class RequestBodyHadlerTest extends TestCase
                     <name>Davidson</name>
                     <email>Davidson123@gmail.com</email>
                     <password>123456</password>
-                </user>')
-            ],
+                </user>'
+            )],
             [null]
         ];
     }
 
     #[DataProvider('requestBodyTypes')]
-    public function testParseMethodReturnsAnArrayIndependentOfTheRequestBodyType($requestBody): void 
+    public function testParseMethodReturnsArrayRegardlessOfRequestBodyType($requestBody): void 
     {
         $requestBodyHadler = new RequestBodyHadler($requestBody);
 
@@ -38,34 +38,29 @@ class RequestBodyHadlerTest extends TestCase
         $this->assertIsArray($requestBodyHadler->getValidatedBody());
     }
 
-    public function testMustPreserveValidatedBodyWhenUpdatingWithNullValue(): void
+    public function testUpdateValidatedBodyReturnsNullForNullParameterValue(): void
     {
-        $requestBody = [
-            'name' => 'Davidson', 
-            'email' => 'Davidson123@gmail.com',
-            'password' => '123456'
-        ];
+        $parameterValue = null;
 
-        $requestBodyHadler = new RequestBodyHadler($requestBody);
-        $requestBodyHadler->updateValidatedBody(null);
+        $requestBodyHadler = new RequestBodyHadler(['name' => 'Davidson']);
         
-        $this->assertSame($requestBody, $requestBodyHadler->getValidatedBody());
+        $this->assertNull($requestBodyHadler->updateValidatedBody($parameterValue));
     }
     
-    public function testUpdatesTheValidatedBodyWhenUpdatingWithAnArray(): void
+    public function testUpdateValidatedBodyUpdatesValidatedBodyWhenParameterIsNotFalse(): void
     {
-        $requestBody = [
-            'name' => 'Davidson', 
-            'email' => 'Davidson123@gmail.com',
-            'password' => '123456'
-        ];
+        $newValidatedField = ['email' => 'new value'];
         
-        $newValidatedBody = ['expected' => 'This array is expected.'];
+        $requestBodyHadler = new RequestBodyHadler(['name' => 'Davidson']);
         
-        $requestBodyHadler = new RequestBodyHadler($requestBody);
-        
-        $requestBodyHadler->updateValidatedBody($newValidatedBody);
-        
-        $this->assertSame($newValidatedBody, $requestBodyHadler->getValidatedBody());
+        $requestBodyHadler->updateValidatedBody($newValidatedField);
+
+        $this->assertSame(
+            [
+                'name' => 'Davidson',
+                'email' => 'new value'
+            ],
+            $requestBodyHadler->getValidatedBody()
+        );
     }
 }
