@@ -25,26 +25,40 @@ class TrimMethodTest extends TestCase
         );
     }
 
-    public static function fieldsThatCannotBeValidated(): array
+    public static function fieldsToValidateWithFalsyValue(): array
     {
         return [
             [['name' => false]],
-            [['name' => 1]],
-            [['fieldDoesNotExist' => 'Nelson']]
+            [['name' => []]],
+            [['name' => 0]],
+            [['name' => ""]],
+            [['name' => null]],
         ];
     }
-
-    #[DataProvider('fieldsThatCannotBeValidated')]
-    public function testExecuteMethodReturnsNullForFieldsThatCannotBeValidated(array $requestBody): void
+    
+    #[DataProvider('fieldsToValidateWithFalsyValue')]
+    public function testReturnsNullWhenTheFieldToValidateHasAFalsyValue(array $requestBody): void
     {
         $this->assertNull($this->trimMethod->execute($requestBody));
     }
 
+    public function testReturnsNullWhenTheFieldToValidateHasNotStringValue(): void
+    {
+        $this->assertNull($this->trimMethod->execute(['name' => 10]));
+    }
+
+    public function testReturnsNullWhenTheFieldToValidateDoesNotExist(): void
+    {
+        $this->assertNull(
+            $this->trimMethod->execute(['thisFieldDoesNotExist' => 'Nelson'])
+        );
+    }
+    
     public function testExecuteMethodReturnFieldValueWithoutBlanks(): void
     {
-        $inputData = ['name' => ' Nelson Dominici '];
+        $requestBody = ['name' => ' Nelson Dominici '];
 
-        $trimmedData = $this->trimMethod->execute($inputData);
+        $trimmedData = $this->trimMethod->execute($requestBody);
     
         $expectedData = ['name' => 'Nelson Dominici'];
         
