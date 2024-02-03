@@ -25,7 +25,7 @@ class TrimMethodTest extends TestCase
         );
     }
 
-    public static function fieldsToValidateWithFalsyValue(): array
+    public static function requestBodyFieldsWithFalseValues(): array
     {
         return [
             [['name' => false]],
@@ -36,18 +36,18 @@ class TrimMethodTest extends TestCase
         ];
     }
     
-    #[DataProvider('fieldsToValidateWithFalsyValue')]
-    public function testReturnsNullWhenTheFieldToValidateHasAFalsyValue(array $requestBody): void
+    #[DataProvider('requestBodyFieldsWithFalseValues')]
+    public function testReturnsNullWhenTheRequestBodyFieldHasAFalsyValue(array $requestBody): void
     {
         $this->assertNull($this->trimMethod->execute($requestBody));
     }
 
-    public function testReturnsNullWhenTheFieldToValidateHasNotStringValue(): void
+    public function testReturnsNullWhenTheRequestBodyFieldHasNotStringValue(): void
     {
         $this->assertNull($this->trimMethod->execute(['name' => 10]));
     }
 
-    public function testReturnsNullWhenTheFieldToValidateDoesNotExist(): void
+    public function testReturnsNullWhenTheRequestBodyFieldDoesNotExist(): void
     {
         $this->assertNull(
             $this->trimMethod->execute(['thisFieldDoesNotExist' => 'Nelson'])
