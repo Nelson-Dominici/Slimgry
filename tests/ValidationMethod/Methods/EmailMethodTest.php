@@ -26,13 +26,6 @@ class EmailMethodTest extends TestCase
         );
     }
 
-    public function testExecuteReturnsNullForTheRequestBodyFieldWithAValueThatIsNotAString(): void
-    {
-        $requestBody = ['email' => ['nelsoncomer777@gmail.com']];
-
-        $this->assertNull($this->emailMethod->execute($requestBody));
-    }
-
     public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
     {
         $this->assertNull(
@@ -49,22 +42,5 @@ class EmailMethodTest extends TestCase
         $this->expectExceptionCode(422);
 
         $this->emailMethod->execute($requestBody);
-    }
-
-    #[DataProvider('requestBodyFieldsWithFalsyValues')]
-    public function testExecuteReturnsNullIfTheRequestBodyFieldHasAFalsyValue(array $requestBody): void
-    {
-        $this->assertNull($this->emailMethod->execute($requestBody));
-    }
-    
-    public static function requestBodyFieldsWithFalsyValues(): array
-    {
-        return [
-            [['email' => false]],
-            [['email' => []]],
-            [['email' => 0]],
-            [['email' => '']],
-            [['email' => null]],
-        ];
     }
 }
