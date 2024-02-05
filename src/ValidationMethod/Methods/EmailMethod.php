@@ -8,19 +8,17 @@ class EmailMethod extends ValidationMethod
 {    
     public function execute(array $requestBody): null
     {
-        if (
-            empty($requestBody[$this->fieldToValidate]) || 
-            !is_string($requestBody[$this->fieldToValidate])
-        ) {
-            return null;
+        if (array_key_exists($this->fieldToValidate, $requestBody)) {
+
+            $email = $requestBody[$this->fieldToValidate];
+
+            $exceptionMessage = "The {$this->fieldToValidate} field is not a valid email.";
+    
+            $expression = filter_var($email, FILTER_VALIDATE_EMAIL) === false;
+    
+            $this->assertAndThrow($expression, $exceptionMessage);        
         }
 
-        $email = $requestBody[$this->fieldToValidate];
-
-        $exceptionMessage = "The {$this->fieldToValidate} field is not a valid email.";
-
-        $expression = filter_var($email, FILTER_VALIDATE_EMAIL) === false;
-
-        return $this->assertAndThrow($expression, $exceptionMessage);
+        return null;
     }
 }
