@@ -25,10 +25,11 @@ class TrimMethodTest extends TestCase
         );
     }
 
-    public static function requestBodyFieldsWithFalseValues(): array
+    public static function requestBodyFieldsThatCannotBeValidated(): array
     {
         return [
             [['name' => false]],
+            [['name' => true]],
             [['name' => []]],
             [['name' => 0]],
             [['name' => ""]],
@@ -36,8 +37,8 @@ class TrimMethodTest extends TestCase
         ];
     }
     
-    #[DataProvider('requestBodyFieldsWithFalseValues')]
-    public function testReturnsNullWhenTheRequestBodyFieldHasAFalsyValue(array $requestBody): void
+    #[DataProvider('requestBodyFieldsThatCannotBeValidated')]
+    public function testReturnsNullWhenTheRequestBodyFieldHasAValueThatCannotBeValidated(array $requestBody): void
     {
         $this->assertNull($this->trimMethod->execute($requestBody));
     }
