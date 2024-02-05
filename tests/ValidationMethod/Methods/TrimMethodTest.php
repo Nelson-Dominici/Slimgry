@@ -47,7 +47,7 @@ class TrimMethodTest extends TestCase
         $this->assertNull($this->trimMethod->execute(['name' => 10]));
     }
 
-    public function testReturnsNullWhenTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
     {
         $this->assertNull(
             $this->trimMethod->execute(['thisFieldDoesNotExist' => 'Nelson'])
