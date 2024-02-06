@@ -9,7 +9,8 @@ class TrimMethod extends ValidationMethod
     public function execute(array $requestBody): ?array
     {
         if (
-            empty($requestBody[$this->fieldToValidate]) || 
+            !array_key_exists($this->fieldToValidate, $requestBody) || 
+            !$requestBody[$this->fieldToValidate] || 
             !is_string($requestBody[$this->fieldToValidate])
         ) {
             return null;

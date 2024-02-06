@@ -9,12 +9,13 @@ class MinMethod extends ValidationMethod
     public function execute(array $requestBody): null
     {    
         if (
-            empty($requestBody[$this->fieldToValidate]) || 
+            !array_key_exists($this->fieldToValidate, $requestBody) ||
+            !$requestBody[$this->fieldToValidate] || 
             $requestBody[$this->fieldToValidate] === true
         ) {
             return null;
         }
-
+        
         $validationMethodValue = $this->getNumericValue();
         $bodyFieldValue = $requestBody[$this->fieldToValidate];
 
