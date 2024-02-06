@@ -8,32 +8,31 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandler
 {
-    public function handle(mixed $validationMethods): array
-    {
-        $this->checkKeyValueValidationMethodsFormat($validationMethods);
-        
-        return $this->removeRepetitions($validationMethods);
-    }
-
-    private function checkKeyValueValidationMethodsFormat(string $validationMethods): void
+    public function checkKeyValueValidationMethodsFormat(string $validationMethod): void
 	{        
-        $pattern = '/[^|]*:[^|]*:[^|]*/';
+        $colonCount = substr_count($validationMethod, ':');
 
-        if (preg_match($pattern, $validationMethods, $matches, PREG_OFFSET_CAPTURE)) {
-
-            $validationMethod = $matches[0][0];
-
-            $message = "The \"$validationMethod\" validation method cannot have more than \":\".";
-
-            throw new ValidationMethodSyntaxException($message, $validationMethod);
+        if ($colonCount === 1) {
+            return;
         }
+
+        $message = "The \"$validationMethod\" validation method cannot have more than \":\".";
+
+        throw new ValidationMethodSyntaxException(
+            $message, 
+            $validationMethod
+        );
     }
     
-	private function removeRepetitions(string $validationMethods): array
+	public function removeRepetitions(string|array $validationMethods): array
 	{
         $uniqueValidationMethods = [];
         
-        foreach (explode('|', $validationMethods) as $validationMethod) {
+        if (is_string($validationMethods)) {
+            $validationMethods = explode('|', $validationMethods);
+        }
+
+        foreach ($validationMethods as $validationMethod) {
         
             $validationMethodName = explode(':', $validationMethod)[0];
 
