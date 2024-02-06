@@ -8,7 +8,7 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodsHandler
 {
-    public function checkKeyValueValidationMethodsFormat(string $validationMethod): void
+    public function checkMethodColon(string $validationMethod): void
 	{        
         $colonCount = substr_count($validationMethod, ':');
 
@@ -16,7 +16,7 @@ class ValidationMethodsHandler
             return;
         }
 
-        $message = "The \"$validationMethod\" validation method cannot have more than \":\".";
+        $message = "The \"$validationMethod\" validation method cannot have more than one \":\".";
 
         throw new ValidationMethodSyntaxException(
             $message, 
@@ -24,9 +24,9 @@ class ValidationMethodsHandler
         );
     }
     
-	public function removeRepetitions(string|array $validationMethods): array
+	public function removeDuplicateMethods(string|array $validationMethods): array
 	{
-        $uniqueValidationMethods = [];
+        $noRepetitions = [];
         
         if (is_string($validationMethods)) {
             $validationMethods = explode('|', $validationMethods);
@@ -36,9 +36,9 @@ class ValidationMethodsHandler
         
             $validationMethodName = explode(':', $validationMethod)[0];
 
-            $uniqueValidationMethods[$validationMethodName] = $validationMethod;
+            $noRepetitions[$validationMethodName] = $validationMethod;
         }
 
-        return array_values($uniqueValidationMethods);
+        return array_values($noRepetitions);
 	}
 }
