@@ -12,7 +12,7 @@ class ValidationMethodsHandler
 	{        
         $colonCount = substr_count($validationMethod, ':');
 
-        if ($colonCount === 1) {
+        if ($colonCount === 0 || $colonCount === 1) {
             return;
         }
 
