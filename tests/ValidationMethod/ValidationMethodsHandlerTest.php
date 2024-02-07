@@ -17,27 +17,47 @@ class ValidationMethodsHandlerTest extends TestCase
         $this->validationMethodsHandler = new ValidationMethodsHandler();
     }
 
-    public function testHandleMethodThrowsExceptionWhenAKeyValueValidationMethodHasMoreThanOneColon(): void
+    public function testCheckMethodColonThrowsExceptionForMethodsWithMoreThanOneColon(): void
     {
-        $validationMethods = 'required|trim|string|min::3';
-
+        $validationMethod = 'min::3';
+    
         $this->expectException(ValidationMethodSyntaxException::class);
-        $this->expectExceptionMessage("The \"min::3\" validation method cannot have more than \":\".");
+        $this->expectExceptionMessage(
+            "Invalid validation method sintax. The \"min::3\" validation method cannot have more than one \":\"."
+        );
 
-        $this->validationMethodsHandler->handle($validationMethods);
+        $this->validationMethodsHandler->checkMethodColon($validationMethod);
     }
 
-    public function testHandleMethodRemovesRepeatedValidationMethods(): void
+    public function testCheckMethodColonReturnsNullForCommonTypeValidationMethod(): void
     {
-        $validationMethodsWithRepetitions = 'required|min:4|trim|trim|string|string|min:3';
+        $validationMethod = 'string';
 
-        $validationMethodsWithoutRepetitions = $this->validationMethodsHandler->handle(
-            $validationMethodsWithRepetitions
+        $this->assertNull(
+            $this->validationMethodsHandler->checkMethodColon($validationMethod)
+        );
+    }
+
+    public function testCheckMethodColonReturnsNullForValidationMethodOfTypeKeyValue(): void
+    {
+        $validationMethod = 'min:2';
+
+        $this->assertNull(
+            $this->validationMethodsHandler->checkMethodColon($validationMethod)
+        );
+    }
+
+    public function testRemoveDuplicateMethodsRemovesDuplicateMethods(): void
+    {
+        $duplicateNethods = 'required|min:4|trim|trim|string|string|min:3';
+
+        $noDuplications = $this->validationMethodsHandler->removeDuplicateMethods(
+            $duplicateNethods
         );
 
         $this->assertSame(
             ['required','min:3','trim','string'],
-            $validationMethodsWithoutRepetitions
+            $noDuplications
         );
     }
 }

@@ -34,7 +34,7 @@ class ValidationMethodExecutorTest extends TestCase
         $this->validationMethodInstantiator = $this->createMock(ValidationMethodInstantiator::class);
 
         $this->validationMethodsHandler
-            ->method('handle')
+            ->method('removeDuplicateMethods')
             ->willReturn(['required', 'string']);
 
         $this->requestBodyHadler
@@ -59,11 +59,20 @@ class ValidationMethodExecutorTest extends TestCase
         );
     }
 
-    public function testValidationMethodsHandlerHandleMethodCalledInTheCorrectAmount(): void
+    public function testRemoveDuplicateMethodsCalledInTheCorrectAmount(): void
     {
         $this->validationMethodsHandler
             ->expects($this->exactly(1))
-            ->method('handle');
+            ->method('removeDuplicateMethods');
+        
+        $this->validationMethodExecutor->performFields();
+    }
+
+    public function testCheckMethodColonCalledInTheCorrectAmount(): void
+    {
+        $this->validationMethodsHandler
+            ->expects($this->exactly(2))
+            ->method('checkMethodColon');
         
         $this->validationMethodExecutor->performFields();
     }
