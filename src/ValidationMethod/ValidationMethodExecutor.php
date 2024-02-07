@@ -19,7 +19,7 @@ class ValidationMethodExecutor
 	{
 		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
             
-            $validationMethods = $this->handler->handle($validationMethods);
+            $validationMethods = $this->handler->removeDuplicateMethods($validationMethods);
         
             $this->executeMethods($fieldToValidate, $validationMethods);
         }
@@ -30,7 +30,9 @@ class ValidationMethodExecutor
     private function executeMethods(string $fieldToValidate, array $validationMethods): void
     {
         foreach ($validationMethods as $validationMethod) {
-    
+            
+            $this->handler->checkMethodColon($validationMethod);
+
             $validationMethodInstance = $this->instantiator->getInstance(
                 $fieldToValidate, $validationMethod
             );
