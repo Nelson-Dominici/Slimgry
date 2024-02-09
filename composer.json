@@ -1,6 +1,6 @@
 {
     "name": "nelson-dominici/slimgry",
-    "description": "Slim Framework high-level validation library",
+    "description": "A powerful validation middleware for the slim framework",
     "type": "library",
     "require-dev": {
         "slim/slim": "^4.12",
