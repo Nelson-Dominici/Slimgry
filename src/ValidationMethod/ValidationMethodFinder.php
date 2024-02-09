@@ -8,17 +8,33 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodFinder
 {
+    private function buildMethodPath(string $validationMethodName, bool $useAcronym): string
+    {
+        $namespace = __NAMESPACE__;
+        $methodDirectory = 'Methods';
+        $methodName = $useAcronym ? ucfirst($validationMethodName) : strtoupper($validationMethodName);
+
+        return "$namespace\\$methodDirectory\\{$methodName}Method";
+    }
+
     public function find(string $validationMethodName): string
     {
-        $validationMethodPath = __NAMESPACE__.'\Methods\\'.ucfirst($validationMethodName)."Method";
-        
-        if (!class_exists($validationMethodPath) || $validationMethodName === 'validation') {
+        $methodPath = $this->buildMethodPath($validationMethodName, false);
 
-            $message = "Validation method \"$validationMethodName\" does not exist.";
+        if (class_exists($methodPath) && $validationMethodName !== 'validation') {
+            return $methodPath;
+        }
 
-            throw new ValidationMethodSyntaxException($message, $validationMethodName, 404);
-        } 
+        $methodPath = $this->buildMethodPath($validationMethodName, true);
 
-        return $validationMethodPath;
+        if (class_exists($methodPath) && $validationMethodName !== 'validation') {
+            return $methodPath;
+        }
+
+        $message = "Validation method \"$validationMethodName\" does not exist.";
+
+        throw new ValidationMethodSyntaxException(
+            $message, $validationMethodName, 404
+        );        
     }
 }
