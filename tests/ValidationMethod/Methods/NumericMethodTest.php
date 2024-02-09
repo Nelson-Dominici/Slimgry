@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace tests\ValidationMethod\Methods;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use NelsonDominici\Slimgry\ValidationMethod\Methods\NumericMethod;
 use NelsonDominici\Slimgry\Exceptions\ValidationMethodException;
 
-class NumericTest extends TestCase
+class NumericMethodTest extends TestCase
 {    
     private NumericMethod $numericMethod;
     
