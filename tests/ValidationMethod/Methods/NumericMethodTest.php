@@ -35,8 +35,15 @@ class NumericMethodTest extends TestCase
 
         $this->numericMethod->execute($requestBody);
     }
+    
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidNumeric(): void
+    {
+        $this->assertNull(
+            $this->numericMethod->execute(['number' => 1])
+        );
+    }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
+    public function testExecuteReturnsnullWhenTheRequestBodyFieldDoesNotExist(): void
     {
         $this->assertNull(
             $this->numericMethod->execute(['thisFieldDoesNotExist' => 'nelsoncomer777@gmail.com'])

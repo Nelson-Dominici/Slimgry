@@ -24,6 +24,13 @@ class StringMethodTest extends TestCase
             $customExceptionMessage
         );
     }
+    
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidString(): void
+    {
+        $this->assertNull(
+            $this->stringMethod->execute(['name' => 'Nelson Dominici'])
+        );
+    }
 
     public function testExecuteMethodReturnsNullIfFieldToValidateDoesNotExist(): void
     {

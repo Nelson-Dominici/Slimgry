@@ -32,6 +32,13 @@ class EmailMethodTest extends TestCase
             $this->emailMethod->execute(['thisFieldDoesNotExist' => 'nelsoncomer777@gmail.com'])
         );
     }
+    
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidEmail(): void
+    {
+        $this->assertNull(
+            $this->emailMethod->execute(['email' => 'nelsoncomer777@gmail.com'])
+        );
+    }
 
     public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidEmail(): void
     {

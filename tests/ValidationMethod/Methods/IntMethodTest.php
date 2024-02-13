@@ -33,6 +33,13 @@ class IntMethodTest extends TestCase
             $this->intMethod->execute($requestBody)
         );
     }
+    
+    public function testExecuteReturnsnullIfRequestBodyFieldIsAValidInt(): void
+    {
+        $this->assertNull(
+            $this->intMethod->execute(['number' => 1])
+        );
+    }
 
     public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidEmail(): void
     {
