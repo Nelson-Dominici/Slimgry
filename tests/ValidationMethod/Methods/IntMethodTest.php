@@ -34,7 +34,7 @@ class IntMethodTest extends TestCase
         );
     }
     
-    public function testExecuteReturnsnullIfRequestBodyFieldIsAValidInt(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidInt(): void
     {
         $this->assertNull(
             $this->intMethod->execute(['number' => 1])
