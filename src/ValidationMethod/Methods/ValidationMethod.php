@@ -15,13 +15,13 @@ abstract class ValidationMethod
         private string $customExceptionMessage
     ) {}
 
-    protected function getNumericValue(): int
+    protected function getNumericValue(): int|float
     {
         $validationMethodName = $this->validationParts[0];
-    
+        
         if (
             !array_key_exists(1, $this->validationParts) || 
-            !ctype_digit($this->validationParts[1])
+            !is_numeric($this->validationParts[1])
         ) {
             $validationMethod = $validationMethodName.':'.$this->validationParts[1];
 
@@ -33,7 +33,7 @@ abstract class ValidationMethod
             );
         }
         
-        $numericMethodValue = intval($this->validationParts[1]);
+        $numericMethodValue = $this->validationParts[1]+0;
         
         return $numericMethodValue;
     }
