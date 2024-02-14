@@ -19,7 +19,7 @@ class ValidationMethodInstantiator
     
         $customExceptionMessage = $this->messageProvider->getCustomMessage(
             $fieldToValidate,
-            $validationMethod
+            $validationMethodName
         );
         
         $validationMethodPath = $this->methodFinder->find($validationMethodName);
