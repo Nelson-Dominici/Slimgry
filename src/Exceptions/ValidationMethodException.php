@@ -13,7 +13,7 @@ class ValidationMethodException extends \InvalidArgumentException
         parent::__construct($message, 422);
     }
 
-    function getValidationMethod()
+    function getValidationMethod(): string
     {
         return $this->validationMethod;
     }
