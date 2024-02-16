@@ -8,13 +8,18 @@ use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 class ValidationMethodFinder
 {
-    private function buildMethodPath(string $validationMethodName, bool $useAcronym): string
+    private function buildMethodPath(string $methodName, bool $useAcronym): string
     {
         $namespace = __NAMESPACE__;
-        $methodDirectory = 'Methods';
-        $methodName = $useAcronym ? ucfirst($validationMethodName) : strtoupper($validationMethodName);
 
-        return "$namespace\\$methodDirectory\\{$methodName}Method";
+        $methodsFolder = 'Methods';
+        
+        if ($useAcronym) {
+
+            return "$namespace\\$methodsFolder\\".ucfirst($methodName).'Method';
+        }
+
+        return "$namespace\\$methodsFolder\\".strtoupper($methodName).'Method';
     }
 
     public function find(string $validationMethodName): string
