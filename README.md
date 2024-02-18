@@ -6,5 +6,4 @@
 </div>
 
 <h2>🎲 Introduction</h2>
-
-Slimgry is a validation middleware for the <a href='https://www.slimframework.com/'>Slim framework</a>, with a validation syntax similar to <a href='https://laravel.com/docs/10.x/validation'>Laravel</a>.
+Slimgry is a validation middleware for the <a href='https://www.slimframework.com/'>Slim framework</a>, which validates the request body, with validation syntax similar to <a href='https://laravel.com/docs/10.x/validation'>Laravel</a>.
