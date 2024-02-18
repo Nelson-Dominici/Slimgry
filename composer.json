@@ -7,6 +7,7 @@
         "slim/psr7": "^1.6",
         "phpunit/phpunit": "^10.5"
     },
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "slim/slim": "^4.0"
