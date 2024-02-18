@@ -3,7 +3,6 @@
     "description": "A powerful validation middleware for the slim framework",
     "type": "library",
     "require-dev": {
-        "slim/slim": "^4.12",
         "slim/psr7": "^1.6",
         "phpunit/phpunit": "^10.5"
     },
