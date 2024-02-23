@@ -32,16 +32,43 @@ class RequestBodyHadler
             return;
         }
 
-        $this->validatedBody = array_merge($this->validatedBody, $newValidatedField);
+        $this->validatedBody = array_merge(
+            $this->validatedBody, 
+            $newValidatedField
+        );
+    }
+
+    public function getBodyField(array $fieldToValidateParts): ?array
+    {
+        $bodyField = $this->requestBody;
+
+        $fieldToValidate = end($fieldToValidateParts);
+    
+        foreach ($fieldToValidateParts as $field) {
+
+            if (!array_key_exists($field, $bodyField)) {
+                return [];
+            }
+    
+            $bodyField = $bodyField[$field];
+    
+            if ($field === $fieldToValidate) {
+
+                unset($this->requestBody[$fieldToValidateParts[0]]);
+                
+                return [$field => $bodyField];
+            }
+    
+            if (!is_array($bodyField)) {
+                return [];
+            }
+        }
+    
+        return [];
     }
 
     public function getValidatedBody(): array
     {
         return $this->validatedBody;
-    }
-
-    public function getRequestBody(): array
-    {
-        return $this->requestBody;
     }
 }
