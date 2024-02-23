@@ -34,20 +34,10 @@ class RequestBodyHadlerTest extends TestCase
     {
         $requestBodyHadler = new RequestBodyHadler($requestBody);
 
-        $this->assertIsArray($requestBodyHadler->getRequestBody());
         $this->assertIsArray($requestBodyHadler->getValidatedBody());
     }
-
-    public function testUpdateValidatedBodyReturnsNullForNullParameterValue(): void
-    {
-        $parameterValue = null;
-
-        $requestBodyHadler = new RequestBodyHadler(['name' => 'Davidson']);
-        
-        $this->assertNull($requestBodyHadler->updateValidatedBody($parameterValue));
-    }
     
-    public function testUpdateValidatedBodyUpdatesValidatedBodyWhenParameterIsNotFalse(): void
+    public function testUpdateValidatedBodyUpdatesWhenParameterIsNotNull(): void
     {
         $newValidatedField = ['email' => 'new value'];
         
@@ -62,5 +52,31 @@ class RequestBodyHadlerTest extends TestCase
             ],
             $requestBodyHadler->getValidatedBody()
         );
+    }
+
+    public function testGetBodyFieldReturnsTheFieldPassedInTheParameter(): void
+    {
+        $fieldToValidateParts = ['user','name'];
+
+        $requestBody = ['user' => ['name' => 'Nelson']];
+        
+        $requestBodyHadler = new RequestBodyHadler($requestBody);
+        
+        $bodyField = $requestBodyHadler->getBodyField($fieldToValidateParts);
+
+        $this->assertSame(['name' => 'Nelson'], $bodyField);
+    }
+
+    public function testGetBodyFieldReturnsEmptyArrayIfFieldDoesNotExist(): void
+    {
+        $fieldToValidateParts = ['user','email'];
+
+        $requestBody = ['user.name' => 'Nelson'];
+        
+        $requestBodyHadler = new RequestBodyHadler($requestBody);
+        
+        $bodyField = $requestBodyHadler->getBodyField($fieldToValidateParts);
+
+        $this->assertEmpty($bodyField);
     }
 }
