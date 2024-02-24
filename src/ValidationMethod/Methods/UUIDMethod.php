@@ -6,15 +6,17 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class UUIDMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
-        if (!array_key_exists($this->fieldToValidate, $requestBody)) {
+        if ($requestBodyField === []) {
             return null;
         }
 
-        $bodyUuid = $requestBody[$this->fieldToValidate];
+        $fieldToValidate = end($fieldToValidateParts);
 
-        $exceptionMessage = "The {$this->fieldToValidate} field is not a valid uuid.";
+        $bodyUuid = $requestBodyField[$fieldToValidate];
+
+        $exceptionMessage = 'The '.$fieldToValidate.' field must be a valid uuid.';
 
         $pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 

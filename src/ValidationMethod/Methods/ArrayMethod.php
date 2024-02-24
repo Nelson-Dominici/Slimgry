@@ -6,15 +6,17 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class ArrayMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
-        if (!array_key_exists($this->fieldToValidate, $requestBody)) {
+        if ($requestBodyField === []) {
             return null;
         }
 
-        $bodyFieldValue = $requestBody[$this->fieldToValidate];
+        $fieldToValidate = end($fieldToValidateParts);
 
-        $exceptionMessage = "The {$this->fieldToValidate} field is not a valid array.";
+        $bodyFieldValue = $requestBodyField[$fieldToValidate];
+
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be a valid array.';
 
         $expression = !is_array($bodyFieldValue);
 
