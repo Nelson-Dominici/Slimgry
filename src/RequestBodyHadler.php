@@ -53,8 +53,6 @@ class RequestBodyHadler
             $bodyField = $bodyField[$field];
     
             if ($field === $fieldToValidate) {
-
-                unset($this->requestBody[$fieldToValidateParts[0]]);
                 
                 return [$field => $bodyField];
             }
