@@ -14,32 +14,52 @@ class BooleanMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'adm';
         $validationParts = ['boolean'];
         $customExceptionMessage = '';
 
         $this->booleanMethod = new BooleanMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['adm'];
+
         $this->assertNull(
-            $this->booleanMethod->execute(['thisFieldIsNotExpected' => true])
+            $this->booleanMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidBoolean(): void
+    {
+        $requestBodyField = ['adm' => true];
+
+        $fieldToValidateParts = ['users','nelson','adm'];
+
+        $this->assertNull(
+            $this->booleanMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
     public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotAValidBoolean(): void
     {
-        $requestBody = ['adm' => 'true'];
+        $requestBodyField = ['adm' => 'true'];
+
+        $fieldToValidateParts = ['users','nelson','adm'];
 
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The adm field is not a valid boolean.');
+        $this->expectExceptionMessage('The users.nelson.adm field must be a valid boolean.');
         $this->expectExceptionCode(422);
 
-        $this->booleanMethod->execute($requestBody);
+        $this->booleanMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

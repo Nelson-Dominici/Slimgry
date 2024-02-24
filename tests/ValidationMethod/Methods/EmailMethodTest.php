@@ -15,39 +15,50 @@ class EmailMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'email';
         $validationParts = ['email'];
         $customExceptionMessage = '';
 
         $this->emailMethod = new EmailMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['adm'];
+
         $this->assertNull(
-            $this->emailMethod->execute(['thisFieldDoesNotExist' => 'nelsoncomer777@gmail.com'])
+            $this->emailMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidEmail(): void
     {
+        $requestBodyField = ['email' => 'nelsoncomer777@gmail.com'];
+        $fieldToValidateParts = ['email'];
+        
         $this->assertNull(
-            $this->emailMethod->execute(['email' => 'nelsoncomer777@gmail.com'])
+            $this->emailMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidEmail(): void
+    public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotAValidEmail(): void
     {
-        $requestBody = ['email' => 'This is an invalid email'];
+        $requestBodyField = ['email' => 'lol'];
+        $fieldToValidateParts = ['email'];
 
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The email field is not a valid email.');
+        $this->expectExceptionMessage('The email field must be a valid email.');
         $this->expectExceptionCode(422);
 
-        $this->emailMethod->execute($requestBody);
+        $this->emailMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

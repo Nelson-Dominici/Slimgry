@@ -14,39 +14,50 @@ class NumericMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'number';
         $validationParts = ['numeric'];
         $customExceptionMessage = '';
 
         $this->numericMethod = new NumericMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotNumeric(): void
+    public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotNumeric(): void
     {
-        $requestBody = ['number' => 'This is not a numerical value'];
+        $requestBodyField = ['number' => null];
+        $fieldToValidateParts = ['number'];
 
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The number field does not have a numeric value.');
+        $this->expectExceptionMessage('The number field must have a numeric value.');
         $this->expectExceptionCode(422);
 
-        $this->numericMethod->execute($requestBody);
+        $this->numericMethod->execute($requestBodyField, $fieldToValidateParts);
     }
-    
-    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidNumeric(): void
+
+    public function testExecuteReturnsNullIfRequestBodyFieldIsNumeric(): void
     {
+        $requestBodyField = ['number' => '10'];
+        $fieldToValidateParts = ['number'];
+
         $this->assertNull(
-            $this->numericMethod->execute(['number' => 1])
+            $this->numericMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['number'];
+
         $this->assertNull(
-            $this->numericMethod->execute(['thisFieldDoesNotExist' => 'nelsoncomer777@gmail.com'])
+            $this->numericMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 }

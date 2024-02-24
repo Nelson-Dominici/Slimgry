@@ -15,35 +15,89 @@ class SizeMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['size', '4'];
         $customExceptionMessage = '';
 
         $this->sizeMethod = new SizeMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteThrowsExceptionWhenRequestBodyFieldDoesNotHaveTheSpecifiedSize(): void
+    public function testExecuteThrowsExceptionForMismatchedRequestBodyField(): void
     {
-        $requestBody = ['name' => '12345'];
+        $requestBodyField = ['name' => ['Nelson', 'Dominici']];
+        $fieldToValidateParts = ['name'];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field must be 4 characters.');
         $this->expectExceptionCode(422);
 
-        $this->sizeMethod->execute($requestBody);
+        $this->sizeMethod->execute($requestBodyField, $fieldToValidateParts);
     }
     
-    #[DataProvider('requestBodyFieldsThatCannotBeValidated')]
-    public function testExecuteReturnsNullWhenFieldCannotBeValidatedInRequestBody(array $requestBody): void
+    #[DataProvider('fieldsWithTheRightSize')]
+    public function testExecuteReturnsNullForMatchingRequestBodyField(array $bodyField): void
     {
-        $this->assertNull($this->sizeMethod->execute($requestBody));
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->sizeMethod->execute(
+                $bodyField,
+                $fieldToValidateParts
+            )
+        );
     }
     
-    public static function requestBodyFieldsThatCannotBeValidated(): array
+    public static function fieldsWithTheRightSize(): array
+    {
+        return [
+            [['name' => ['Nelson','Dominici','Gonçalves','Neto']]],
+            [['name' => 1234]],
+            [['name' => '1234']],
+        ];
+    }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldIsTrue(): void
+    {
+        $requestBodyField = ['name' => true];
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->sizeMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
+    {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->sizeMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+    
+    #[DataProvider('falsyBodyFields')]
+    public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
+    {
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->sizeMethod->execute(
+                $bodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+    
+    public static function falsyBodyFields(): array
     {
         return [
             [['name' => false]],
@@ -51,8 +105,6 @@ class SizeMethodTest extends TestCase
             [['name' => 0]],
             [['name' => ""]],
             [['name' => null]],
-            [['name' => true]],
-            [['thisFieldDoesNotExist' => 'Nelson']],
         ];
     }
 }
