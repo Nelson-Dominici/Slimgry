@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
-use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 use NelsonDominici\Slimgry\Exceptions\ValidationMethodException;
+use NelsonDominici\Slimgry\Exceptions\ValidationMethodSyntaxException;
 
 abstract class ValidationMethod
 {    
     public function __construct(
-        protected string $fieldToValidate,
         protected array $validationParts,
         private string $customExceptionMessage
     ) {}
@@ -56,5 +55,5 @@ abstract class ValidationMethod
         throw new ValidationMethodException($exceptionMessage, $this->validationParts[0]);
     }
     
-    abstract protected function execute(array $requestBody): ?array;
+    abstract protected function execute(array $requestBodyField, array $fieldToValidateParts): ?array;
 }
