@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry;
 
-class RequestBodyHadler
+class RequestBodyHandler
 {
     private array $requestBody; 
     private array $validatedBody;
@@ -26,15 +26,23 @@ class RequestBodyHadler
         return (array) $requestBody ?? [];
     }
     
-    public function updateValidatedBody(?array $newValidatedField): void
+    public function updateValidatedBody(?array $newFieldValue, array $fieldToValidateParts): void
     {
-        if (!$newValidatedField) {
+        if (!$newFieldValue) {
             return;
-        }
-
+        } 
+        
+        $validatedField = array_reduce(array_reverse($fieldToValidateParts), function ($carry, $field) use ($newFieldValue) {
+            if ($carry === null) {
+                return [$field => $newFieldValue[0]];
+            }
+        
+            return [$field => $carry];
+        }, null);
+        
         $this->validatedBody = array_merge(
             $this->validatedBody, 
-            $newValidatedField
+            $validatedField
         );
     }
 

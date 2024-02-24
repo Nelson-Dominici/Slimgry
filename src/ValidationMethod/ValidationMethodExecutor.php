@@ -4,44 +4,54 @@ declare(strict_types=1);
 
 namespace NelsonDominici\Slimgry\ValidationMethod;
 
-use NelsonDominici\Slimgry\RequestBodyHadler;
+use NelsonDominici\Slimgry\RequestBodyHandler;
 
 class ValidationMethodExecutor
 {
     public function __construct(
         private array $bodyValidations,
         private ValidationMethodsHandler $handler,
-        private RequestBodyHadler $requestBodyHandler,
+        private RequestBodyHandler $requestBodyHandler,
         private ValidationMethodInstantiator $instantiator
     ) {}
     
-	 public function performFields(): array
+	public function performFields(): array
 	{
-		foreach ($this->bodyValidations as $fieldToValidate => $validationMethods) {
+		foreach ($this->bodyValidations as $field => $validationMethods) {
             
-            $validationMethods = $this->handler->removeDuplicateMethods($validationMethods);
+            $validationMethods = $this->handler->removeDuplicateMethods(
+                $validationMethods
+            );
         
-            $this->executeMethods($fieldToValidate, $validationMethods);
+            $this->executeMethods(explode('.', $field),$validationMethods);
         }
         
         return $this->requestBodyHandler->getValidatedBody();
 	}
 
-    private function executeMethods(string $fieldToValidate, array $validationMethods): void
+    private function executeMethods(array $fieldToValidateParts, array $validationMethods): void
     {
+        $requestBodyField = $this->requestBodyHandler->getBodyField(
+            $fieldToValidateParts
+        );
+
         foreach ($validationMethods as $validationMethod) {
             
             $this->handler->checkMethodColon($validationMethod);
 
-            $validationMethodInstance = $this->instantiator->getInstance(
-                $fieldToValidate, $validationMethod
+            $methodInstance = $this->instantiator->getInstance(
+                $fieldToValidateParts, $validationMethod
             );
 
-            $newValidatedField = $validationMethodInstance->execute(
-                $this->requestBodyHandler->getRequestBody(), 
+            $newFieldValue = $methodInstance->execute(
+                $requestBodyField,
+                $fieldToValidateParts
             );
 
-            $this->requestBodyHandler->updateValidatedBody($newValidatedField);
+            $this->requestBodyHandler->updateValidatedBody(
+                $newFieldValue,
+                $fieldToValidateParts
+            );
         }
     }
 }

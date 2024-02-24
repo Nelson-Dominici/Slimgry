@@ -33,7 +33,7 @@ final class Slimgry
             new CustomExceptionMessageProvider($this->customExceptionMessages)
         );
 
-        $requestBodyHandler = new RequestBodyHadler($request->getParsedBody());
+        $requestBodyHandler = new RequestBodyHandler($request->getParsedBody());
         
         $validationMethodsHandler = new ValidationMethodsHandler();     
 
