@@ -20,8 +20,7 @@ class ValidationMethodTest extends TestCase
         $this->validationMethodMock = $this
             ->getMockBuilder(ValidationMethod::class)
             ->setConstructorArgs([
-                'name', 
-                ['max','test'], 
+                ['max','invalidValue'], 
                 'This is a custom exception message.'
             ])
             ->getMockForAbstractClass();
@@ -33,7 +32,7 @@ class ValidationMethodTest extends TestCase
         );
     } 
 
-    public function testThrowsExceptionForNonNumericKeyValueValidationMethodValue(): void
+    public function testThrowsExceptionForNonNumericValidationMethodValue(): void
     {
         $getNumericValueMethod = $this->validationMethodReflection->getMethod(
             'getNumericValue'
@@ -44,7 +43,7 @@ class ValidationMethodTest extends TestCase
         $this->expectException(ValidationMethodSyntaxException::class);
     
         $this->expectExceptionMessage(
-            "The validation method \"max:test\" does not have a numeric value."
+            "The validation method \"max:invalidValue\" does not have a numeric value."
         );
     
         $this->expectExceptionCode(500);

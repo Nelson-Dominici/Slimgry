@@ -6,15 +6,17 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class IntMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
-        if (!array_key_exists($this->fieldToValidate, $requestBody)) {
+        $fieldToValidate = end($fieldToValidateParts);
+      
+        if ($requestBodyField === []) {
             return null;
         }
 
-        $intValue = $requestBody[$this->fieldToValidate];
+        $intValue = $requestBodyField[$fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldToValidate} field does not have a integer value.";
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be a valid integer.';
 
         $expression = is_int($intValue) === false;
 
