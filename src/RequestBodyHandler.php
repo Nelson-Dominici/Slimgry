@@ -39,8 +39,8 @@ class RequestBodyHandler
         
             return [$field => $carry];
         }, null);
-        
-        $this->validatedBody = array_merge(
+
+        $this->validatedBody = array_replace_recursive(
             $this->validatedBody, 
             $validatedField
         );
