@@ -14,53 +14,76 @@ class GteMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'money';
         $validationParts = ['gte', '1000'];
         $customExceptionMessage = '';
 
         $this->gteMethod = new GteMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteReturnsNullIfTheRequestBodyFieldIsAboveTheMethodValue(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAboveTheMethodValue(): void
     {
+        $requestBodyField = ['money' => 5000];
+        $fieldToValidateParts = ['money'];
+
         $this->assertNull(
-            $this->gteMethod->execute(['number' => 5000])
+            $this->gteMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteReturnsNullIfTheRequestBodyFieldIsEqualsTheMethodValue(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsEqualsTheMethodValue(): void
     {
+        $requestBodyField = ['money' => 1000];
+        $fieldToValidateParts = ['money'];
+
         $this->assertNull(
-            $this->gteMethod->execute(['number' => 1000])
+            $this->gteMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['money'];
+
         $this->assertNull(
-            $this->gteMethod->execute(['thisFieldIsNotExpected' => '1000.1'])
+            $this->gteMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
     public function testExecuteReturnsnullIfTheRequestBodyFieldIsNotNumeric(): void
     {
+        $requestBodyField = ['money' => []];
+        $fieldToValidateParts = ['money'];
+
         $this->assertNull(
-            $this->gteMethod->execute(['money' => 'Nelson'])
+            $this->gteMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
     public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotAboveMethodValue(): void
     {
-        $requestBody = ['money' => '100'];
+        $requestBodyField = ['money' => '100'];
+        $fieldToValidateParts = ['money'];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The money field must be greater than or equal to 1000.');
         $this->expectExceptionCode(422);
 
-        $this->gteMethod->execute($requestBody);
+        $this->gteMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

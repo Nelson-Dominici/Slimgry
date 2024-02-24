@@ -15,49 +15,93 @@ class MaxMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['max', '10'];
         $customExceptionMessage = '';
 
         $this->maxMethod = new MaxMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteThrowsExceptionForRequestBodyFieldWithValueAboveMaximumSize(): void
+    public function testExecuteThrowsExceptionIfRequestBodyFieldIsAboveMaximumSize(): void
     {
-        $requestBody = ['name' => 12345678910];
+        $requestBodyField = ['name' => '123456791011'];
+        $fieldToValidateParts = ['name'];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field cannot be greater than 10.');
         $this->expectExceptionCode(422);
 
-        $this->maxMethod->execute($requestBody);
+        $this->maxMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 
-    public function testExecuteReturnsNullForTheRequestBodyFieldWithAValueEqualToTheMaximumSize(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsEqualsTheMethodValue(): void
     {
-        $requestBody = ['name' => ['0','1','2','3','4','5','6','7','8','9']];
+        $requestBodyField = ['name' => ['1','2','3','4','5','6','7','8','9','1']];
+        $fieldToValidateParts = ['name'];
 
-        $this->assertNull($this->maxMethod->execute($requestBody));
+        $this->assertNull(
+            $this->maxMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
     }
     
-    public function testExecuteReturnsNullForTheRequestBodyFieldWithAValueBelowTheMaximumSize(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsBelowTheMaximumSize(): void
     {
-        $requestBody = ['name' => '123456789'];
+        $requestBodyField = ['name' => 123456789];
+        $fieldToValidateParts = ['name'];
 
-        $this->assertNull($this->maxMethod->execute($requestBody));
+        $this->assertNull(
+            $this->maxMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
     }
 
-    #[DataProvider('requestBodyFieldsThatCannotBeValidated')]
-    public function testExecuteReturnsNullWhenFieldCannotBeValidatedInRequestBody(array $requestBody): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
-        $this->assertNull($this->maxMethod->execute($requestBody));
+        $requestBodyField = [];
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->maxMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldIsTrue(): void
+    {
+        $requestBodyField = ['name' => true];
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->maxMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+
+    #[DataProvider('falsyBodyFields')]
+    public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
+    {
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->maxMethod->execute(
+                $bodyField,
+                $fieldToValidateParts
+            )
+        );
     }
     
-    public static function requestBodyFieldsThatCannotBeValidated(): array
+    public static function falsyBodyFields(): array
     {
         return [
             [['name' => false]],
@@ -65,8 +109,6 @@ class MaxMethodTest extends TestCase
             [['name' => 0]],
             [['name' => ""]],
             [['name' => null]],
-            [['name' => true]],
-            [['nameFieldDoesNotExist' => 'Nelson']],
         ];
     }
 }
