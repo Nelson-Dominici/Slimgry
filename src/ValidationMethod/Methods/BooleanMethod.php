@@ -6,15 +6,17 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class BooleanMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
-        if (!array_key_exists($this->fieldToValidate, $requestBody)) {
+        if ($requestBodyField === []) {
             return null;
         }
 
-        $bodyFieldValue = $requestBody[$this->fieldToValidate];
+        $fieldToValidate = end($fieldToValidateParts);
 
-        $exceptionMessage = "The {$this->fieldToValidate} field is not a valid boolean.";
+        $bodyFieldValue = $requestBodyField[$fieldToValidate];
+
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be a valid boolean.';
 
         $expression = !is_bool($bodyFieldValue);
 

@@ -6,20 +6,22 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class SizeMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
+        $fieldToValidate = end($fieldToValidateParts);
+
         if (
-            !array_key_exists($this->fieldToValidate, $requestBody) ||
-            !$requestBody[$this->fieldToValidate] || 
-            $requestBody[$this->fieldToValidate] === true
+            $requestBodyField === [] ||
+            !$requestBodyField[$fieldToValidate] || 
+            $requestBodyField[$fieldToValidate] === true
         ) {
             return null;
         }
 
         $validationMethodValue = $this->getNumericValue();
-        $bodyFieldValue = $requestBody[$this->fieldToValidate];
+        $bodyFieldValue = $requestBodyField[$fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldToValidate} field must be {$validationMethodValue} characters.";
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be '.$validationMethodValue.' characters.';
 
         $expression = false;
 
