@@ -6,7 +6,7 @@ namespace tests\ValidationMethod;
 
 use PHPUnit\Framework\TestCase;
 
-use NelsonDominici\Slimgry\RequestBodyHadler;
+use NelsonDominici\Slimgry\RequestBodyHandler;
 
 use NelsonDominici\Slimgry\ValidationMethod\{
     ValidationMethodExecutor,
@@ -18,7 +18,7 @@ use NelsonDominici\Slimgry\ValidationMethod\Methods\RequiredMethod;
 
 class ValidationMethodExecutorTest extends TestCase
 {
-    private RequestBodyHadler $requestBodyHadler;
+    private RequestBodyHandler $requestBodyHandler;
     private ValidationMethodsHandler $validationMethodsHandler;
     private ValidationMethodExecutor $validationMethodExecutor;
     private ValidationMethodInstantiator $validationMethodInstantiator;
@@ -29,7 +29,7 @@ class ValidationMethodExecutorTest extends TestCase
             'name' => 'required|string',
         ];
 
-        $this->requestBodyHadler = $this->createMock(RequestBodyHadler::class);
+        $this->requestBodyHandler = $this->createMock(RequestBodyHandler::class);
         $this->validationMethodsHandler = $this->createMock(ValidationMethodsHandler::class);
         $this->validationMethodInstantiator = $this->createMock(ValidationMethodInstantiator::class);
 
@@ -37,12 +37,12 @@ class ValidationMethodExecutorTest extends TestCase
             ->method('removeDuplicateMethods')
             ->willReturn(['required', 'string']);
 
-        $this->requestBodyHadler
+        $this->requestBodyHandler
             ->method('getValidatedBody')
             ->willReturn(['name' => 'Nelson']);
 
-        $this->requestBodyHadler
-            ->method('getRequestBody')
+        $this->requestBodyHandler
+            ->method('getBodyField')
             ->willReturn(['name' => 'Nelson']);
 
         $this->validationMethodInstantiator
@@ -54,7 +54,7 @@ class ValidationMethodExecutorTest extends TestCase
         $this->validationMethodExecutor = new ValidationMethodExecutor(
             $bodyValidations,
             $this->validationMethodsHandler,
-            $this->requestBodyHadler,
+            $this->requestBodyHandler,
             $this->validationMethodInstantiator
         );
     }
@@ -77,20 +77,20 @@ class ValidationMethodExecutorTest extends TestCase
         $this->validationMethodExecutor->performFields();
     }
 
-    public function testRequestBodyHadlerGetValidatedBodyMethodCalledInTheCorrectAmount(): void
+    public function testRequestBodyHandlerGetValidatedBodyMethodCalledInTheCorrectAmount(): void
     {
-        $this->requestBodyHadler
+        $this->requestBodyHandler
             ->expects($this->exactly(1))
             ->method('getValidatedBody');
     
         $this->validationMethodExecutor->performFields();
     }
 
-    public function testRequestBodyHadlerGetRequestBodyMethodCalledInTheCorrectAmount(): void
+    public function testRequestBodyHandlerGetBodyFieldMethodCalledInTheCorrectAmount(): void
     {
-        $this->requestBodyHadler
-            ->expects($this->exactly(2))
-            ->method('getRequestBody');
+        $this->requestBodyHandler
+            ->expects($this->exactly(1))
+            ->method('getBodyField');
     
         $this->validationMethodExecutor->performFields();
     }
