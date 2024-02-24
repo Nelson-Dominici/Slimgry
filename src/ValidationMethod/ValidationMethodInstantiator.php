@@ -11,21 +11,20 @@ class ValidationMethodInstantiator
         private CustomExceptionMessageProvider $messageProvider
     ){}
 
-    public function getInstance(string $fieldToValidate, string $validationMethod): Methods\ValidationMethod 
+    public function getInstance(array $fieldToValidateParts, string $validationMethod): Methods\ValidationMethod 
     {
         $validationMethodParts = explode(':', $validationMethod);
     
-        $validationMethodName = $validationMethodParts[0];
+        $validationMethodKey = $validationMethodParts[0];
     
-        $customExceptionMessage = $this->messageProvider->getCustomMessage(
-            $fieldToValidate,
-            $validationMethodName
+        $customExceptionMessage = $this->messageProvider->getMessage(
+            $fieldToValidateParts,
+            $validationMethodKey
         );
         
-        $validationMethodPath = $this->methodFinder->find($validationMethodName);
+        $validationMethodPath = $this->methodFinder->find($validationMethodKey);
 
         return new $validationMethodPath(
-            $fieldToValidate,
             $validationMethodParts, 
             $customExceptionMessage
         );    

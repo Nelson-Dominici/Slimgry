@@ -10,9 +10,9 @@ class CustomExceptionMessageProvider
         private array $customExceptionMessages
     ) {}
     
-    public function getCustomMessage(string $fieldToValidate, string $validationMethodName): string 
+    public function getMessage(array $fieldToValidateParts, string $validationMethodKey): string 
     {
-        $customExceptionMessageField = $fieldToValidate.'.'.$validationMethodName;
+        $customExceptionMessageField = join('.', $fieldToValidateParts).'.'.$validationMethodKey;
 
         return $this->customExceptionMessages[$customExceptionMessageField] ?? '';
     }
