@@ -15,25 +15,25 @@ class RequiredMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['required'];
         $customExceptionMessage = '';
 
         $this->requiredMethod = new RequiredMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
     #[DataProvider('fieldsConsideredEmpty')]
-    public function testThrowsExceptionForFieldToValidateThatAreConsideredEmpty(array $requestBody): void
+    public function testThrowsExceptionIfRequestBodyFieldIsEmpty(array $requestBody): void
     {
+        $fieldToValidateParts = ['name'];
+
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field is required.');
         $this->expectExceptionCode(422);
 
-        $this->requiredMethod->execute($requestBody);
+        $this->requiredMethod->execute($requestBody, $fieldToValidateParts);
     }
     
     public static function fieldsConsideredEmpty(): array
@@ -46,10 +46,16 @@ class RequiredMethodTest extends TestCase
         ];
     }
 
-    public function testReturnsNullWhenTheFieldToValidateIsNotOneOfTheFieldsConsideredEmpty(): void
+    public function testReturnsNullIfRequestBodyFieldIsNotEmpty(): void
     {
-        $requestBody = ['name' => 'Nelson'];
+        $requestBodyField = ['name' => ['Nelson']];
+        $fieldToValidateParts = ['name'];
 
-        $this->assertNull($this->requiredMethod->execute($requestBody));
+        $this->assertNull(
+            $this->requiredMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
     }
 }

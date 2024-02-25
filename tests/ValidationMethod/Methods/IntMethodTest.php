@@ -14,41 +14,50 @@ class IntMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'number';
         $validationParts = ['int'];
         $customExceptionMessage = '';
 
         $this->intMethod = new IntMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
-        $requestBody = ['thisFieldDoesNotExist' => 'nelsoncomer777@gmail.com'];
+        $requestBodyField = [];
+        $fieldToValidateParts = ['number'];
 
         $this->assertNull(
-            $this->intMethod->execute($requestBody)
+            $this->intMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidInt(): void
     {
+        $requestBodyField = ['number' => 10];
+        $fieldToValidateParts = ['number'];
+
         $this->assertNull(
-            $this->intMethod->execute(['number' => 1])
+            $this->intMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidEmail(): void
+    public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidInt(): void
     {
-        $requestBody = ['number' => 'This is not an integer value'];
+        $requestBodyField = ['money' => 10.1];
+        $fieldToValidateParts = ['money'];
 
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The number field does not have a integer value.');
+        $this->expectExceptionMessage('The money field must be a valid integer.');
         $this->expectExceptionCode(422);
 
-        $this->intMethod->execute($requestBody);
+        $this->intMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

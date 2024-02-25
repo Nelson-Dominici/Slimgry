@@ -14,55 +14,78 @@ class TrimMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['trim'];
         $customExceptionMessage = '';
 
         $this->trimMethod = new TrimMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
 
-    public static function requestBodyFieldsThatCannotBeValidated(): array
+    #[DataProvider('falsyBodyFields')]
+    public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
+    {
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->trimMethod->execute(
+                $bodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+    
+    public static function falsyBodyFields(): array
     {
         return [
             [['name' => false]],
-            [['name' => true]],
             [['name' => []]],
             [['name' => 0]],
             [['name' => ""]],
             [['name' => null]],
         ];
     }
-    
-    #[DataProvider('requestBodyFieldsThatCannotBeValidated')]
-    public function testReturnsNullWhenTheRequestBodyFieldHasAValueThatCannotBeValidated(array $requestBody): void
-    {
-        $this->assertNull($this->trimMethod->execute($requestBody));
-    }
 
-    public function testReturnsNullWhenTheRequestBodyFieldHasNotStringValue(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldHasNotStringValue(): void
     {
-        $this->assertNull($this->trimMethod->execute(['name' => 10]));
-    }
+        $requestBodyField = ['name' => 13];
+        $fieldToValidateParts = ['name'];
 
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldThatWillBeValidatedDoesNotExist(): void
-    {
         $this->assertNull(
-            $this->trimMethod->execute(['thisFieldDoesNotExist' => 'Nelson'])
+            $this->trimMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
+        );
+    }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
+    {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['name'];
+
+        $this->assertNull(
+            $this->trimMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
     public function testExecuteMethodReturnFieldValueWithoutBlanks(): void
     {
-        $requestBody = ['name' => ' Nelson Dominici '];
+        $requestBodyField = ['name' => ' Nelson Dominici '];
+        $fieldToValidateParts = ['name'];
 
-        $trimmedData = $this->trimMethod->execute($requestBody);
-    
-        $expectedData = ['name' => 'Nelson Dominici'];
-        
-        $this->assertSame($expectedData, $trimmedData);
+        $expectedData = ['Nelson Dominici'];
+
+        $this->assertSame(
+            $this->trimMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            ),
+            $expectedData
+        );
     }
 }

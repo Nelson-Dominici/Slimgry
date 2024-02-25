@@ -14,12 +14,10 @@ class StringMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['string'];
         $customExceptionMessage = '';
 
         $this->stringMethod = new StringMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
@@ -27,24 +25,39 @@ class StringMethodTest extends TestCase
     
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidString(): void
     {
+        $requestBodyField = ['name' => 'Nelson'];
+        $fieldToValidateParts = ['name'];
+
         $this->assertNull(
-            $this->stringMethod->execute(['name' => 'Nelson Dominici'])
+            $this->stringMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteMethodReturnsNullIfFieldToValidateDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $requestBodyField = [];
+        $fieldToValidateParts = ['name'];
+
         $this->assertNull(
-            $this->stringMethod->execute(['ThisFieldDoesNotExist' => 'Nelson'])
+            $this->stringMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
     public function testExecuteMethodThrowsExceptionIfFieldToValidateIsNotAString(): void
     {
+        $requestBodyField = ['name' => 10];
+        $fieldToValidateParts = ['users','nelson','name'];
+
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The name field must be a string.');
+        $this->expectExceptionMessage('The users.nelson.name field must be a string.');
         $this->expectExceptionCode(422);
 
-        $this->stringMethod->execute(['name' => 123]);
+        $this->stringMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

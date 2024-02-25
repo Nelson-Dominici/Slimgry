@@ -14,42 +14,49 @@ class UUIDMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'uuid';
         $validationParts = ['uuid'];
         $customExceptionMessage = '';
 
         $this->uuidMethod = new UUIDMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldIsAValidUUID(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldIsAValidUUID(): void
     {
-        $requestBody = ['uuid' => '550e8400-e29b-41d4-a716-446655440000'];
-        
+        $requestBodyField = ['uuid' => '550e8400-e29b-41d4-a716-446655440000'];
+        $fieldToValidateParts = ['uuid'];
+
         $this->assertNull(
-            $this->uuidMethod->execute($requestBody)
+            $this->uuidMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
-    public function testExecuteReturnsnullWhenTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
-        $requestBody = ['thisFieldDoesNotExist' => '02020491'];
-        
+        $requestBodyField = [];
+        $fieldToValidateParts = ['uuid'];
+
         $this->assertNull(
-            $this->uuidMethod->execute($requestBody)
+            $this->uuidMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
 
-    public function testExecuteThrowsExceptionIfRequestBodyFieldValueIsNotAValidEmail(): void
+    public function testExecuteThrowsExceptionIfRequestBodyFieldVIsNotAValidUuid(): void
     {
-        $requestBody = ['uuid' => 'This is an invalid uuid'];
+        $requestBodyField = ['uuid' => '550e8400-e29b-41d4-a716-446655440000sad'];
+        $fieldToValidateParts = ['users','nelson','uuid'];
 
         $this->expectException(ValidationMethodException::class);
-        $this->expectExceptionMessage('The uuid field is not a valid uuid.');
+        $this->expectExceptionMessage('The uuid field must be a valid uuid.');
         $this->expectExceptionCode(422);
 
-        $this->uuidMethod->execute($requestBody);
+        $this->uuidMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }

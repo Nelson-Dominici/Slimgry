@@ -14,33 +14,37 @@ class PresentMethodTest extends TestCase
     
     public function setUp(): void
     {
-        $fieldToValidate = 'name';
         $validationParts = ['present'];
         $customExceptionMessage = '';
 
         $this->presentMethod = new PresentMethod(
-            $fieldToValidate, 
             $validationParts, 
             $customExceptionMessage
         );
     }
-    public function testExecuteReturnsNullIfTheFieldExistsInRequestBody(): void
+
+    public function testExecuteReturnsNullIfTheRequestBodyFieldIsPresent(): void
     {
-        $requestBody = ['name' => 'Nelson'];
+        $requestBodyField = ['name' => []];
+        $fieldToValidateParts = ['name'];
 
         $this->assertNull(
-            $this->presentMethod->execute($requestBody)
+            $this->presentMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts
+            )
         );
     }
     
-    public function testExecuteReturnsNullIfTheRequestBodyFieldDoesNotExist(): void
+    public function testExecuteThrowsExceptionIfTheRequestBodyFieldIsNotPresent(): void
     {
-        $requestBody = ['thisFieldDoesNotExist' => 'Nelson'];
+        $requestBodyField = [];
+        $fieldToValidateParts = ['name'];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field must be present.');
         $this->expectExceptionCode(422);
 
-        $this->presentMethod->execute($requestBody);
+        $this->presentMethod->execute($requestBodyField, $fieldToValidateParts);
     }
 }
