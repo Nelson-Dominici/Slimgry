@@ -9,7 +9,7 @@ use NelsonDominici\Slimgry\ValidationMethod\CustomExceptionMessageProvider;
 
 class CustomExceptionMessageProviderTest extends TestCase
 {
-    public function testReturnsCustomMessageWhenItExists(): void
+    public function testGetMessageReturnsCustomMessageIfItExists(): void
     {
         $customExceptionMessages = [
             'name.required' => 'This field is required.'
@@ -19,15 +19,15 @@ class CustomExceptionMessageProviderTest extends TestCase
             $customExceptionMessages
         );
 
-        $customMessage = $customExceptionMessageProvider->getCustomMessage(
-            'name',
+        $customMessage = $customExceptionMessageProvider->getMessage(
+            ['name'],
             'required'
         );
 
         $this->assertEquals('This field is required.', $customMessage);
     }
 
-    function testReturnsEmptyStringWhenCustomMessageDoesNotExist(): void
+    function testGetMessageReturnsEmptyStringIfCustomMessageDoesNotExist(): void
     {
         $customExceptionMessages = [];
 
@@ -35,8 +35,8 @@ class CustomExceptionMessageProviderTest extends TestCase
             $customExceptionMessages
         );
 
-        $customMessage = $customExceptionMessageProvider->getCustomMessage(
-            'name',
+        $customMessage = $customExceptionMessageProvider->getMessage(
+            ['name'],
             'required'
         );
 
