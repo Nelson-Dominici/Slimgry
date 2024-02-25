@@ -14,3 +14,7 @@
 ```bash
 $ composer require nelsondominici/slimgry
 ```
+
+<h2>Usage</h2>
+
+To add validations to a route, instantiate the `NelsonDominici\Slimgry\Slimgry` class with validation methods in the constructor.
