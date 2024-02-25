@@ -17,4 +17,54 @@ $ composer require nelsondominici/slimgry
 
 <h2>Usage</h2>
 
-To add validations to a route, instantiate the `NelsonDominici\Slimgry\Slimgry` class with validation methods in the constructor.
+To add validations to a route, add the `NelsonDominici\Slimgry\Slimgry` middleware with the validations in the constructor.<br>
+If any validation method fails, an `NelsonDominici\Slimgry\Exceptions\ValidationMethodException` exception will be thrown.<br>
+
+```php
+use NelsonDominici\Slimgry\Slimgry;
+
+$app->post('/api/auth', [AuthController::class, 'login'])->add(new Slimgry(
+    [
+        'email' => ['required','email','trim','string','min:3','max:100'],
+        'password' => ['required','trim','string','min:6','max:100']
+    ]
+));
+```
+You can also use `|`.
+```php
+[
+    'email' => 'required|email|trim|string|min:6|max:100',
+    'password' => 'required|trim|string|min:6|max:100'
+]
+```
+
+## Validating nested fields
+You can use "dot notation" to validate nested fields, example:
+
+```php
+[
+    'users.adm.email' => ['required','email','trim','string','min:3','max:100'],
+    'users.adm.password' => ['required','trim','string','min:6','max:100'],
+]
+```
+
+## Adding custom message when validation method fails
+Add a second array in the Slimgry class to store custom messages, choose which field the message refers to along with a "dot" and the validation method that failed.
+```php
+use NelsonDominici\Slimgry\Slimgry;
+
+$app->post('/api/auth', [AuthController::class, 'auth'])->add(new Slimgry(
+    [
+        'email' => ['required','email','trim','string','min:3','max:100'],
+        'password' => ['required','trim','string','min:6','max:100']
+    ],
+    [
+        'email.email' => 'We need a valid email.',
+        'password.required' => 'We need your password.'
+    ]
+));
+```
+
+## Validation Methods List
+
+`string`: 
