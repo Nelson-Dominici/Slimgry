@@ -21,7 +21,7 @@ class ValidationMethodInstantiatorTest extends TestCase
 {    
     public function testMustReturnTheInstanceOfAValidationMethod(): void
     {
-        $exampleFieldToValidate = 'name';
+        $fieldToValidateParts = ['name'];
         $exampleValidationMethod = 'string';
         
         $validationMethodFinder = $this->createMock(
@@ -33,11 +33,13 @@ class ValidationMethodInstantiatorTest extends TestCase
         );
 
         $validationMethodFinder
+            ->expects($this->once())
             ->method('find')
             ->willReturn(StringMethod::class);
 
         $customExceptionMessageProvider
-            ->method('getCustomMessage')
+            ->expects($this->once())
+            ->method('getMessage')
             ->willReturn('');
 
         $validationMethodInstantiator = new ValidationMethodInstantiator(
@@ -46,7 +48,7 @@ class ValidationMethodInstantiatorTest extends TestCase
         );
 
         $validationMethodInstance = $validationMethodInstantiator->getInstance(
-            $exampleFieldToValidate, $exampleValidationMethod
+            $fieldToValidateParts, $exampleValidationMethod
         );
 
         $this->assertInstanceOf(ValidationMethod::class, $validationMethodInstance);
