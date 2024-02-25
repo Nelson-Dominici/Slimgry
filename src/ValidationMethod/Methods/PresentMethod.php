@@ -6,11 +6,11 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class PresentMethod extends ValidationMethod
 {
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {    
-        $exceptionMessage = 'The '.$this->fieldToValidate.' field must be present.';
+        $exceptionMessage = 'The '.join('.',$fieldToValidateParts).' field must be present.';
         
-        $expression = !array_key_exists($this->fieldToValidate, $requestBody);
+        $expression = $requestBodyField === [];
 
         return $this->assertAndThrow($expression, $exceptionMessage);
     }

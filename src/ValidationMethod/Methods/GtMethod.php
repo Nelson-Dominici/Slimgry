@@ -6,21 +6,23 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class GtMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
+        $fieldToValidate = end($fieldToValidateParts);
+
         if (
-            !array_key_exists($this->fieldToValidate, $requestBody) || 
-            !is_numeric($requestBody[$this->fieldToValidate])
+            $requestBodyField === [] || 
+            !is_numeric($requestBodyField[$fieldToValidate])
         ) {
             return null;
         }
 
-        $bodyFieldValue = $requestBody[$this->fieldToValidate];
+        $bodyFieldValue = $requestBodyField[$fieldToValidate];
 
         $methodValue = $this->getNumericValue();
 
-        $exceptionMessage = "The {$this->fieldToValidate} field must be greater than {$methodValue}.";
-
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be greater than '.$methodValue.'.';;
+        
         $expression = $bodyFieldValue+0 <= $methodValue;
 
         return $this->assertAndThrow($expression, $exceptionMessage);         

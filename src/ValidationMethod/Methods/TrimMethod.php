@@ -6,20 +6,18 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class TrimMethod extends ValidationMethod
 {
-    public function execute(array $requestBody): ?array
+    public function execute(array $requestBodyField, array $fieldToValidateParts): ?array
     {
+        $fieldToValidate = end($fieldToValidateParts);
+       
         if (
-            !array_key_exists($this->fieldToValidate, $requestBody) || 
-            !$requestBody[$this->fieldToValidate] || 
-            !is_string($requestBody[$this->fieldToValidate])
+            $requestBodyField === [] || 
+            !$requestBodyField[$fieldToValidate] || 
+            !is_string($requestBodyField[$fieldToValidate])
         ) {
             return null;
         }
-        
-        $newValidatedField = [
-            $this->fieldToValidate => trim($requestBody[$this->fieldToValidate])
-        ];
-        
-        return $newValidatedField;
+
+        return [trim($requestBodyField[$fieldToValidate])];
     }
 }

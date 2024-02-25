@@ -6,31 +6,33 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class MaxMethod extends ValidationMethod
 {    
-    public function execute(array $requestBody): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts): null
     {
+        $fieldToValidate = end($fieldToValidateParts);
+       
         if (
-            !array_key_exists($this->fieldToValidate, $requestBody) ||
-            !$requestBody[$this->fieldToValidate] || 
-            $requestBody[$this->fieldToValidate] === true
+            $requestBodyField === [] ||
+            !$requestBodyField[$fieldToValidate] || 
+            $requestBodyField[$fieldToValidate] === true
         ) {
             return null;
         }
-
+        
         $validationMethodValue = $this->getNumericValue();
-        $bodyFieldValue = $requestBody[$this->fieldToValidate];
+        $bodyFieldValue = $requestBodyField[$fieldToValidate];
 
-        $exceptionMessage = "The {$this->fieldToValidate} field cannot be greater than $validationMethodValue.";
+        $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field cannot be greater than '.$validationMethodValue.'.';
 
         $expression = false;
 
         if (is_string($bodyFieldValue) || is_int($bodyFieldValue)) {
-            $expression = strlen(strval($bodyFieldValue)) > $validationMethodValue;
+            $expression = strlen(trim(strval($bodyFieldValue))) > $validationMethodValue;
         }
 
         if (is_array($bodyFieldValue)) {
             $expression = count($bodyFieldValue) > $validationMethodValue;
         }
 
-       return $this->assertAndThrow($expression, $exceptionMessage);
+        return $this->assertAndThrow($expression, $exceptionMessage);
     }
 }
