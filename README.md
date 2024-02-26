@@ -33,7 +33,7 @@ $app->post('/api/auth', [AuthController::class, 'login'])->add(new Slimgry(
 You can also use `|`.
 ```php
 [
-    'email' => 'required|email|trim|string|min:6|max:100',
+    'email' => 'required|email|trim|string|min:3|max:100',
     'password' => 'required|trim|string|min:6|max:100'
 ]
 ```
