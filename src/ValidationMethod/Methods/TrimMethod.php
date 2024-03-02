@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class TrimMethod extends ValidationMethod
 {
-    public function execute(array $requestBodyField, array $fieldToValidateParts): ?array
+    public function execute(array $requestBodyField, array $fieldToValidateParts, array $validationMethods): ?array
     {
         $fieldToValidate = end($fieldToValidateParts);
        

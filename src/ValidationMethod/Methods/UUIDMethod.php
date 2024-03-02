@@ -6,7 +6,7 @@ namespace NelsonDominici\Slimgry\ValidationMethod\Methods;
 
 class UUIDMethod extends ValidationMethod
 {    
-    public function execute(array $requestBodyField, array $fieldToValidateParts): null
+    public function execute(array $requestBodyField, array $fieldToValidateParts, array $validationMethods): null
     {
         if ($requestBodyField === []) {
             return null;
