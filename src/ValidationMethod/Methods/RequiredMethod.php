@@ -12,9 +12,12 @@ class RequiredMethod extends ValidationMethod
 
         if (
             !array_key_exists($fieldToValidate, $requestBodyField) ||
-            $requestBodyField[$fieldToValidate] === '' ||
             $requestBodyField[$fieldToValidate] === [] ||
-            $requestBodyField[$fieldToValidate] === null
+            $requestBodyField[$fieldToValidate] === null ||
+            (
+                is_string($requestBodyField[$fieldToValidate]) && 
+                trim($requestBodyField[$fieldToValidate]) === ''    
+            )
         ) {
             $this->throwException('The '.join('.', $fieldToValidateParts).' field is required.');
         }

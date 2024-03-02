@@ -8,11 +8,17 @@ class StringMethod extends ValidationMethod
 {
     public function execute(array $requestBodyField, array $fieldToValidateParts, array $validationMethods): null
     {    
-        if ($requestBodyField === []) {
+        $fieldToValidate = end($fieldToValidateParts);
+       
+        if (
+            $requestBodyField === [] ||
+            (
+                in_array('nullable', $validationMethods) && 
+                $requestBodyField[$fieldToValidate] === null
+            )
+        ) {
             return null;
         }
-
-        $fieldToValidate = end($fieldToValidateParts);
 
         $exceptionMessage = 'The '.join('.', $fieldToValidateParts).' field must be a string.';
 

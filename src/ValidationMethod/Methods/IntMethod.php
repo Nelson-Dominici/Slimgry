@@ -10,7 +10,13 @@ class IntMethod extends ValidationMethod
     {
         $fieldToValidate = end($fieldToValidateParts);
       
-        if ($requestBodyField === []) {
+        if (
+            $requestBodyField === [] ||
+            (
+                in_array('nullable', $validationMethods) && 
+                $requestBodyField[$fieldToValidate] === null
+            )
+        ) {
             return null;
         }
 
