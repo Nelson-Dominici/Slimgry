@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace tests\ValidationMethod\Methods;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use NelsonDominici\Slimgry\ValidationMethod\Methods\EmailMethod;
 use NelsonDominici\Slimgry\Exceptions\ValidationMethodException;
 
@@ -38,7 +37,22 @@ class EmailMethodTest extends TestCase
             )
         );
     }
-    
+
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['email' => null];
+        $fieldToValidateParts = ['email'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->emailMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
+
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidEmail(): void
     {
         $requestBodyField = ['email' => 'nelsoncomer777@gmail.com'];
