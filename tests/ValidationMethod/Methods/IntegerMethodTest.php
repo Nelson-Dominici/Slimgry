@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace tests\ValidationMethod\Methods;
 
 use PHPUnit\Framework\TestCase;
-use NelsonDominici\Slimgry\ValidationMethod\Methods\IntMethod;
+use NelsonDominici\Slimgry\ValidationMethod\Methods\IntegerMethod;
 use NelsonDominici\Slimgry\Exceptions\ValidationMethodException;
 
-class IntMethodTest extends TestCase
+class IntegerMethodTest extends TestCase
 {    
-    private IntMethod $intMethod;
+    private IntegerMethod $integerMethod;
     
     public function setUp(): void
     {
         $validationParts = ['int'];
         $customExceptionMessage = '';
 
-        $this->intMethod = new IntMethod(
+        $this->integerMethod = new IntegerMethod(
             $validationParts, 
             $customExceptionMessage
         );
@@ -30,7 +30,7 @@ class IntMethodTest extends TestCase
         $validationMethods = ['nullable'];
 
         $this->assertNull(
-            $this->intMethod->execute(
+            $this->integerMethod->execute(
                 $requestBodyField,
                 $fieldToValidateParts,
                 $validationMethods
@@ -45,7 +45,7 @@ class IntMethodTest extends TestCase
         $validationMethods = [];
 
         $this->assertNull(
-            $this->intMethod->execute(
+            $this->integerMethod->execute(
                 $requestBodyField,
                 $fieldToValidateParts,
                 $validationMethods
@@ -60,7 +60,7 @@ class IntMethodTest extends TestCase
         $validationMethods = [];
 
         $this->assertNull(
-            $this->intMethod->execute(
+            $this->integerMethod->execute(
                 $requestBodyField,
                 $fieldToValidateParts,
                 $validationMethods
@@ -78,7 +78,7 @@ class IntMethodTest extends TestCase
         $this->expectExceptionMessage('The money field must be a valid integer.');
         $this->expectExceptionCode(422);
 
-        $this->intMethod->execute(
+        $this->integerMethod->execute(
             $requestBodyField, 
             $fieldToValidateParts,
             $validationMethods
