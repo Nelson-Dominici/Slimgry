@@ -23,6 +23,21 @@ class BooleanMethodTest extends TestCase
         );
     }
 
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['adm' => null];
+        $fieldToValidateParts = ['adm'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->booleanMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
+
     public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
         $validationMethods = [];

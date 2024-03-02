@@ -22,6 +22,21 @@ class StringMethodTest extends TestCase
             $customExceptionMessage
         );
     }
+
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['name' => null];
+        $fieldToValidateParts = ['name'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->stringMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
     
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidString(): void
     {

@@ -22,6 +22,21 @@ class IntMethodTest extends TestCase
             $customExceptionMessage
         );
     }
+    
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['number' => null];
+        $fieldToValidateParts = ['number'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->intMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
 
     public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {

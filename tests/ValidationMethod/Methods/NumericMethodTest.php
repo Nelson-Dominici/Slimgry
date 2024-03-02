@@ -23,6 +23,21 @@ class NumericMethodTest extends TestCase
         );
     }
 
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['number' => null];
+        $fieldToValidateParts = ['number'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->numericMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
+
     public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotNumeric(): void
     {
         $requestBodyField = ['number' => null];

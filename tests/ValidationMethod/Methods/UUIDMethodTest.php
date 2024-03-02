@@ -37,6 +37,21 @@ class UUIDMethodTest extends TestCase
         );
     }
     
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['uuid' => null];
+        $fieldToValidateParts = ['uuid'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->uuidMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
+
     public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
         $requestBodyField = [];

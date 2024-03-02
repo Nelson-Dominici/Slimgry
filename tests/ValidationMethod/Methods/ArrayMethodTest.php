@@ -23,6 +23,21 @@ class ArrayMethodTest extends TestCase
         );
     }
 
+    public function testExecuteReturnsNullIfRequestBodyFieldCanBeNullable(): void
+    {
+        $requestBodyField = ['list' => null];
+        $fieldToValidateParts = ['list'];
+        $validationMethods = ['nullable'];
+
+        $this->assertNull(
+            $this->arrayMethod->execute(
+                $requestBodyField,
+                $fieldToValidateParts,
+                $validationMethods
+            )
+        );
+    }
+
     public function testExecuteReturnsNullWhenTheRequestBodyFieldDoesNotExist(): void
     {
         $validationMethods = [];
