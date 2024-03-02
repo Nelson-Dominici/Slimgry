@@ -27,11 +27,13 @@ class TrimMethodTest extends TestCase
     public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->trimMethod->execute(
                 $bodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -51,11 +53,13 @@ class TrimMethodTest extends TestCase
     {
         $requestBodyField = ['name' => 13];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->trimMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -64,11 +68,13 @@ class TrimMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->trimMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -77,13 +83,15 @@ class TrimMethodTest extends TestCase
     {
         $requestBodyField = ['name' => ' Nelson Dominici '];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $expectedData = ['Nelson Dominici'];
 
         $this->assertSame(
             $this->trimMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             ),
             $expectedData
         );

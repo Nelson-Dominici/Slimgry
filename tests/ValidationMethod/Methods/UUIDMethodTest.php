@@ -26,11 +26,13 @@ class UUIDMethodTest extends TestCase
     {
         $requestBodyField = ['uuid' => '550e8400-e29b-41d4-a716-446655440000'];
         $fieldToValidateParts = ['uuid'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->uuidMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -39,11 +41,13 @@ class UUIDMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['uuid'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->uuidMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -52,11 +56,16 @@ class UUIDMethodTest extends TestCase
     {
         $requestBodyField = ['uuid' => '550e8400-e29b-41d4-a716-446655440000sad'];
         $fieldToValidateParts = ['users','nelson','uuid'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The uuid field must be a valid uuid.');
         $this->expectExceptionCode(422);
 
-        $this->uuidMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->uuidMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

@@ -28,23 +28,30 @@ class MaxMethodTest extends TestCase
     {
         $requestBodyField = ['name' => '123456791011'];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field cannot be greater than 10.');
         $this->expectExceptionCode(422);
 
-        $this->maxMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->maxMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 
     public function testExecuteReturnsNullIfRequestBodyFieldIsEqualsTheMethodValue(): void
     {
         $requestBodyField = ['name' => ['1','2','3','4','5','6','7','8','9','1']];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->maxMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +60,13 @@ class MaxMethodTest extends TestCase
     {
         $requestBodyField = ['name' => 123456789];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->maxMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -66,11 +75,13 @@ class MaxMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->maxMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -79,11 +90,13 @@ class MaxMethodTest extends TestCase
     {
         $requestBodyField = ['name' => true];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->maxMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -92,11 +105,13 @@ class MaxMethodTest extends TestCase
     public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->maxMethod->execute(
                 $bodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }

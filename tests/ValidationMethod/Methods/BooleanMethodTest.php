@@ -25,13 +25,15 @@ class BooleanMethodTest extends TestCase
 
     public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
+        $validationMethods = [];
         $requestBodyField = [];
         $fieldToValidateParts = ['adm'];
 
         $this->assertNull(
             $this->booleanMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -39,27 +41,33 @@ class BooleanMethodTest extends TestCase
     public function testExecuteReturnsNullIfRequestBodyFieldIsAValidBoolean(): void
     {
         $requestBodyField = ['adm' => true];
+        $validationMethods = [];
 
         $fieldToValidateParts = ['users','nelson','adm'];
 
         $this->assertNull(
             $this->booleanMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
 
     public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotAValidBoolean(): void
     {
+        $validationMethods = [];
         $requestBodyField = ['adm' => 'true'];
-
         $fieldToValidateParts = ['users','nelson','adm'];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The users.nelson.adm field must be a valid boolean.');
         $this->expectExceptionCode(422);
 
-        $this->booleanMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->booleanMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

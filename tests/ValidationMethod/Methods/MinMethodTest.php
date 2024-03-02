@@ -28,23 +28,30 @@ class MinMethodTest extends TestCase
     {
         $requestBodyField = ['name' => 'ND'];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field cannot be less than 3.');
         $this->expectExceptionCode(422);
 
-        $this->minMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->minMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );    
     }
     
     public function testExecuteReturnsNullForRequestBodyFieldAboveMinimumSize(): void
     {
         $requestBodyField = ['name' => 'Nelson'];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->minMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +60,13 @@ class MinMethodTest extends TestCase
     {
         $requestBodyField = ['name' => [1,2,3]];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->minMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -66,11 +75,13 @@ class MinMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->minMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -79,11 +90,13 @@ class MinMethodTest extends TestCase
     {
         $requestBodyField = ['name' => true];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->minMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -92,11 +105,13 @@ class MinMethodTest extends TestCase
     public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->minMethod->execute(
                 $bodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }

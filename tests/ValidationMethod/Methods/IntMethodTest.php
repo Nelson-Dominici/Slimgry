@@ -27,11 +27,13 @@ class IntMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['number'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->intMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -40,11 +42,13 @@ class IntMethodTest extends TestCase
     {
         $requestBodyField = ['number' => 10];
         $fieldToValidateParts = ['number'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->intMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +57,16 @@ class IntMethodTest extends TestCase
     {
         $requestBodyField = ['money' => 10.1];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The money field must be a valid integer.');
         $this->expectExceptionCode(422);
 
-        $this->intMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->intMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

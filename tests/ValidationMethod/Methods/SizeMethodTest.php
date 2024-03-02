@@ -28,23 +28,30 @@ class SizeMethodTest extends TestCase
     {
         $requestBodyField = ['name' => ['Nelson', 'Dominici']];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field must be 4 characters.');
         $this->expectExceptionCode(422);
 
-        $this->sizeMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->sizeMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
     
     #[DataProvider('fieldsWithTheRightSize')]
     public function testExecuteReturnsNullForMatchingRequestBodyField(array $bodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->sizeMethod->execute(
                 $bodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -62,11 +69,13 @@ class SizeMethodTest extends TestCase
     {
         $requestBodyField = ['name' => true];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->sizeMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -75,11 +84,13 @@ class SizeMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->sizeMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -88,11 +99,13 @@ class SizeMethodTest extends TestCase
     public function testExecuteReturnsNullForFalsyRequestBodyField(array $bodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->sizeMethod->execute(
                 $bodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }

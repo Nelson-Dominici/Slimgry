@@ -27,11 +27,13 @@ class GtMethodTest extends TestCase
     {
         $requestBodyField = ['money' => 5000];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gtMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -40,11 +42,13 @@ class GtMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gtMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +57,13 @@ class GtMethodTest extends TestCase
     {
         $requestBodyField = ['money' => null];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gtMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -66,11 +72,16 @@ class GtMethodTest extends TestCase
     {
         $requestBodyField = ['money' => '100'];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The money field must be greater than 1000.');
         $this->expectExceptionCode(422);
 
-        $this->gtMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->gtMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

@@ -27,11 +27,13 @@ class GteMethodTest extends TestCase
     {
         $requestBodyField = ['money' => 5000];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gteMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -40,11 +42,13 @@ class GteMethodTest extends TestCase
     {
         $requestBodyField = ['money' => 1000];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gteMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +57,13 @@ class GteMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gteMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -66,11 +72,13 @@ class GteMethodTest extends TestCase
     {
         $requestBodyField = ['money' => []];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->gteMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -79,11 +87,16 @@ class GteMethodTest extends TestCase
     {
         $requestBodyField = ['money' => '100'];
         $fieldToValidateParts = ['money'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The money field must be greater than or equal to 1000.');
         $this->expectExceptionCode(422);
 
-        $this->gteMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->gteMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

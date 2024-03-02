@@ -27,11 +27,13 @@ class StringMethodTest extends TestCase
     {
         $requestBodyField = ['name' => 'Nelson'];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->stringMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -40,11 +42,13 @@ class StringMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->stringMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -53,11 +57,16 @@ class StringMethodTest extends TestCase
     {
         $requestBodyField = ['name' => 10];
         $fieldToValidateParts = ['users','nelson','name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The users.nelson.name field must be a string.');
         $this->expectExceptionCode(422);
 
-        $this->stringMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->stringMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

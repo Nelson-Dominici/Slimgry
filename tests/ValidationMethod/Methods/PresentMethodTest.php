@@ -16,6 +16,7 @@ class PresentMethodTest extends TestCase
     {
         $validationParts = ['present'];
         $customExceptionMessage = '';
+        $validationMethods = [];
 
         $this->presentMethod = new PresentMethod(
             $validationParts, 
@@ -27,11 +28,13 @@ class PresentMethodTest extends TestCase
     {
         $requestBodyField = ['name' => []];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->presentMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -40,11 +43,16 @@ class PresentMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field must be present.');
         $this->expectExceptionCode(422);
 
-        $this->presentMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->presentMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );    
     }
 }

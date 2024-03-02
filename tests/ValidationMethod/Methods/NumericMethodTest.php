@@ -27,23 +27,30 @@ class NumericMethodTest extends TestCase
     {
         $requestBodyField = ['number' => null];
         $fieldToValidateParts = ['number'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The number field must have a numeric value.');
         $this->expectExceptionCode(422);
 
-        $this->numericMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->numericMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );    
     }
 
     public function testExecuteReturnsNullIfRequestBodyFieldIsNumeric(): void
     {
         $requestBodyField = ['number' => '10'];
         $fieldToValidateParts = ['number'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->numericMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -52,11 +59,13 @@ class NumericMethodTest extends TestCase
     {
         $requestBodyField = [];
         $fieldToValidateParts = ['number'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->numericMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }

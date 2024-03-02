@@ -27,12 +27,14 @@ class EmailMethodTest extends TestCase
     public function testExecuteReturnsNullIfRequestBodyFieldDoesNotExist(): void
     {
         $requestBodyField = [];
+        $validationMethods = [];
         $fieldToValidateParts = ['adm'];
 
         $this->assertNull(
             $this->emailMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
@@ -41,17 +43,20 @@ class EmailMethodTest extends TestCase
     {
         $requestBodyField = ['email' => 'nelsoncomer777@gmail.com'];
         $fieldToValidateParts = ['email'];
+        $validationMethods = [];
         
         $this->assertNull(
             $this->emailMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
 
     public function testExecuteThrowsExceptionIfRequestBodyFieldIsNotAValidEmail(): void
     {
+        $validationMethods = [];
         $requestBodyField = ['email' => 'lol'];
         $fieldToValidateParts = ['email'];
 
@@ -59,6 +64,10 @@ class EmailMethodTest extends TestCase
         $this->expectExceptionMessage('The email field must be a valid email.');
         $this->expectExceptionCode(422);
 
-        $this->emailMethod->execute($requestBodyField, $fieldToValidateParts);
+        $this->emailMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
 }

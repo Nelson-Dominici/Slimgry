@@ -25,15 +25,20 @@ class RequiredMethodTest extends TestCase
     }
 
     #[DataProvider('fieldsConsideredEmpty')]
-    public function testThrowsExceptionIfRequestBodyFieldIsEmpty(array $requestBody): void
+    public function testThrowsExceptionIfRequestBodyFieldIsEmpty(array $requestBodyField): void
     {
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->expectException(ValidationMethodException::class);
         $this->expectExceptionMessage('The name field is required.');
         $this->expectExceptionCode(422);
 
-        $this->requiredMethod->execute($requestBody, $fieldToValidateParts);
+        $this->requiredMethod->execute(
+            $requestBodyField, 
+            $fieldToValidateParts,
+            $validationMethods
+        );
     }
     
     public static function fieldsConsideredEmpty(): array
@@ -50,11 +55,13 @@ class RequiredMethodTest extends TestCase
     {
         $requestBodyField = ['name' => ['Nelson']];
         $fieldToValidateParts = ['name'];
+        $validationMethods = [];
 
         $this->assertNull(
             $this->requiredMethod->execute(
                 $requestBodyField,
-                $fieldToValidateParts
+                $fieldToValidateParts,
+                $validationMethods
             )
         );
     }
