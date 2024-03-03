@@ -12,9 +12,8 @@
 <h2>Install</h2>
 
 ```bash
-$ composer require nelsondominici/slimgry
+composer require nelson-dominici/slimgry
 ```
-
 <h2>Usage</h2>
 
 To add validations to a route, add the `NelsonDominici\Slimgry\Slimgry` middleware with the validations in the constructor.<br>
