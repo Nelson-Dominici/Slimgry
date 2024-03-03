@@ -81,6 +81,7 @@ $app->post('/api/auth', [AuthController::class, 'auth'])->add(new Slimgry(
 | nullable | The field under validation may be `null` | |
 | numeric | The field under validation must be `numeric` | |
 | present | The field under validation must exist in request body | |
+| regex:pattern | The field under validation must match the given regular expression | |
 | required | The field under validation must be present in request body and not "empty" | Values considered "empty" are `null`, `empty string` and `empty array` |
 | size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
 | string | The field under validation must be a `string` | |
