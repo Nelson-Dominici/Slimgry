@@ -67,23 +67,23 @@ $app->post('/api/auth', [AuthController::class, 'auth'])->add(new Slimgry(
 
 ## Validation Methods List
 
-| Validation Method | Function | attention! |
+| Validation Method | Function | Attention! |
 |----------|:-------------|:-------------|
-| string | The field under validation must be a `string` | |
-| email | The field under validation must be a valid `email` | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_EMAIL` |
-| boolean | The field under validation must be a `boolean` | only `true` or `false` is accepted |
-| integer | The field under validation must be an `integer` | |
 | array | The field under validation must be a PHP `array` | |
+| boolean | The field under validation must be a `boolean` | Only `true` or `false` is accepted |
+| email | The field under validation must be a valid `email` | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_EMAIL` |
 | gt:value | The field under validation must be greater than a `numeric` value | Only `numeric` values are validated |
 | gte:value | The field under validation must be greater than or equal to a `numeric` value | Only `numeric` values are validated |
-| min:value | The field under validation must have a minimum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| integer | The field under validation must be an `integer` | |
+| ip | The field under validation must be an IP address | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_IP |
 | max:value | The field under validation must have a maximum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
-| size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
-| size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| min:value | The field under validation must have a minimum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
 | nullable | The field under validation may be `null` | |
 | numeric | The field under validation must be `numeric` | |
 | present | The field under validation must exist in request body | |
-| required | The field under validation must be present in request body and not empty |  |
+| required | The field under validation must be present in request body and not "empty" | Values considered "empty" are `null`, `empty string` and `empty array` |
+| size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| string | The field under validation must be a `string` | |
+| trim | Remove white space from The field under validation | |
+| uuid | The field under validation must be a valid universally unique identifier (UUID) in 4 version | |
 
-### string
-The field under validation must be a `string`
