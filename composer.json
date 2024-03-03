@@ -1,10 +1,15 @@
 {
     "name": "nelson-dominici/slimgry",
-    "description": "Slim Framework high-level validation library",
+    "description": "A powerful validation middleware for the slim framework",
     "type": "library",
     "require-dev": {
-        "slim/slim": "^4.12",
-        "slim/psr7": "^1.6"
+        "slim/psr7": "^1.6",
+        "phpunit/phpunit": "^10.5"
+    },
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "slim/slim": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -13,7 +18,7 @@
     },
     "authors": [
         {
-            "name": "Nelson-Dominici",
+            "name": "Nelson Dominici",
             "email": "nelsoncomer777@gmail.com"
         }
     ],
