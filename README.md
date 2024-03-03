@@ -74,7 +74,7 @@ $app->post('/api/auth', [AuthController::class, 'auth'])->add(new Slimgry(
 | gt:value | The field under validation must be greater than a `numeric` value | Only `numeric` values are validated |
 | gte:value | The field under validation must be greater than or equal to a `numeric` value | Only `numeric` values are validated |
 | integer | The field under validation must be an `integer` | |
-| ip | The field under validation must be an IP address | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_IP |
+| ip | The field under validation must be an IP address | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_IP` |
 | max:value | The field under validation must have a maximum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
 | min:value | The field under validation must have a minimum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
 | nullable | The field under validation may be `null` | |
