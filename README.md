@@ -67,4 +67,23 @@ $app->post('/api/auth', [AuthController::class, 'auth'])->add(new Slimgry(
 
 ## Validation Methods List
 
-`string`: 
+| Validation Method | Function | attention! |
+|----------|:-------------|:-------------|
+| string | The field under validation must be a `string` | |
+| email | The field under validation must be a valid `email` | <a href='https://www.php.net/manual/en/function.filter-var.php'>filter_var()</a> is used with `FILTER_VALIDATE_EMAIL` |
+| boolean | The field under validation must be a `boolean` | only `true` or `false` is accepted |
+| integer | The field under validation must be an `integer` | |
+| array | The field under validation must be a PHP `array` | |
+| gt:value | The field under validation must be greater than a `numeric` value | Only `numeric` values are validated |
+| gte:value | The field under validation must be greater than or equal to a `numeric` value | Only `numeric` values are validated |
+| min:value | The field under validation must have a minimum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| max:value | The field under validation must have a maximum number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| size:value | The field under validation must have a specific number of `elements` | Only `arrays`, `strings`, and `numeric` values are validated |
+| nullable | The field under validation may be `null` | |
+| numeric | The field under validation must be `numeric` | |
+| present | The field under validation must exist in request body | |
+| required | The field under validation must be present in request body and not empty |  |
+
+### string
+The field under validation must be a `string`
