@@ -1,6 +1,6 @@
 {
     "name": "nelson-dominici/slimgry",
-    "description": "A powerful validation middleware for the slim framework",
+    "description": "Slimgry is a validation middleware for the Slim framework, with a validation syntax similar to Laravel.",
     "type": "library",
     "require-dev": {
         "slim/psr7": "^1.6",
@@ -21,6 +21,5 @@
             "name": "Nelson Dominici",
             "email": "nelsoncomer777@gmail.com"
         }
-    ],
-    "minimum-stability": "stable"
+    ]
 }
